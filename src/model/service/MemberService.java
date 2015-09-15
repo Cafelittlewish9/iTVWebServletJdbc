@@ -40,19 +40,20 @@ public class MemberService {
 	}	
 	
 	//registry1採帳號密碼信箱註冊；registry2是採信箱密碼註冊
-	public String registry2(String password,String usermail)throws SQLException{
+	public String registry2(String usermail,String password)throws SQLException{
 		String result=null;		
 		MemberVO mvo=new MemberVO();
 		if (usermail.length()==0){
 			result="Please keyin a your mail.";
 		}else{
 			if (dao.getId(usermail.substring(0,usermail.indexOf("@")))!=0)  {		
-				result="Please change another mail address to login.";
+				result="Please change another mail address to registry.";
 			}else{
 				mvo.setMemberAccount(usermail.substring(0,usermail.indexOf("@")));
 				mvo.setMemberPassword(password.getBytes());
+				mvo.setMemberEmail(usermail);
 //				mvo.setMemberRegisterTime(new java.util.Date());	
-				dao.insert(mvo);
+				dao.insert2(mvo);
 				result="success";
 			}				
 		}
@@ -178,9 +179,10 @@ public class MemberService {
 	
 	public static void main(String[] args) throws SQLException{
 		MemberService service = new MemberService();
-		MemberVO mvo = service.login1("niceguy", "E");
-		System.out.println("");
-		
+//		MemberVO mvo = service.login1("niceguy", "E");
+//		System.out.println("");
+		String result=service.registry2("madclown@gmail.com","E");
+		System.out.println(result);
 		
 //		String result=service.registry1("niceguy", "E","madclown@gmail.com");
 //		System.out.println("registry result="+result);
