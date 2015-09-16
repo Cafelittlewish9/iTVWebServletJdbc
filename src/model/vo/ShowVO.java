@@ -6,14 +6,8 @@ public class ShowVO {
 	private int memberId;
 	private java.util.Date showTime;
 	private String website;
-	private MemberVO member;
+	private String title;
 	
-	public MemberVO getMember() {
-		return member;
-	}
-	public void setMember(MemberVO member) {
-		this.member = member;
-	}
 	@Override
 	public String toString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -37,5 +31,11 @@ public class ShowVO {
 	}
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }

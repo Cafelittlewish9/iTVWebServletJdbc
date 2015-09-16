@@ -7,6 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.dao.ChannelDAO;
 import model.vo.ChannelVO;
 import model.vo.MemberVO;
@@ -17,10 +23,18 @@ import util.GC;
  *
  */
 public class ChannelDAOjdbc implements ChannelDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
-
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
+	public ChannelDAOjdbc(){
+		try {
+			Context ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * 查詢某會員設定的某頻道網址
@@ -34,7 +48,8 @@ public class ChannelDAOjdbc implements ChannelDAO {
 	public ChannelVO selectByChannelNo(int memberId, int channelNo) {
 		ChannelVO result = null;
 		ResultSet rset = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID_CHANNELNO);) {
 			stmt.setInt(1, memberId);
 			stmt.setInt(2, channelNo);
@@ -68,7 +83,8 @@ public class ChannelDAOjdbc implements ChannelDAO {
 		List<ChannelVO> list = null;
 		ChannelVO result = null;
 		ResultSet rset = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID);) {
 			stmt.setInt(1, memberId);
 			rset = stmt.executeQuery();
@@ -100,7 +116,8 @@ public class ChannelDAOjdbc implements ChannelDAO {
 
 	public List<ChannelVO> selectAll() {
 		List<ChannelVO> list = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
 				ResultSet rset = stmt.executeQuery();) {
 			list = new ArrayList<ChannelVO>();
@@ -127,7 +144,8 @@ public class ChannelDAOjdbc implements ChannelDAO {
 	@Override
 	public int insert(ChannelVO bean) {
 		int result = -1;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
 			if (bean != null) {
 				stmt.setInt(1, bean.getMemberId());
@@ -153,7 +171,8 @@ public class ChannelDAOjdbc implements ChannelDAO {
 	@Override
 	public int update(String broadcastWebsite, int memberId, int channelNo) {
 		int result = -1;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(UPDATE);) {
 			stmt.setString(1, broadcastWebsite);
 			stmt.setInt(2, memberId);
@@ -169,7 +188,8 @@ public class ChannelDAOjdbc implements ChannelDAO {
 	@Override
 	public int update(ChannelVO bean) {
 		int result = -1;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(UPDATE);) {
 			stmt.setString(1, bean.getBroadcastWebsite());
 			stmt.setInt(2, bean.getMemberId());
@@ -192,7 +212,8 @@ public class ChannelDAOjdbc implements ChannelDAO {
 	 */
 	@Override
 	public boolean delete(int memberId, int channelNo) {
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(DELETE);) {
 			stmt.setInt(1, memberId);
 			stmt.setInt(2, channelNo);
@@ -211,7 +232,8 @@ public class ChannelDAOjdbc implements ChannelDAO {
 
 	@Override
 	public boolean deleteAll(int memberId) {
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(DELETE_ALL);) {
 			stmt.setInt(1, memberId);
 			int i = stmt.executeUpdate();

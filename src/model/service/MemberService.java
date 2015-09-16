@@ -1,9 +1,7 @@
 package model.service;
 
-import java.security.MessageDigest;
 import java.sql.SQLException;
 import java.util.Arrays;
-
 import model.dao.MemberDAO;
 import model.dao.jdbc.MemberDAOjdbc;
 import model.vo.MemberVO;
@@ -193,8 +191,8 @@ public class MemberService {
 		// MemberVO mvo = service.login1("niceguy", "E");
 		// System.out.println("VO info="+mvo);
 
-		// MemberVO mvo = service.login2("Squirtle@gmail.com", "C");
-		// System.out.println("VO info="+mvo);
+		 MemberVO mvo = service.login2("Pikachu@gmail.com", "A");
+		 System.out.println("VO info="+mvo);
 
 		// String result = service.changePassword("niceguy",
 		// "madclown@gmail.com", "E");

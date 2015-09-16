@@ -40,7 +40,7 @@ public class Registry extends HttpServlet {
 	
 		if(errorMsg!=null && !errorMsg.isEmpty()) {
 			request.getRequestDispatcher(
-					"/NewFile.html").forward(request, response);
+					"/LoginPage.html").forward(request, response);
 			return;
 		}
 
@@ -68,8 +68,8 @@ public class Registry extends HttpServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		this.doPost(req, resp);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		this.doGet(request, response);
 	}
 
 }

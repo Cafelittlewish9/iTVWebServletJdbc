@@ -8,6 +8,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.dao.ReportVideoDAO;
 import model.vo.MemberVO;
 import model.vo.ReportVideoVO;
@@ -15,10 +20,18 @@ import model.vo.VideoVO;
 import util.ConvertType;
 import util.GC;
 public class ReportVideoDAOjdbc implements ReportVideoDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
-
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
+	public ReportVideoDAOjdbc(){
+		try {
+			Context ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 	private static final String SELECT_ALL = "SELECT orderId, reportedVideoId, reportTime, reportReason, "
 			+ "v.memberId, videoWebsite, videoClassName, videoTitle, videoUploadTime, videoDescription, "
 			+ "videoDescriptionModifyTime, memberAccount FROM ReportVideo JOIN Video v ON reportedVideoId = "
@@ -28,8 +41,8 @@ public class ReportVideoDAOjdbc implements ReportVideoDAO {
 	public List<ReportVideoVO> selectAll() {
 		List<ReportVideoVO> list = new ArrayList<ReportVideoVO>();
 		Connection conn = null;
-		try {
-			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try {conn=ds.getConnection();
+//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -74,8 +87,8 @@ public class ReportVideoDAOjdbc implements ReportVideoDAO {
 	public boolean insert(ReportVideoVO reportVideo) {
 		Connection conn = null;
 		boolean result = false;
-		try {
-			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try {conn=ds.getConnection();
+//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			PreparedStatement pstmt = conn.prepareStatement(INSERT);
 			pstmt.setInt(1, reportVideo.getReportedVideoId());
 			pstmt.setString(2, reportVideo.getReportReason());
@@ -103,8 +116,8 @@ public class ReportVideoDAOjdbc implements ReportVideoDAO {
 	public boolean delete(int orderId) {
 		Connection conn = null;
 		boolean result = false;
-		try {
-			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try { conn=ds.getConnection();
+//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			PreparedStatement pstmt = conn.prepareStatement(DELETE);
 			pstmt.setInt(1, orderId);
 			int demo = pstmt.executeUpdate();

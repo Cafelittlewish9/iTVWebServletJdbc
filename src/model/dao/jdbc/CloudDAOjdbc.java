@@ -7,6 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.dao.CloudDAO;
 import model.vo.CloudVO;
 import util.ConvertType;
@@ -17,9 +23,18 @@ import util.GC;
  *
  */
 public class CloudDAOjdbc implements CloudDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
+	public CloudDAOjdbc(){
+		try {
+			Context ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private static final String SELECT_ALL = "SELECT * FROM Cloud";
 	/**
@@ -29,7 +44,8 @@ public class CloudDAOjdbc implements CloudDAO {
 	@Override
 	public List<CloudVO> selectAll() {
 		List<CloudVO> list = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
 				ResultSet rs = stmt.executeQuery();) {
 			list = new ArrayList<CloudVO>();
@@ -61,7 +77,8 @@ public class CloudDAOjdbc implements CloudDAO {
 	@Override
 	public List<CloudVO> selectByMemberId(int memberId) {
 		List<CloudVO> list = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_MEMBERID);) {
 			stmt.setInt(1, memberId);
 			ResultSet rs = stmt.executeQuery();
@@ -89,7 +106,8 @@ public class CloudDAOjdbc implements CloudDAO {
 	@Override
 	public List<CloudVO> selectByFileName(int memberId, String fileName) {
 		List<CloudVO> list = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_FILENAME);) {
 			stmt.setInt(1, memberId);
 			stmt.setString(2, "%" + fileName + "%");
@@ -120,7 +138,8 @@ public class CloudDAOjdbc implements CloudDAO {
 	@Override
 	public List<CloudVO> selectByTime(int memberId, java.util.Date fromTime, java.util.Date toTime) {
 		List<CloudVO> list = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_TIME);) {
 			stmt.setInt(1, memberId);
 			stmt.setTimestamp(2, new java.sql.Timestamp(fromTime.getTime()));
@@ -150,7 +169,8 @@ public class CloudDAOjdbc implements CloudDAO {
 	@Override
 	public List<CloudVO> selectByFileType(int memberId, String fileType) {
 		List<CloudVO> list = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_FILETYPE);) {
 			stmt.setInt(1, memberId);
 			stmt.setString(2, fileType);
@@ -180,7 +200,8 @@ public class CloudDAOjdbc implements CloudDAO {
 	public List<CloudVO> selectByFileNameAndTime(int memberId, String fileName, java.util.Date fromTime,
 			java.util.Date toTime) {
 		List<CloudVO> list = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_FILENAME_AND_TIME);) {
 			stmt.setInt(1, memberId);
 			stmt.setString(2, "%" + fileName + "%");
@@ -211,7 +232,8 @@ public class CloudDAOjdbc implements CloudDAO {
 	@Override
 	public List<CloudVO> selectByFileNameAndFileType(int memberId, String fileType, String fileName) {
 		List<CloudVO> list = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_FILENAME_AND_FILETYPE);) {
 			stmt.setInt(1, memberId);
 			stmt.setString(2, fileType);
@@ -242,7 +264,8 @@ public class CloudDAOjdbc implements CloudDAO {
 	public List<CloudVO> selectByFileTypeAndTime(int memberId, java.util.Date fromTime, java.util.Date toTime,
 			String fileType) {
 		List<CloudVO> list = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_FILETYPE_AND_TIME);) {
 			stmt.setInt(1, memberId);
 			stmt.setString(2, fileType);
@@ -274,7 +297,8 @@ public class CloudDAOjdbc implements CloudDAO {
 	public List<CloudVO> selectByFileNameFileTypeAndTime(int memberId, String fileName, java.util.Date fromTime,
 			java.util.Date toTime, String fileType) {
 		List<CloudVO> list = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_FILENAME_FILETYPE_AND_TIME);) {
 			stmt.setInt(1, memberId);
 			stmt.setString(2, fileType);
@@ -306,7 +330,8 @@ public class CloudDAOjdbc implements CloudDAO {
 	@Override
 	public int insert(CloudVO file) {
 		int result = -1;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
 			stmt.setInt(1, file.getMemberId());
 			stmt.setString(2, file.getFileName());
@@ -327,8 +352,8 @@ public class CloudDAOjdbc implements CloudDAO {
 	public int updateFile(String filePath, long fileSize, int fileId) {
 		int result = -1;
 		CloudVO file=new CloudVO();
-
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(UPDATE_FILE);) {
 			stmt.setString(1, filePath);
 			stmt.setLong(2, fileSize);
@@ -347,7 +372,8 @@ public class CloudDAOjdbc implements CloudDAO {
 	public int updateFileName(int fileId, String fileName, String filePath) {
 		int result = -1;
 		CloudVO file=new CloudVO();
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(UPDATE_FILENAME);) {
 			stmt.setString(1, fileName);
 			stmt.setString(2, filePath);
@@ -365,7 +391,8 @@ public class CloudDAOjdbc implements CloudDAO {
 	@Override
 	public int delete(int fileId) {
 		int result = -1;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(DELETE);) {
 			stmt.setInt(1, fileId);
 			result = stmt.executeUpdate();

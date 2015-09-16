@@ -6,6 +6,6 @@ public class GC {
 	public static final String USERNAME = "iTVSoCool@xase7q8rgb";
 	public static final String PASSWORD = "iTVisgood911";
 	
-	
+	public static final String DATASOURCE="java:comp/env/jdbc/iTV";
 
 }

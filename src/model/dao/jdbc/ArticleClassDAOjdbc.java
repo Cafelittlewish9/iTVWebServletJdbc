@@ -8,6 +8,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.dao.ArticleClassDAO;
 import model.vo.ArticleClassVO;
 import util.GC;
@@ -17,9 +22,19 @@ import util.GC;
  *
  */
 public class ArticleClassDAOjdbc implements ArticleClassDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
+	public ArticleClassDAOjdbc(){
+		try {
+			Context ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+
+	}
 	
 	private static final String SELECT_ALL = "SELECT subclassNo,subclassName,className FROM articleclass";
 	/**
@@ -30,7 +45,8 @@ public class ArticleClassDAOjdbc implements ArticleClassDAO {
 	public List<ArticleClassVO> selectAll() {
 		ArticleClassVO acvo;
 		List<ArticleClassVO> acvos = new ArrayList<ArticleClassVO>();
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL);) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -59,7 +75,8 @@ public class ArticleClassDAOjdbc implements ArticleClassDAO {
 
 		ArticleClassVO acvo = null;
 		List<ArticleClassVO> acvos = new ArrayList<ArticleClassVO>();
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(SELECT_BY_SUBCLASSNO);) {
 			pstmt.setString(1, subclassNo);
 			ResultSet rs = pstmt.executeQuery();
@@ -80,7 +97,8 @@ public class ArticleClassDAOjdbc implements ArticleClassDAO {
 	@Override
 	public ArticleClassVO selectBySubclassName(String subclassName) {
 		ArticleClassVO acvo = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(SELECT_BY_SUBCLASSNAME);) {
 			pstmt.setString(1, subclassName);
 			ResultSet rs = pstmt.executeQuery();
@@ -105,7 +123,8 @@ public class ArticleClassDAOjdbc implements ArticleClassDAO {
 	@Override
 	public boolean insert(ArticleClassVO bean) {
 		boolean result = false;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(INSERT);) {
 			pstmt.setString(1, bean.getSubclassNo());
 			pstmt.setString(2, bean.getSubclassName());
@@ -129,7 +148,8 @@ public class ArticleClassDAOjdbc implements ArticleClassDAO {
 	@Override
 	public boolean update(ArticleClassVO bean) {
 		boolean result = false;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(UPDATE);) {
 			if (bean != null) {
 				pstmt.setString(1, bean.getSubclassName());
@@ -155,7 +175,8 @@ public class ArticleClassDAOjdbc implements ArticleClassDAO {
 	@Override
 	public boolean delete(String subclassNo) {
 		boolean result = false;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(DELETE);) {
 			pstmt.setString(1, subclassNo);
 			int updateCount = pstmt.executeUpdate();

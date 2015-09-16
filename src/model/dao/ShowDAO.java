@@ -6,7 +6,8 @@ import model.vo.ShowVO;
 
 public interface ShowDAO {
 
-	public List<ShowVO> select(int memberId);
+	public List<ShowVO> selectJoinMember(int memberId);
+	public List<ShowVO> selectJoinVideo(int memberId);
 
 	public List<ShowVO> selectAll();
 
