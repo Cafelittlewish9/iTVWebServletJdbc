@@ -1,7 +1,7 @@
 $(function() {
 	$('#videos_div1').empty();
 	$.ajax({
-		url : 'VideoServlet',
+		url : 'RESTful/video',
 		type : 'get',
 		// data:{'categoryID':1},
 		dataType : "json",
