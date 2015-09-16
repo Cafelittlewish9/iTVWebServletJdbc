@@ -54,7 +54,7 @@ public class VideoDAOjdbc implements VideoDAO {
 		return list;
 	}
 
-	private static final String SELECT_ALL = "SELECT v.*,m.memberAccount FROM video v Join member m ON v.memberId = m.memberId";
+	private static final String SELECT_ALL = "SELECT v.*,m.memberAccount FROM video v Join member m ON v.memberId = m.memberId ORDER BY videoWatchTimes DESC";
 
 	@Override
 	public List<VideoVO> selectAll() {

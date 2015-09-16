@@ -14,7 +14,9 @@ public class VideoService {
 	public VideoService() {
 		this.dao = new VideoDAOjdbc();
 	}	
-	
+	public Collection<VideoVO> hotVideo() {
+		return dao.selectAll();
+	}
 	//另一個可以考慮的名稱為uploadVideo
 	public boolean addVideo(VideoVO bean) {
 		return dao.insert(bean);
