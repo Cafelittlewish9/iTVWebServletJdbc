@@ -193,8 +193,8 @@ public class MemberService {
 		// MemberVO mvo = service.login1("niceguy", "E");
 		// System.out.println("VO info="+mvo);
 
-		// MemberVO mvo = service.login2("Squirtle@gmail.com", "C");
-		// System.out.println("VO info="+mvo);
+		 MemberVO mvo = service.login2("Pikachu@gmail.com", "A");
+		 System.out.println("VO info="+mvo);
 
 		// String result = service.changePassword("niceguy",
 		// "madclown@gmail.com", "E");

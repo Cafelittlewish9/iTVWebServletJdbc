@@ -139,10 +139,8 @@ public class ArticleDAOjdbc implements ArticleDAO {
 			pstmt.setString(1, bean.getSubclassNo());
 			pstmt.setString(2, bean.getArticleTitle());
 			pstmt.setString(3, bean.getArticleContent());
-			long modify = bean.getModifyTime().getTime();
-			pstmt.setTimestamp(4, new java.sql.Timestamp(modify));
-			pstmt.setInt(5, bean.getArticleId());
-			pstmt.setInt(6, bean.getMemberId());
+			pstmt.setInt(4, bean.getArticleId());
+			pstmt.setInt(5, bean.getMemberId());
 
 			int updateCount = pstmt.executeUpdate();
 			if (updateCount == 1) {
@@ -184,10 +182,13 @@ public class ArticleDAOjdbc implements ArticleDAO {
 	public static void main(String[] args) throws SQLException, ParseException {
 		ArticleDAO temp = new ArticleDAOjdbc();
 		ArticleVO avo = new ArticleVO();
-		
-		System.out.println(temp.selectByInput("E","","",""));
-		
-		
+		avo.setSubclassNo("J");
+		avo.setArticleId(13);
+		avo.setMemberId(4);
+		avo.setArticleTitle("freaking");
+//		System.out.println(temp.selectByInput("E","","",""));
+		avo.setArticleContent("Yes, I am normal");
+		temp.update(avo);
 //		 System.out.println(temp.selectAll());
 		// System.out.println(temp.delete(13, 2));
 

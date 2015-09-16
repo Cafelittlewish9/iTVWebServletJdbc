@@ -50,17 +50,20 @@ public class Login extends HttpServlet {
 		}
 		
 		MemberVO bean = ms.login2(username, password);
+		
 		if(bean==null) {
 			errors.put("password", "登入失敗，請再試一遍");//放在session裡
-			System.out.println("有跑到這來");//為何會跑到這來？明明帳密是對的
+			
 			request.getRequestDispatcher(
 					"LoginPage.html").forward(request, response);
-			
+			return ;
 		} else {
 			HttpSession session = request.getSession();
-			session.setAttribute("user", bean);	
+			String ip=request.getRemoteAddr();//有個ip and then?
 			
+			session.setAttribute("user", bean);	
 			response.sendRedirect(path+"/index.html");
+			return;
 		}
 	}
 
