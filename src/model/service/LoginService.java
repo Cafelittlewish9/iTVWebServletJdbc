@@ -16,7 +16,7 @@ public class LoginService {
 	public Collection<LoginVO> loginLog(String memberAccount) {
 		return dao.selectAll(memberAccount);
 	}
-
+	
 	public java.util.Date lastLogin(String memberAccount) {
 		java.util.Date result = null;
 		if (memberAccount != null && memberAccount.trim().length() != 0) {

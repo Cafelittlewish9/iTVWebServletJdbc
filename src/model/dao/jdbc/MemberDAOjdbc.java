@@ -205,14 +205,15 @@ public class MemberDAOjdbc implements MemberDAO {
 	
 	// 測試程式
 	public static void main(String[] args) throws SQLException, ParseException {
-		MemberDAO temp = new MemberDAOjdbc();
-		// memberDao的insert，與insert2的差異在於用戶需輸入memberAccount
-		MemberVO member1 = new MemberVO();
-		// member1.setMemberAccount("");
-		member1.setMemberPassword("G".getBytes());
-		member1.setMemberEmail("godzilla@gmail.com");
-		int count1 = temp.insert2(member1);
-		System.out.println("insert " + count1 + " rows");
+		
+//		MemberDAO temp = new MemberDAOjdbc();
+//		// memberDao的insert，與insert2的差異在於用戶需輸入memberAccount
+//		MemberVO member1 = new MemberVO();
+//		// member1.setMemberAccount("");
+//		member1.setMemberPassword("G".getBytes());
+//		member1.setMemberEmail("godzilla@gmail.com");
+//		int count1 = temp.insert2(member1);
+//		System.out.println("insert " + count1 + " rows");
 
 		// memberDao的insert2，與insert的差異在於用戶少輸入memberAccount
 		// MemberVO member2 = new MemberVO();

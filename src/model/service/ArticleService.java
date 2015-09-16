@@ -163,11 +163,11 @@ public class ArticleService {
 		ArticleService service = new ArticleService();
 		// System.out.println(service.allArticle());
 		// System.out.println(service.allSubArticle("M"));
-		System.out.println(service.searchByInput(""));
+		System.out.println(service.searchByInput("一天"));
 		// System.out.println(service.searchArticle("Pikachu", "皮卡丘"));
 		// System.out.println(service.addArticle());
 		// System.out.println(service.deleteArticle(1));
-		System.out.println(service.modifyArticle("hey", 12));
+//		System.out.println(service.modifyArticle("hey", 12));
 
 	}
 }

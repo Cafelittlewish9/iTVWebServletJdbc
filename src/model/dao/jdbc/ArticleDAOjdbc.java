@@ -56,7 +56,7 @@ public class ArticleDAOjdbc implements ArticleDAO {
 	}
 
 	private static final String SELECT_BY_INPUT="SELECT a.articleId,a.memberId,a.subclassNo,a.articleTitle,a.articleContent,a.publishTime,a.modifyTime,a.watchTimes,m.memberAccount,m.memberNickname"
-	+" FROM article a join member m on a.memberId=m.memberId WHERE a.subclassNo =? OR a.articleTitle like ? OR m.memberAccount like ? OR m.memberNickName like ?";
+	+" FROM article a JOIN member m ON a.memberId=m.memberId WHERE a.subclassNo =? OR a.articleTitle like ? OR m.memberAccount like ? OR m.memberNickName like ?";
 	/**
 	 * 依照各種條件來查詢文章
 	 * 	 
@@ -185,10 +185,10 @@ public class ArticleDAOjdbc implements ArticleDAO {
 		ArticleDAO temp = new ArticleDAOjdbc();
 		ArticleVO avo = new ArticleVO();
 		
-//		System.out.println(temp.selectByInput("","","",""));
+		System.out.println(temp.selectByInput("E","","",""));
 		
 		
-		 System.out.println(temp.selectAll());
+//		 System.out.println(temp.selectAll());
 		// System.out.println(temp.delete(13, 2));
 
 		// avo.setMemberId(1);
