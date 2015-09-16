@@ -87,8 +87,8 @@ public class LoginDAOjdbc implements LoginDAO {
 	private static final String INSERT = "insert into Login(ip, memberAccount) values(?, ?)";
 
 	@Override
-	public LoginVO insert(LoginVO bean) {
-		LoginVO result = null;
+	public boolean insert(LoginVO bean) {
+		boolean result = false;
 		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
 			if (bean != null) {
@@ -96,7 +96,7 @@ public class LoginDAOjdbc implements LoginDAO {
 				stmt.setString(2, bean.getMemberAccount());
 				int i = stmt.executeUpdate();
 				if (i == 1) {
-					result = bean;
+					result = true;
 				}
 			}
 		} catch (SQLException e) {

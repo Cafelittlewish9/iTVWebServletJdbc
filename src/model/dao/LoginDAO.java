@@ -12,6 +12,6 @@ public interface LoginDAO {
 	
 	public LoginVO select(String memberAccount);
 
-	public LoginVO insert(LoginVO bean);
+	public boolean insert(LoginVO bean);
 
 }

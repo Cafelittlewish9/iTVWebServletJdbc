@@ -1,9 +1,7 @@
 package model.service;
 
-import java.security.MessageDigest;
 import java.sql.SQLException;
 import java.util.Arrays;
-
 import model.dao.MemberDAO;
 import model.dao.jdbc.MemberDAOjdbc;
 import model.vo.MemberVO;
