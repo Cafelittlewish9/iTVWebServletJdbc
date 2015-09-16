@@ -1,7 +1,6 @@
 package model.dao.jdbc;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -128,6 +127,9 @@ public class VideoDAOjdbc implements VideoDAO {
 				bean.setVideoDescription(rset.getString("videoDescription"));
 				bean.setVideoDescriptionModifyTime(
 						ConvertType.convertToLocalTime(rset.getTimestamp("videoDescriptionModifyTime")));
+				MemberVO member = new MemberVO();
+				member.setMemberAccount(rset.getString("memberAccount"));
+				bean.setMember(member);
 				list.add(bean);
 			}
 		} catch (SQLException e) {

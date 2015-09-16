@@ -9,29 +9,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class VideoVO {
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private int videoId;
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private int memberId;
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private String videoWebsite;
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private String videoClassName;
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private String videoTitle;
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private String videoName;
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private String videoPath;
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private java.util.Date videoUploadTime;
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private long videoWatchTimes;
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private String videoDescription;
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private java.util.Date videoDescriptionModifyTime;
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private MemberVO member;
 
 	@Override
@@ -136,4 +136,5 @@ public class VideoVO {
 	public void setMember(MemberVO member) {
 		this.member = member;
 	}
+
 }

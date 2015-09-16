@@ -1,10 +1,13 @@
 package model.service.restful;
 
 import java.util.Collection;
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import model.dao.VideoDAO;
 import model.dao.jdbc.VideoDAOjdbc;
 import model.vo.VideoVO;
@@ -19,7 +22,7 @@ public class VideoService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<VideoVO> hotVideo() {
+	public List<VideoVO> hotVideo() {
 		return dao.selectAll();
 	}
 
