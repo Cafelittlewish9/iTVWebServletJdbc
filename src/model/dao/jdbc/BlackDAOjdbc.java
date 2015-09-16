@@ -50,7 +50,8 @@ public class BlackDAOjdbc implements BlackDAO {
 		return markResult;
 	}
 
-	private static final String GET_LIST="SELETE b.memberId, b.blackedId,m.memberAccount FROM black b JOIN member m"
+	//SELECT更改過了
+	private static final String GET_LIST="SELECT b.memberId, b.blackedId,m.memberAccount FROM black b JOIN member m"
 	+" ON b.blackedid = m.memberid WHERE b.memberId=?";
 	
 	/**

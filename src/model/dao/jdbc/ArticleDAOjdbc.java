@@ -56,7 +56,7 @@ public class ArticleDAOjdbc implements ArticleDAO {
 	}
 
 	private static final String SELECT_BY_INPUT="SELECT a.articleId,a.memberId,a.subclassNo,a.articleTitle,a.articleContent,a.publishTime,a.modifyTime,a.watchTimes,m.memberAccount,m.memberNickname"
-	+" FROM article a JOIN member m ON a.memberId=m.memberId WHERE a.subclassNo =? OR a.articleTitle like ? OR m.memberAccount like ? OR m.memberNickName like ?";
+	+" FROM article a JOIN member m ON a.memberId=m.memberId WHERE a.subclassNo =? OR a.articleTitle like ? OR m.memberAccount like ? OR m.memberNickName like ? ";
 	/**
 	 * 依照各種條件來查詢文章
 	 * 	 
@@ -71,9 +71,9 @@ public class ArticleDAOjdbc implements ArticleDAO {
 		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(SELECT_BY_INPUT);) {			
 			pstmt.setString(1, subclassNo);
-			pstmt.setString(2, "%"+articleTitle+"%");
-			pstmt.setString(3, "%"+memberAccount+"%");
-			pstmt.setString(4, "%"+memberNickName+"%");
+			pstmt.setString(2, "%"+ articleTitle + "%");
+			pstmt.setString(3, "%"+ memberAccount + "%");
+			pstmt.setString(4, "%"+ memberNickName + "%");
 			ResultSet rs = pstmt.executeQuery();
 			avos = new ArrayList<ArticleVO>();
 			while (rs.next()) {
@@ -139,10 +139,8 @@ public class ArticleDAOjdbc implements ArticleDAO {
 			pstmt.setString(1, bean.getSubclassNo());
 			pstmt.setString(2, bean.getArticleTitle());
 			pstmt.setString(3, bean.getArticleContent());
-			long modify = bean.getModifyTime().getTime();
-			pstmt.setTimestamp(4, new java.sql.Timestamp(modify));
-			pstmt.setInt(5, bean.getArticleId());
-			pstmt.setInt(6, bean.getMemberId());
+			pstmt.setInt(4, bean.getArticleId());
+			pstmt.setInt(5, bean.getMemberId());
 
 			int updateCount = pstmt.executeUpdate();
 			if (updateCount == 1) {
@@ -155,7 +153,7 @@ public class ArticleDAOjdbc implements ArticleDAO {
 	}
 
 
-	private static final String DELETE = "UPDATE Article SET memberId = NULL, articleContent = N'文章已被刪除', modifyTime = GETUTCDATE() WHERE articleId = ?";
+	private static final String DELETE = "UPDATE Article SET articleContent = N'文章已被刪除', modifyTime = GETUTCDATE() WHERE articleId = ?";
 	/**
 	 * 刪除文章，僅有發文者本人能於登入狀態看到刪除按鈕，當文章確定刪除後，刪除按鈕即消失
 	 * 	 

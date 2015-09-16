@@ -47,7 +47,6 @@ public class ArticleClassDAOjdbc implements ArticleClassDAO {
 	}
 
 
-	private static final String SELECT = "SELECT subclassNo,subclassName,className FROM articleclass WHERE subclassNo=?";
 	/**
 	 * 以文章子分類代碼查詢該分類下資料庫內的所有文章
 	 * @param subclassNo 文章子分類代碼
@@ -184,9 +183,6 @@ public class ArticleClassDAOjdbc implements ArticleClassDAO {
 
 	}
 
-	@Override
-	public ArticleClassVO selectBySubclassNo(String subclassNo) {
-		return null;
-	}
+	
 
 }

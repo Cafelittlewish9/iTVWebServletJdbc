@@ -206,6 +206,7 @@ public class ChannelDAOjdbc implements ChannelDAO {
 		return false;
 	}
 
+	//DeleteAll刪除成功出現False！雖然發現但是我沒做更動，請小心使用。
 	private static final String DELETE_ALL = "delete from channel where memberId = ?";
 
 	@Override

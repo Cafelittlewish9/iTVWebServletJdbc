@@ -91,7 +91,8 @@ public class CloudDAOjdbc implements CloudDAO {
 		List<CloudVO> list = null;
 		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_FILENAME);) {
-			stmt.setString(1, "%" + fileName + "%");
+			stmt.setInt(1, memberId);
+			stmt.setString(2, "%" + fileName + "%");
 			ResultSet rs = stmt.executeQuery();
 			list = new ArrayList<CloudVO>();
 			while (rs.next()) {
@@ -112,6 +113,8 @@ public class CloudDAOjdbc implements CloudDAO {
 		return list;
 	}
 
+	
+	//搜尋輸入時間部分尚未解決時間轉換問題，請記得。
 	private static final String SELECT_BY_TIME = "SELECT * FROM Cloud WHERE memberId = ? AND (modifyTime BETWEEN ? AND ? )";
 
 	@Override
@@ -119,8 +122,9 @@ public class CloudDAOjdbc implements CloudDAO {
 		List<CloudVO> list = null;
 		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_TIME);) {
-			stmt.setTimestamp(1, new java.sql.Timestamp(fromTime.getTime()));
-			stmt.setTimestamp(2, new java.sql.Timestamp(toTime.getTime()));
+			stmt.setInt(1, memberId);
+			stmt.setTimestamp(2, new java.sql.Timestamp(fromTime.getTime()));
+			stmt.setTimestamp(3, new java.sql.Timestamp(toTime.getTime()));
 			ResultSet rs = stmt.executeQuery();
 			list = new ArrayList<CloudVO>();
 			while (rs.next()) {
@@ -146,6 +150,27 @@ public class CloudDAOjdbc implements CloudDAO {
 	@Override
 	public List<CloudVO> selectByFileType(int memberId, String fileType) {
 		List<CloudVO> list = null;
+		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_FILETYPE);) {
+			stmt.setInt(1, memberId);
+			stmt.setString(2, fileType);
+			ResultSet rs = stmt.executeQuery();
+			list = new ArrayList<CloudVO>();
+			while (rs.next()) {
+				CloudVO file = new CloudVO();
+				file.setFileId(rs.getInt("fileId"));
+				file.setMemberId(rs.getInt("memberId"));
+				file.setFileName(rs.getString("fileName"));
+				file.setFileType(rs.getString("fileType"));
+				file.setFilePath(rs.getString("filePath"));
+				file.setFileSize(rs.getLong("fileSize"));
+				file.setModifyTime(ConvertType.convertToLocalTime(rs.getTimestamp("modifyTime")));
+				list.add(file);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getErrorCode() + " : " + e.getMessage());
+			e.printStackTrace();
+		}
 		return list;
 	}
 
@@ -157,9 +182,10 @@ public class CloudDAOjdbc implements CloudDAO {
 		List<CloudVO> list = null;
 		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_FILENAME_AND_TIME);) {
-			stmt.setString(1, "%" + fileName + "%");
-			stmt.setTimestamp(2, new java.sql.Timestamp(fromTime.getTime()));
-			stmt.setTimestamp(3, new java.sql.Timestamp(toTime.getTime()));
+			stmt.setInt(1, memberId);
+			stmt.setString(2, "%" + fileName + "%");
+			stmt.setTimestamp(3, new java.sql.Timestamp(fromTime.getTime()));
+			stmt.setTimestamp(4, new java.sql.Timestamp(toTime.getTime()));
 			ResultSet rs = stmt.executeQuery();
 			list = new ArrayList<CloudVO>();
 			while (rs.next()) {
@@ -183,8 +209,30 @@ public class CloudDAOjdbc implements CloudDAO {
 	private static final String SELECT_BY_FILENAME_AND_FILETYPE = "SELECT * FROM Cloud WHERE memberId = ? AND fileType = ? AND fileName like ?";
 
 	@Override
-	public List<CloudVO> selectByFileNameAndFileType(int memberId, String fileName, String fileType) {
+	public List<CloudVO> selectByFileNameAndFileType(int memberId, String fileType, String fileName) {
 		List<CloudVO> list = null;
+		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_FILENAME_AND_FILETYPE);) {
+			stmt.setInt(1, memberId);
+			stmt.setString(2, fileType);
+			stmt.setString(3, "%" + fileName + "%");
+			ResultSet rs = stmt.executeQuery();
+			list = new ArrayList<CloudVO>();
+			while (rs.next()) {
+				CloudVO file = new CloudVO();
+				file.setFileId(rs.getInt("fileId"));
+				file.setMemberId(rs.getInt("memberId"));
+				file.setFileName(rs.getString("fileName"));
+				file.setFileType(rs.getString("fileType"));
+				file.setFilePath(rs.getString("filePath"));
+				file.setFileSize(rs.getLong("fileSize"));
+				file.setModifyTime(ConvertType.convertToLocalTime(rs.getTimestamp("modifyTime")));
+				list.add(file);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getErrorCode() + " : " + e.getMessage());
+			e.printStackTrace();
+		}
 		return list;
 	}
 
@@ -194,6 +242,29 @@ public class CloudDAOjdbc implements CloudDAO {
 	public List<CloudVO> selectByFileTypeAndTime(int memberId, java.util.Date fromTime, java.util.Date toTime,
 			String fileType) {
 		List<CloudVO> list = null;
+		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_FILETYPE_AND_TIME);) {
+			stmt.setInt(1, memberId);
+			stmt.setString(2, fileType);
+			stmt.setTimestamp(3, new java.sql.Timestamp(fromTime.getTime()));
+			stmt.setTimestamp(4, new java.sql.Timestamp(toTime.getTime()));
+			ResultSet rs = stmt.executeQuery();
+			list = new ArrayList<CloudVO>();
+			while (rs.next()) {
+				CloudVO file = new CloudVO();
+				file.setFileId(rs.getInt("fileId"));
+				file.setMemberId(rs.getInt("memberId"));
+				file.setFileName(rs.getString("fileName"));
+				file.setFileType(rs.getString("fileType"));
+				file.setFilePath(rs.getString("filePath"));
+				file.setFileSize(rs.getLong("fileSize"));
+				file.setModifyTime(ConvertType.convertToLocalTime(rs.getTimestamp("modifyTime")));
+				list.add(file);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getErrorCode() + " : " + e.getMessage());
+			e.printStackTrace();
+		}
 		return list;
 	}
 
@@ -203,6 +274,30 @@ public class CloudDAOjdbc implements CloudDAO {
 	public List<CloudVO> selectByFileNameFileTypeAndTime(int memberId, String fileName, java.util.Date fromTime,
 			java.util.Date toTime, String fileType) {
 		List<CloudVO> list = null;
+		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_FILENAME_FILETYPE_AND_TIME);) {
+			stmt.setInt(1, memberId);
+			stmt.setString(2, fileType);
+			stmt.setString(3, "%" + fileName + "%");
+			stmt.setTimestamp(4, new java.sql.Timestamp(fromTime.getTime()));
+			stmt.setTimestamp(5, new java.sql.Timestamp(toTime.getTime()));
+			ResultSet rs = stmt.executeQuery();
+			list = new ArrayList<CloudVO>();
+			while (rs.next()) {
+				CloudVO file = new CloudVO();
+				file.setFileId(rs.getInt("fileId"));
+				file.setMemberId(rs.getInt("memberId"));
+				file.setFileName(rs.getString("fileName"));
+				file.setFileType(rs.getString("fileType"));
+				file.setFilePath(rs.getString("filePath"));
+				file.setFileSize(rs.getLong("fileSize"));
+				file.setModifyTime(ConvertType.convertToLocalTime(rs.getTimestamp("modifyTime")));
+				list.add(file);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getErrorCode() + " : " + e.getMessage());
+			e.printStackTrace();
+		}
 		return list;
 	}
 
