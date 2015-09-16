@@ -18,15 +18,15 @@ import util.ConvertType;
 import util.GC;
 
 public class VideoDAOjdbc implements VideoDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
 	private DataSource datasource;
 
 	public VideoDAOjdbc() {
 		try {
 			InitialContext context = new InitialContext();
-			this.datasource = (DataSource) context.lookup("java:comp/env/jdbc/iTV");
+			this.datasource = (DataSource) context.lookup(GC.DATASOURCE);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}

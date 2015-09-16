@@ -10,23 +10,38 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.dao.MemberDAO;
 import model.vo.MemberVO;
 import util.ConvertType;
 import util.GC;
 
 public class MemberDAOjdbc implements MemberDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
-	// DB會員註冊的時間是抓格林威治時間
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
 	private static final String INSERT = "INSERT INTO member (memberAccount,memberPassword,memberEmail,broadcastWebsite) VALUES (?, cast( ? as varbinary(50)), ?,?)";
 
+	public MemberDAOjdbc(){
+		try {
+			Context ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public int insert(MemberVO member) {
 		// 要先檢查bean是否為null
 		int updateCount = 0;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
 				PreparedStatement pstmt = conn.prepareStatement(INSERT);) {
 			pstmt.setString(1, member.getMemberAccount());
 			pstmt.setBytes(2, member.getMemberPassword());
@@ -48,7 +63,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	public int insert2(MemberVO member) {
 		// 要先檢查bean是否為null
 		int updateCount = 0;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
 				PreparedStatement pstmt = conn.prepareStatement(INSERT2);) {
 			pstmt.setString(1, member.getMemberEmail());
 			pstmt.setBytes(2, member.getMemberPassword());
@@ -70,7 +86,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	public List<MemberVO> getMemberList() {
 		List<MemberVO> members = null;
 		MemberVO member = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(GET_MEMBER_LIST);
 				ResultSet rs = pstmt.executeQuery();) {
 			members = new ArrayList<MemberVO>();
@@ -92,7 +109,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	@Override
 	public int getId(String memberAccount) {
 		int result = 0;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
 				PreparedStatement pstmt = conn.prepareStatement(GET_ID);) {
 			pstmt.setString(1, memberAccount);
 			ResultSet rs = pstmt.executeQuery();
@@ -114,7 +132,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	public int update(MemberVO member) {
 		// 要先檢查bean是否為null
 		int updateCount = 0;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
 				PreparedStatement pstmt = conn.prepareStatement(UPDATE);) {
 			pstmt.setBytes(1, member.getMemberPassword());
 			pstmt.setString(2, member.getMemberEmail());
@@ -154,7 +173,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	@Override
 	public MemberVO findByPK(int memberId) {
 		MemberVO member = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(FIND_BY_PK);) {
 			pstmt.setInt(1, memberId);
 			ResultSet rs = pstmt.executeQuery();
@@ -190,7 +210,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	@Override
 	public int switchSuspend(int memberId, boolean suspendRight) {
 		int result=0;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(SWITCH_SUSPEND);) {
 			pstmt.setBoolean(1, suspendRight);
 			pstmt.setInt(2, memberId);
@@ -206,7 +227,7 @@ public class MemberDAOjdbc implements MemberDAO {
 	// 測試程式
 	public static void main(String[] args) throws SQLException, ParseException {
 		
-//		MemberDAO temp = new MemberDAOjdbc();
+		MemberDAO temp = new MemberDAOjdbc();
 //		// memberDao的insert，與insert2的差異在於用戶需輸入memberAccount
 //		MemberVO member1 = new MemberVO();
 //		// member1.setMemberAccount("");
@@ -230,8 +251,8 @@ public class MemberDAOjdbc implements MemberDAO {
 		// System.out.println(member.getBroadcastWebsite());
 		// }
 
-		// memberDao的getId
-		// System.out.print(temp.getId("Shekx"));
+//		 memberDao的getId
+		 System.out.print(temp.getId("shekx"));
 
 		// memberDao的find by PrimaryKey
 		// MemberVO member3 = temp.findByPK(3);

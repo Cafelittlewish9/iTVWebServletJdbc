@@ -8,6 +8,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.dao.BlackDAO;
 import model.dao.MemberDAO;
 import model.vo.BlackVO;
@@ -19,9 +24,18 @@ import util.GC;
  *
  */
 public class BlackDAOjdbc implements BlackDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
+	public BlackDAOjdbc(){
+		try {
+			Context ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private static final String MARK_BLACK = "INSERT INTO black VALUES (?,?)";
 	/**
@@ -34,7 +48,8 @@ public class BlackDAOjdbc implements BlackDAO {
 	public boolean markBlack(int memberId, int blackedId) {
 		boolean markResult = false;
 		int updateCount = 0;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(MARK_BLACK);) {
 			if (memberId != blackedId) {
 				pstmt.setInt(1, memberId);
@@ -50,7 +65,8 @@ public class BlackDAOjdbc implements BlackDAO {
 		return markResult;
 	}
 
-	private static final String GET_LIST="SELETE b.memberId, b.blackedId,m.memberAccount FROM black b JOIN member m"
+	//SELECT更改過了
+	private static final String GET_LIST="SELECT b.memberId, b.blackedId,m.memberAccount FROM black b JOIN member m"
 	+" ON b.blackedid = m.memberid WHERE b.memberId=?";
 	
 	/**
@@ -62,7 +78,8 @@ public class BlackDAOjdbc implements BlackDAO {
 	public List<BlackVO> getList(int memberId) {		
 		BlackVO blackMem = null;
 		List<BlackVO> blacks = new ArrayList<BlackVO>();
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(GET_LIST);) {
 			pstmt.setInt(1, memberId);
 			ResultSet rs = pstmt.executeQuery();
@@ -91,7 +108,8 @@ public class BlackDAOjdbc implements BlackDAO {
 	@Override
 	public boolean removeBlack(int memberId, int blackedId) {
 		boolean result = false;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(REMOVE_BLACK);) {
 			pstmt.setInt(1, memberId);
 			pstmt.setInt(2, blackedId);
@@ -113,7 +131,8 @@ public class BlackDAOjdbc implements BlackDAO {
 	@Override
 	public boolean removeAll(int memberId) {
 		boolean removeResult = false;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(REMOVE_ALL);) {
 			pstmt.setInt(1, memberId);
 			int updateCount = pstmt.executeUpdate();
