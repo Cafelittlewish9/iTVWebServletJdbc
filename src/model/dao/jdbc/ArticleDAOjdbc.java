@@ -8,6 +8,12 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.dao.ArticleDAO;
 import model.vo.ArticleVO;
 import model.vo.MemberVO;
@@ -19,10 +25,18 @@ import util.GC;
  *
  */
 public class ArticleDAOjdbc implements ArticleDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
-
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
+	public ArticleDAOjdbc(){
+		try {
+			Context ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 	private static final String SELECT_ALL = "SELECT articleId,memberId,subclassNo,articleTitle,articleContent,publishTime,modifyTime,watchTimes FROM article ORDER BY modifytime";
 	/**
 	 * 查詢所有文章
@@ -33,7 +47,8 @@ public class ArticleDAOjdbc implements ArticleDAO {
 	public List<ArticleVO> selectAll() {
 		ArticleVO avo;
 		List<ArticleVO> avos = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL);
 				ResultSet rs = pstmt.executeQuery();) {
 			avos = new ArrayList<ArticleVO>();
@@ -68,7 +83,8 @@ public class ArticleDAOjdbc implements ArticleDAO {
 			String memberNickName) {
 		ArticleVO avo = new ArticleVO();
 		List<ArticleVO> avos = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(SELECT_BY_INPUT);) {			
 			pstmt.setString(1, subclassNo);
 			pstmt.setString(2, "%"+articleTitle+"%");
@@ -107,7 +123,8 @@ public class ArticleDAOjdbc implements ArticleDAO {
 	@Override
 	public boolean insert(ArticleVO bean) {
 		boolean result = false;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(INSERT);) {
 			pstmt.setInt(1, bean.getMemberId());
 			pstmt.setString(2, bean.getSubclassNo());
@@ -134,7 +151,8 @@ public class ArticleDAOjdbc implements ArticleDAO {
 	@Override
 	public boolean update(ArticleVO bean) {
 		boolean result = false;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(UPDATE);) {
 			pstmt.setString(1, bean.getSubclassNo());
 			pstmt.setString(2, bean.getArticleTitle());
@@ -163,7 +181,8 @@ public class ArticleDAOjdbc implements ArticleDAO {
 	@Override
 	public boolean delete(int articleId) {
 		boolean result = false;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(DELETE);) {
 			pstmt.setInt(1, articleId);
 			int updateCount = pstmt.executeUpdate();

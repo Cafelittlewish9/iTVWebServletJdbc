@@ -9,6 +9,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.dao.ReportReplyArticleDAO;
 import model.vo.MemberVO;
 import model.vo.ReplyArticleVO;
@@ -17,10 +22,18 @@ import util.ConvertType;
 import util.GC;
 
 public class ReportReplyArticleDAOjdbc implements ReportReplyArticleDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
-
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
+	public ReportReplyArticleDAOjdbc(){
+		try {
+			Context ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 	private static final String SELECT_ALL = "SELECT orderId, reportedReplyArticleId, reportTime, reportReason, "
 			+ "r.memberId, replyContent, modifyTime, memberAccount, memberPhoto FROM ReportReplyArticle "
 			+ "JOIN ReplyArticle r ON reportedReplyArticleId = replyArticleId JOIN Member m ON r.memberId = "
@@ -31,8 +44,8 @@ public class ReportReplyArticleDAOjdbc implements ReportReplyArticleDAO {
 		List<ReportReplyArticleVO> list = null;
 		ReportReplyArticleVO reportReplyArticle = null;
 		Connection conn = null;
-		try {
-			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try {conn=ds.getConnection();
+//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL);
 			ResultSet rs = pstmt.executeQuery();
 			list = new ArrayList<ReportReplyArticleVO>();
@@ -76,8 +89,8 @@ public class ReportReplyArticleDAOjdbc implements ReportReplyArticleDAO {
 	public boolean insert(ReportReplyArticleVO reportReplyArticle) {
 		Connection conn = null;
 		boolean result = false;
-		try {
-			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try {conn=ds.getConnection();
+//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			PreparedStatement pstmt = conn.prepareStatement(INSERT);
 			pstmt.setInt(1, reportReplyArticle.getReportedReplyArticleId());
 			pstmt.setString(2, reportReplyArticle.getReportReason());
@@ -105,8 +118,8 @@ public class ReportReplyArticleDAOjdbc implements ReportReplyArticleDAO {
 	public boolean delete(int orderId) {
 		Connection conn = null;
 		boolean result = false;
-		try {
-			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try {conn=ds.getConnection();
+//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			PreparedStatement pstmt = conn.prepareStatement(DELETE);
 			pstmt.setInt(1, orderId);
 			int demo = pstmt.executeUpdate();

@@ -34,7 +34,6 @@ public class MemberDAOjdbc implements MemberDAO {
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-
 	}
 	
 	@Override
