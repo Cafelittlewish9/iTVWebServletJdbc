@@ -1,33 +1,54 @@
 package model.vo;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class MemberVO {
+	@XmlElement(required=true)
 	private int memberId;
+	@XmlElement(required=true)
 	private String memberAccount;
+	@XmlElement(required=true)
 	private byte[] memberPassword;
+	@XmlElement(required=true)
 	private String memberEmail;
+	@XmlElement(required=true)
 	private String memberFB;
+	@XmlElement(required=true)
 	private String memberGoogle;
+	@XmlElement(required=true)
 	private String memberTwitter;
+	@XmlElement(required=true)
 	private String memberName;
+	@XmlElement(required=true)
 	private String memberNickname;
+	@XmlElement(required=true)
 	private java.util.Date memberBirthday;
+	@XmlElement(required=true)
 	private byte[] memberPhoto;
+	@XmlElement(required=true)
 	private java.util.Date memberRegisterTime;
+	@XmlElement(required=true)
 	private String memberSelfIntroduction;
+	@XmlElement(required=true)
 	private String broadcastWebsite;
+	@XmlElement(required=true)
 	private String broadcastTitle;
+	@XmlElement(required=true)
 	private String broadcastClassName;
+	@XmlElement(required=true)
 	private java.util.Date broadcastTime;
+	@XmlElement(required=true)
 	private String broadcastDescription;
+	@XmlElement(required=true)
 	private long broadcastWatchTimes;
+	@XmlElement(required=true)
 	private boolean suspendMember;
 	
-	public boolean isSuspendMember() {
-		return suspendMember;
-	}
-	public void setSuspendMember(boolean suspendMember) {
-		this.suspendMember = suspendMember;
-	}
 	@Override
 	public String toString() {
 		return memberId + ": " + memberAccount + " " + memberName + " (" + memberNickname + ")";
@@ -146,5 +167,10 @@ public class MemberVO {
 	public void setBroadcastWatchTimes(long broadcastWatchTimes) {
 		this.broadcastWatchTimes = broadcastWatchTimes;
 	}
-
+	public boolean isSuspendMember() {
+		return suspendMember;
+	}
+	public void setSuspendMember(boolean suspendMember) {
+		this.suspendMember = suspendMember;
+	}
 }
