@@ -13,7 +13,7 @@ import model.service.ShowService;
 import model.vo.MemberVO;
 import model.vo.ShowVO;
 
-@WebServlet("/Show")
+@WebServlet("/show")
 public class Show extends HttpServlet {
 	private ShowService service;
 
