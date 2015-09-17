@@ -29,7 +29,6 @@ public class Show extends HttpServlet {
 		Collection<ShowVO> showList = service.showList(2);
 		String path = request.getContextPath();
 		session.setAttribute("showlist", showList);
-		response.sendRedirect(path + "/show.html");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
