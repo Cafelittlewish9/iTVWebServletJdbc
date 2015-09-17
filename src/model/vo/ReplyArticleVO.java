@@ -2,14 +2,27 @@ package model.vo;
 
 import java.text.SimpleDateFormat;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ReplyArticleVO {
+	@XmlElement(required = true)
 	private int replyArticleId;
+	@XmlElement(required = true)
 	private int memberId;
+	@XmlElement(required = true)
 	private int articleId;
+	@XmlElement(required = true)
 	private String replyContent;
+	@XmlElement(required = true)
 	private java.util.Date publishTime;
+	@XmlElement(required = true)
 	private java.util.Date modifyTime;
-	private MemberVO member;
+	@XmlElement(required = true)
+	private MemberVO member;	
 	
 	@Override
 	public String toString() {

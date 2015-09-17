@@ -2,14 +2,29 @@ package model.vo;
 
 import java.text.SimpleDateFormat;
 
+import javax.ws.rs.Path;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ArticleVO {
+	@XmlElement(required = true)
 	private int articleId;
+	@XmlElement(required = true)
 	private int memberId;
+	@XmlElement(required = true)
 	private String subclassNo;
+	@XmlElement(required = true)
 	private String articleTitle;
+	@XmlElement(required = true)
 	private String articleContent;
+	@XmlElement(required = true)
 	private java.util.Date publishTime;
+	@XmlElement(required = true)
 	private java.util.Date modifyTime;
+	@XmlElement(required = true)
 	private long watchTimes;
 	private MemberVO member;
 	private ArticleClassVO articleClass;

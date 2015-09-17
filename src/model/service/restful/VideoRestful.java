@@ -14,10 +14,10 @@ import model.dao.jdbc.VideoDAOjdbc;
 import model.vo.VideoVO;
 
 @Path("/video")
-public class VideoService {
+public class VideoRestful {
 	private VideoDAO dao;
 
-	public VideoService() {
+	public VideoRestful() {
 		this.dao = new VideoDAOjdbc();
 	}
 
@@ -55,7 +55,7 @@ public class VideoService {
 
 	// 不知道是否應該要有一個全刪的方法
 	public static void main(String[] args) {
-		VideoService service = new VideoService();
+		VideoRestful service = new VideoRestful();
 		System.out.println(service.hotVideo());
 	}
 

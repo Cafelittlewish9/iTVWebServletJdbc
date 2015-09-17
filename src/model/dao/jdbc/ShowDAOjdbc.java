@@ -43,6 +43,7 @@ public class ShowDAOjdbc implements ShowDAO {
 		try (
 				Connection conn = datasource.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID_JOIN_MEMBER);) {
 			stmt.setInt(1, memberId);
 			ResultSet rset = stmt.executeQuery();
@@ -98,8 +99,10 @@ public class ShowDAOjdbc implements ShowDAO {
 	public List<ShowVO> selectAll() {
 		List<ShowVO> list = null;
 		try (
+
 				Connection conn = datasource.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
 				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
 				ResultSet rset = stmt.executeQuery();) {
 			list = new ArrayList<ShowVO>();
@@ -122,8 +125,10 @@ public class ShowDAOjdbc implements ShowDAO {
 	public int insert(ShowVO bean) {
 		int result = -1;
 		try (
+
 				Connection conn = datasource.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
 				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
 			if (bean != null) {
 				stmt.setInt(1, bean.getMemberId());
@@ -144,8 +149,10 @@ public class ShowDAOjdbc implements ShowDAO {
 	public int update(java.util.Date showTime, String website, int memberId, java.util.Date showTimed) {
 		int result = -1;
 		try (
+
 				Connection conn = datasource.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
 				PreparedStatement stmt = conn.prepareStatement(UPDATE);) {
 			if (showTime != null) {
 				long time = showTime.getTime();
@@ -167,10 +174,12 @@ public class ShowDAOjdbc implements ShowDAO {
 	private static final String DELETE = "delete from show where memberId = ? and website = ?";
 
 	@Override
+
 	public boolean delete(int memberId, String website) {
 		try (
 				Connection conn = datasource.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
 				PreparedStatement stmt = conn.prepareStatement(DELETE);) {
 			stmt.setInt(1, memberId);
 			stmt.setString(2, website);
@@ -185,11 +194,17 @@ public class ShowDAOjdbc implements ShowDAO {
 	}
 
 	public static void main(String[] args) {
+
 //		ShowDAOjdbc dao = new ShowDAOjdbc();
 //		List<ShowVO> list = dao.selectJoinMember(2);
 //		for (ShowVO bean : list) {
 //			System.out.println(bean);
 //			System.out.println(bean.getTitle());
 //		}
-	}
+
+		}
+		
+		
+
+	
 }
