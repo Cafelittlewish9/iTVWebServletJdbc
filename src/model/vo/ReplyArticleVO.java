@@ -28,7 +28,7 @@ public class ReplyArticleVO {
 	public String toString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = sdf.format(publishTime);
-		return replyArticleId + "回覆的文章ID為: " + articleId + " (" + date + ")";
+		return replyArticleId + "回覆的文章ID為: " + articleId + " (" + date + ")"+ "帳號：" + member.getMemberAccount() + "會員照片" + member.getMemberPhoto();
 	}
 	public int getReplyArticleId() {
 		return replyArticleId;

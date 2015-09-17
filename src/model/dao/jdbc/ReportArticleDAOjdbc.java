@@ -27,7 +27,8 @@ public class ReportArticleDAOjdbc implements ReportArticleDAO {
 //	private static final String USERNAME = GC.USERNAME;
 //	private static final String PASSWORD = GC.PASSWORD;
 	private DataSource ds;
-	public ReportArticleDAOjdbc(){
+
+	public ReportArticleDAOjdbc() {
 		try {
 			Context ctx = new InitialContext();
 			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
@@ -36,20 +37,19 @@ public class ReportArticleDAOjdbc implements ReportArticleDAO {
 		}
 	}
 	
-	private static final String SELECT_ALL = "SELECT orderId, reportedArticleId, reportTime, reportReason, articleId, "
-			+ "a.memberId, memberAccount, memberPhoto, articleTitle, articleContent, modifyTime,a.subclassNo, className, subclassName"
-			+ "FROM ReportArticle r JOIN Article a ON reportedArticleId = articleId JOIN Member m "
+	private static final String SELECT_ALL = "SELECT orderId, reportedArticleId, reportTime, reportReason, articleId,"
+			+ "a.memberId, memberAccount, memberPhoto, articleTitle, articleContent, modifyTime,a.subclassNo, className, subclassName "
+			+ "FROM ReportArticle r JOIN Article a ON r.reportedArticleId = a.articleId JOIN Member m "
 			+ "ON a.memberId = m.memberId JOIN ArticleClass ac ON a.subclassNo = ac.subclassNo ORDER BY reportTime DESC";
 
 	@Override
 	public List<ReportArticleVO> selectAll() {
 		List<ReportArticleVO> list = null;
 		ReportArticleVO reportArticle = null;
-		Connection conn = null;
-		try {conn=ds.getConnection();
-//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL);
-			ResultSet rs = pstmt.executeQuery();
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
+				ResultSet rs = stmt.executeQuery();) {
 			list = new ArrayList<ReportArticleVO>();
 			while (rs.next()) {
 				reportArticle = new ReportArticleVO();
@@ -67,8 +67,9 @@ public class ReportArticleDAOjdbc implements ReportArticleDAO {
 				MemberVO member = new MemberVO();
 				member.setMemberId(rs.getInt("memberId"));
 				member.setMemberAccount(rs.getString("memberAccount"));
-				Blob b = rs.getBlob("memberPhoto");
-				member.setMemberPhoto(b.getBytes(1, (int)b.length()));
+//				Blob b = rs.getBlob("memberPhoto");
+//				member.setMemberPhoto(b.getBytes(1, (int)b.length()));
+				member.setMemberPhoto(rs.getBytes("memberPhoto"));
 				article.setMember(member);
 				ArticleClassVO articleClass = new ArticleClassVO();
 				articleClass.setSubclassNo(rs.getString("subclassNo"));
@@ -81,15 +82,7 @@ public class ReportArticleDAOjdbc implements ReportArticleDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		} 
 		return list;
 	}
 

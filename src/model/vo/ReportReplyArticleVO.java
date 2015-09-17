@@ -19,12 +19,13 @@ public class ReportReplyArticleVO {
 	private String reportReason;
 	@XmlElement(required = true)
 	private ReplyArticleVO replyArticle;
-	
+	private MemberVO member;
+
 	@Override
 	public String toString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = sdf.format(reportTime);
-		return orderId + "被檢舉的回覆文章ID為: " + reportedReplyArticleId + " (" + date + ")";
+		return orderId + "被檢舉的回覆文章ID為: " + reportedReplyArticleId + " (" + date + ")" + replyArticle.getMemberId() + replyArticle.getMember().getMemberAccount();
 	}
 	public int getOrderId() {
 		return orderId;
@@ -55,5 +56,11 @@ public class ReportReplyArticleVO {
 	}
 	public void setReplyArticle(ReplyArticleVO replyArticle) {
 		this.replyArticle = replyArticle;
+	}
+	public MemberVO getMember() {
+		return member;
+	}
+	public void setMember(MemberVO member) {
+		this.member = member;
 	}
 }

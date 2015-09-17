@@ -1,6 +1,6 @@
 package model.vo;
 
-import java.text.SimpleDateFormat;
+//import java.text.SimpleDateFormat;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -22,9 +22,10 @@ public class ReportMemberVO {
 	
 	@Override
 	public String toString() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String date = sdf.format(reportTime);
-		return orderId + "被檢舉的會員ID為: " + reportedMemberId + " (" + date + ")";
+//		VO只要simpleDateFromat就死，註解之後進資料庫格式也正確，所以先註解。
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		String date = sdf.format(reportTime);
+		return orderId + "被檢舉的會員ID為: " + reportedMemberId + " (" + reportTime + ")";
 	}
 	public int getOrderId() {
 		return orderId;
