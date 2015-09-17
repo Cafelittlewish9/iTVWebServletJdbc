@@ -22,18 +22,18 @@ import util.ConvertType;
 import util.GC;
 
 public class ReportReplyArticleDAOjdbc implements ReportReplyArticleDAO {
-//	private static final String URL = GC.URL;
-//	private static final String USERNAME = GC.USERNAME;
-//	private static final String PASSWORD = GC.PASSWORD;
-	private DataSource ds;
-	public ReportReplyArticleDAOjdbc(){
-		try {
-			Context ctx = new InitialContext();
-			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-	}
+	private static final String URL = GC.URL;
+	private static final String USERNAME = GC.USERNAME;
+	private static final String PASSWORD = GC.PASSWORD;
+//	private DataSource ds;
+//	public ReportReplyArticleDAOjdbc(){
+//		try {
+//			Context ctx = new InitialContext();
+//			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+//		} catch (NamingException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	private static final String SELECT_ALL = "SELECT orderId, reportedReplyArticleId, reportTime, reportReason, "
 			+ "r.memberId, replyContent, modifyTime, memberAccount, memberPhoto FROM ReportReplyArticle "
 			+ "JOIN ReplyArticle r ON reportedReplyArticleId = replyArticleId JOIN Member m ON r.memberId = "
@@ -44,8 +44,8 @@ public class ReportReplyArticleDAOjdbc implements ReportReplyArticleDAO {
 		List<ReportReplyArticleVO> list = null;
 		ReportReplyArticleVO reportReplyArticle = null;
 		Connection conn = null;
-		try {conn=ds.getConnection();
-//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try {//conn=ds.getConnection();
+			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL);
 			ResultSet rs = pstmt.executeQuery();
 			list = new ArrayList<ReportReplyArticleVO>();
@@ -57,14 +57,15 @@ public class ReportReplyArticleDAOjdbc implements ReportReplyArticleDAO {
 				reportReplyArticle.setReportReason(rs.getString("reportReason"));
 				ReplyArticleVO replyArticle = new ReplyArticleVO();
 				replyArticle.setReplyArticleId(rs.getInt("reportedReplyArticleId"));
-				replyArticle.setMemberId(rs.getInt("r.memberId"));
+				replyArticle.setMemberId(rs.getInt("memberId"));
 				replyArticle.setReplyContent(rs.getString("replyContent"));
 				replyArticle.setModifyTime(ConvertType.convertToLocalTime(rs.getTimestamp("modifyTime")));
 				MemberVO member = new MemberVO();
-				member.setMemberId(rs.getInt("r.memberId"));
+//				member.setMemberId(rs.getInt("memberId"));
 				member.setMemberAccount(rs.getString("memberAccount"));
-				Blob b = rs.getBlob("memberPhoto");
-				member.setMemberPhoto(b.getBytes(0, (int)b.length()));
+//				Blob b = rs.getBlob("memberPhoto");
+//				member.setMemberPhoto(b.getBytes(0, (int)b.length()));
+				member.setMemberPhoto(rs.getBytes("memberPhoto"));
 				replyArticle.setMember(member);
 				reportReplyArticle.setReplyArticle(replyArticle);
 				list.add(reportReplyArticle);
@@ -89,8 +90,8 @@ public class ReportReplyArticleDAOjdbc implements ReportReplyArticleDAO {
 	public boolean insert(ReportReplyArticleVO reportReplyArticle) {
 		Connection conn = null;
 		boolean result = false;
-		try {conn=ds.getConnection();
-//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try {//conn=ds.getConnection();
+			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			PreparedStatement pstmt = conn.prepareStatement(INSERT);
 			pstmt.setInt(1, reportReplyArticle.getReportedReplyArticleId());
 			pstmt.setString(2, reportReplyArticle.getReportReason());
@@ -118,8 +119,8 @@ public class ReportReplyArticleDAOjdbc implements ReportReplyArticleDAO {
 	public boolean delete(int orderId) {
 		Connection conn = null;
 		boolean result = false;
-		try {conn=ds.getConnection();
-//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try {//conn=ds.getConnection();
+			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			PreparedStatement pstmt = conn.prepareStatement(DELETE);
 			pstmt.setInt(1, orderId);
 			int demo = pstmt.executeUpdate();

@@ -32,8 +32,8 @@ public class FollowDAOjdbc implements FollowDAO {
 		}
 	}
 
-	private static final String SELECT_BY_MEMBERID = "SELECT f.memberId, followId, memberAccount FROM Follow f join Member m "
-			+ "ON followId = m.memberId WHERE f.memberId = ?";
+	private static final String SELECT_BY_MEMBERID = "SELECT f.memberId, followId, memberAccount "
+			+ "FROM Follow f join Member m ON followId = m.memberId WHERE f.memberId = ?";
 
 	@Override
 	public List<FollowVO> selectByMemberId(int memberId) {

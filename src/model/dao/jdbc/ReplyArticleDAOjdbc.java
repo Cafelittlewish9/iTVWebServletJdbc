@@ -34,7 +34,7 @@ public class ReplyArticleDAOjdbc implements ReplyArticleDAO {
 		}
 	}
 
-	private static final String SELECT_ALL = "SELECT * FROM ReplyArticle";
+	private static final String SELECT_ALL = "SELECT r.* , m.memberAccount , memberPhoto FROM ReplyArticle r Join member m on r.memberId = m.memberId";
 
 	@Override
 	public List<ReplyArticleVO> selectAll() {
@@ -54,8 +54,9 @@ public class ReplyArticleDAOjdbc implements ReplyArticleDAO {
 				replyArticle.setModifyTime(ConvertType.convertToLocalTime(rs.getTimestamp("modifyTime")));
 				MemberVO bean = new MemberVO();
 				bean.setMemberAccount(rs.getString("memberAccount"));
-				Blob b = rs.getBlob("memberPhoto");
-				bean.setMemberPhoto(b.getBytes(1, (int)b.length()));
+//				Blob b = rs.getBlob("memberPhoto");
+//				bean.setMemberPhoto(b.getBytes(1, (int)b.length()));
+				bean.setMemberPhoto(rs.getBytes("memberPhoto"));
 				replyArticle.setMember(bean);
 				list.add(replyArticle);
 			}
@@ -87,8 +88,9 @@ public class ReplyArticleDAOjdbc implements ReplyArticleDAO {
 				replyArticle.setModifyTime(ConvertType.convertToLocalTime(rs.getTimestamp("modifyTime")));
 				MemberVO bean = new MemberVO();
 				bean.setMemberAccount(rs.getString("memberAccount"));
-				Blob b = rs.getBlob("memberPhoto");
-				bean.setMemberPhoto(b.getBytes(1, (int)b.length()));
+//				Blob b = rs.getBlob("memberPhoto");
+//				bean.setMemberPhoto(b.getBytes(1, (int)b.length()));
+				bean.setMemberPhoto(rs.getBytes("memberPhoto"));
 				replyArticle.setMember(bean);
 				list.add(replyArticle);
 			}
