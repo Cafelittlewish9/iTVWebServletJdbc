@@ -6,7 +6,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 @ApplicationPath("/RESTful")
 public class RESTfulServiceConfig extends ResourceConfig {
 	public RESTfulServiceConfig(){
-		this.packages("model.service.restful");
+		this.packages("model.service.restful","model.vo");
 	}
 
 }

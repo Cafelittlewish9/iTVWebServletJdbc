@@ -3,7 +3,11 @@ package model.service.restful;
 import java.util.Collection;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -40,16 +44,21 @@ public class VideoRestful {
 		return dao.selectByVideoClassName(videoClassName);
 	}
 
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean uploadVideo(VideoVO bean) {
 		return dao.insert(bean);
 	}
 
 	// 只能改videoDescription，另外兩個參數是應資料庫而要求的
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean updateVideo(String videoDescription, int videoId) {
 		return dao.update(videoDescription, videoId);
 	}
-
-	public boolean removeVideo(int videoId) {
+	@DELETE
+	@Path("/{videoId}")
+	public boolean removeVideo(@PathParam("videoId")int videoId) {
 		return dao.delete(videoId);
 	}
 

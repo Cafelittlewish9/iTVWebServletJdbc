@@ -2,7 +2,11 @@ package model.service.restful;
 
 import java.util.Collection;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -25,6 +29,8 @@ public class ReplyArticleRestful {
 		return dao.selectByArticleId(articleId);
 	}
 
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean addReplyArticle(int memberId, int articleId, String replyContent) {
 		int temp = dao.insert(memberId, articleId, replyContent);
 		if (temp == 1) {
@@ -34,6 +40,8 @@ public class ReplyArticleRestful {
 		}
 	}
 
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean modifyReplyArticle(String replyContent, int replyArticleId) {
 		if (replyContent != null && replyContent.trim().length() != 0) {
 			int temp = dao.update(replyContent, replyArticleId);
@@ -46,8 +54,9 @@ public class ReplyArticleRestful {
 			return false;
 		}
 	}
-
-	public boolean deleteReplyArticle(int replyArticleId) {
+	@DELETE
+	@Path("/{replyArticleId}")
+	public boolean deleteReplyArticle(@PathParam("replyArticleId")int replyArticleId) {
 		int temp = dao.delete(replyArticleId);
 		if (temp == 1) {
 			return true;

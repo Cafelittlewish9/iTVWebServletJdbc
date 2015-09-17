@@ -3,7 +3,11 @@ package model.service.restful;
 
 import java.util.Collection;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -12,7 +16,6 @@ import javax.ws.rs.core.MediaType;
 import model.dao.ArticleDAO;
 import model.dao.jdbc.ArticleDAOjdbc;
 import model.vo.ArticleVO;
-import model.vo.MemberVO;
 
 /**
  * @author iTV小組成員
@@ -68,6 +71,7 @@ public class ArticleRestful {
 	 * @return true 新增成功; false 新增失敗
 	 * @see #addArticle(int, String, String, String)
 	 */
+	
 	public boolean addArticle(ArticleVO bean) {
 		boolean result = false;
 		bean.getMemberId();
@@ -94,6 +98,8 @@ public class ArticleRestful {
 	 * @return true 新增成功; false 新增失敗
 	 * @see #addArticle(ArticleVO)
 	 */
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean addArticle(int memberId, String subclassNo, String articleTitle, String articleContent) {
 		boolean result = false;
 		ArticleVO bean = new ArticleVO();
@@ -116,6 +122,8 @@ public class ArticleRestful {
 	 *            要修改的文章ID
 	 * @return true 新增成功; false 新增失敗
 	 */
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean modifyArticle(String articleContent, int articleId) {
 		ArticleVO bean = new ArticleVO();
 		bean.setArticleContent(articleContent);
@@ -146,7 +154,9 @@ public class ArticleRestful {
 	 * @return true 新增成功; false 新增失敗
 	 * @see #addArticle(ArticleVO)
 	 */
-	public boolean deleteArticle(int articleId) {
+	@DELETE
+	@Path("/{articleId}")
+	public boolean deleteArticle(@PathParam("articleId")int articleId) {
 		boolean result = false;
 		if (dao.delete(articleId)) {
 			return true;
@@ -162,6 +172,7 @@ public class ArticleRestful {
 	 * @return true 新增成功; false 新增失敗
 	 * @see #deleteArticle(int)
 	 */
+
 	public boolean deleteArticle(ArticleVO bean) {
 		boolean result = false;
 		if (dao.delete(bean.getArticleId())) {

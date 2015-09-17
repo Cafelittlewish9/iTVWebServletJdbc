@@ -1,7 +1,5 @@
 package model.vo;
 
-import java.io.Serializable;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -9,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="Member")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MemberVO implements Serializable {
+public class MemberVO {
 	@XmlElement(required = true)
 	private int memberId;
 	@XmlElement(required = true)

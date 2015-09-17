@@ -2,7 +2,11 @@ package model.service.restful;
 
 import java.util.Collection;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -21,13 +25,13 @@ public class CloudRestful {
 	}
 	
 	@GET
-	@Path("/list/{memberId}")
+	@Path("/allfile/{memberId}")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 	public Collection<CloudVO> allFile(@PathParam("memberId")int memberId) {
 		return dao.selectByMemberId(memberId);
 	}
 	@GET
-	@Path("/list/{memberId}/{fileName}")
+	@Path("/samename/{memberId}/{fileName}")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 	public Collection<CloudVO> searchFile(@PathParam("memberId")int memberId, @PathParam("fileName")String fileName) {
 		Collection<CloudVO> result = null;
@@ -36,10 +40,7 @@ public class CloudRestful {
 		}
 		return result;
 	}
-	@GET
-	@Path("/list/{memberId}/{fromTime}/{toTime}")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-	public Collection<CloudVO> searchFile(@PathParam("memberId")int memberId, @PathParam("fromTime")java.util.Date fromTime,@PathParam("toTime") java.util.Date toTime) {
+	public Collection<CloudVO> searchFile(int memberId, java.util.Date fromTime,java.util.Date toTime) {
 		Collection<CloudVO> result = null;
 		if (fromTime != null && toTime != null) {
 			result = dao.selectByTime(memberId, fromTime, toTime);
@@ -47,7 +48,7 @@ public class CloudRestful {
 		return result;
 	}
 	@GET
-	@Path("/list/{memberId}/{fileType}")
+	@Path("/sametype/{memberId}/{fileType}")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 	public Collection<CloudVO> searchFile(@PathParam("fileType")String fileType, @PathParam("memberId")int memberId) {
 		Collection<CloudVO> result = null;
@@ -57,11 +58,8 @@ public class CloudRestful {
 		return result;
 	}
 
-	@GET
-	@Path("/list/{memberId}/{fileType}/{fromTime}/{toTime}")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-	public Collection<CloudVO> searchFile(@PathParam("memberId")int memberId,@PathParam("fileName") String fileName, @PathParam("fromTime")java.util.Date fromTime,
-			@PathParam("toTime")java.util.Date toTime) {
+	public Collection<CloudVO> searchFile(int memberId, String fileName, java.util.Date fromTime,
+			java.util.Date toTime) {
 		Collection<CloudVO> result = null;
 		if (fileName != null && fileName.trim().length() != 0) {
 			if (fromTime != null && toTime != null) {
@@ -71,7 +69,7 @@ public class CloudRestful {
 		return result;
 	}
 	@GET
-	@Path("/list/{memberId}/{fileName}/{fileType}")
+	@Path("/file/{memberId}/{fileName}/{fileType}")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 	public Collection<CloudVO> searchFile(@PathParam("memberId")int memberId,@PathParam("fileName")String fileName, @PathParam("fileType")String fileType) {
 		Collection<CloudVO> result = null;
@@ -82,11 +80,8 @@ public class CloudRestful {
 		}
 		return result;
 	}
-	@GET
-	@Path("/list/{memberId}/{fromTime}/{toTime}/{fileType}")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-	public Collection<CloudVO> searchFile(@PathParam("memberId")int memberId, @PathParam("fromTime")java.util.Date fromTime,@PathParam("toTime")java.util.Date toTime,
-			 @PathParam("fileType")String fileType) {
+	public Collection<CloudVO> searchFile(int memberId, java.util.Date fromTime,java.util.Date toTime,
+			 String fileType) {
 		Collection<CloudVO> result = null;
 		if (fileType != null && fileType.trim().length() != 0) {
 			if (fromTime != null && toTime != null) {
@@ -95,11 +90,9 @@ public class CloudRestful {
 		}
 		return result;
 	}
-	@GET
-	@Path("/list/{memberId}/{fileType}")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-	public Collection<CloudVO> searchFile(@PathParam("memberId")int memberId,@PathParam("fileName")String fileName,@PathParam("fromTime")java.util.Date fromTime, @PathParam("toTime")java.util.Date toTime,
-			@PathParam("fileType")String fileType) {
+	
+	public Collection<CloudVO> searchFile(int memberId,String fileName,java.util.Date fromTime, java.util.Date toTime,
+			String fileType) {
 		Collection<CloudVO> result = null;
 		if (fileName != null && fileName.trim().length() != 0) {
 			if (fileType != null && fileType.trim().length() != 0) {
@@ -110,12 +103,14 @@ public class CloudRestful {
 		}
 		return result;
 	}
-
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean addFile(int memberId, String fileName, String fileType, String filePath, long fileSize) {
 		boolean result = false;
 		return result;
 	}
-
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean modifyFile(int fileId, String filePath, long fileSize) {
 		boolean result = false;
 		return result;
@@ -125,8 +120,9 @@ public class CloudRestful {
 		boolean result = false;
 		return result;
 	}
-
-	public boolean deleteFile(int fileId) {
+	@DELETE
+	@Path("/{fileId}")
+	public boolean deleteFile(@PathParam("fileId")int fileId) {		
 		int temp = dao.delete(fileId);
 		if (temp == 1) {
 			return true;

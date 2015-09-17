@@ -3,7 +3,14 @@ package model.service.restful;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import model.dao.MemberDAO;
 import model.dao.jdbc.MemberDAOjdbc;
@@ -20,6 +27,8 @@ public class MemberRestful {
 	}
 
 	// registry1採帳號密碼信箱註冊；registry2是採信箱密碼註冊
+//	@POST
+//	@Consumes(MediaType.APPLICATION_JSON)
 	public String registry1(String username, String password, String usermail) throws SQLException {
 		String result = null;
 		MemberVO mvo = new MemberVO();
@@ -41,6 +50,8 @@ public class MemberRestful {
 	}
 
 	// registry1採帳號密碼信箱註冊；registry2是採信箱密碼註冊
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
 	public String registry2(String usermail, String password) throws SQLException {
 		String result = null;
 		MemberVO mvo = new MemberVO();
@@ -143,13 +154,18 @@ public class MemberRestful {
 	 */
 
 	// 會員查詢個資
-	public MemberVO checkInfo(String username, String password) {
+	@GET
+	@Path("/info/{username}/{password}")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+	public MemberVO checkInfo(@PathParam("username")String username, @PathParam("password")String password) {
 		MemberVO mvo = this.login1(username, password);
 		return mvo;
 	}
 	// ↑是否是指連查詢個資都要輸入一次帳密？
 
 	// 更改、測試完成
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
 	public int update(MemberVO mvo) {
 		int result = -1;
 		if (mvo != null) {

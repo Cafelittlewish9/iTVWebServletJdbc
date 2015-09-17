@@ -2,8 +2,12 @@ package model.service.restful;
 
 import java.util.Collection;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -27,6 +31,8 @@ public class ReportArticleRestful {
 		return dao.selectAll();
 	}
 
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean reportArticle(int reportedArticleId, String reportReason) {
 		ReportArticleVO bean = new ReportArticleVO();
 		bean.setReportedArticleId(reportedArticleId);
@@ -37,8 +43,9 @@ public class ReportArticleRestful {
 	public boolean reportArticle(ReportArticleVO bean) {
 		return dao.insert(bean);
 	}
-
-	public boolean deleteArticle(ReportArticleVO bean) {
+	@DELETE
+	@Path("/{bean}")
+	public boolean deleteArticle(@PathParam("bean")ReportArticleVO bean) {
 		boolean result1 = dao2.delete(bean.getReportedArticleId());
 		boolean result2 = dao.delete(bean.getOrderId());
 		if (result1 && result2) {

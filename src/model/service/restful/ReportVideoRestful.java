@@ -2,8 +2,12 @@ package model.service.restful;
 
 import java.util.Collection;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -26,6 +30,9 @@ public class ReportVideoRestful {
 	public Collection<ReportVideoVO> selectAllList(){
 		return dao.selectAll();
 	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean addReportVideo(int reportedVideoId,java.util.Date reportTime,String reportReason){
 		ReportVideoVO bean = new ReportVideoVO();
 		bean.setReportedVideoId(reportedVideoId);
@@ -33,7 +40,9 @@ public class ReportVideoRestful {
 		bean.setReportReason(reportReason);
 		return dao.insert(bean);
 	}
-	public boolean deleteVideo(ReportVideoVO bean){
+	@DELETE
+	@Path("/{bean}")
+	public boolean deleteVideo(@PathParam("bean")ReportVideoVO bean){
 		boolean result1 = dao2.delete(bean.getReportedVideoId());
 		boolean result2 = dao.delete(bean.getOrderId());
 		if(result1 && result2){
