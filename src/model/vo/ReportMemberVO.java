@@ -2,11 +2,22 @@ package model.vo;
 
 import java.text.SimpleDateFormat;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ReportMemberVO {
+	@XmlElement(required = true)
 	private int orderId;
+	@XmlElement(required = true)
 	private int reportedMemberId;
+	@XmlElement(required = true)
 	private java.util.Date reportTime;
+	@XmlElement(required = true)
 	private String reportReason;
+	@XmlElement(required = true)
 	private MemberVO member;
 	
 	@Override
