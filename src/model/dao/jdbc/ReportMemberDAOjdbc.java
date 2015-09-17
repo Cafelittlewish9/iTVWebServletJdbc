@@ -58,8 +58,9 @@ public class ReportMemberDAOjdbc implements ReportMemberDAO {
 				member.setMemberAccount(rset.getString("memberAccount"));
 				member.setMemberName(rset.getString("memberName"));
 				member.setMemberNickname(rset.getString("memberNickname"));
-				Blob b = rset.getBlob("memberPhoto");
-				member.setMemberPhoto(b.getBytes(1, (int)b.length()));
+//				Blob b = rset.getBlob("memberPhoto");
+//				member.setMemberPhoto(b.getBytes(1, (int)b.length()));
+				member.setMemberPhoto(rset.getBytes("memberPhoto"));
 				member.setBroadcastTitle(rset.getString("broadcastTitle"));
 				member.setBroadcastClassName(rset.getString("broadcastClassName"));
 				member.setBroadcastDescription(rset.getString("broadcastDescription"));
@@ -72,7 +73,7 @@ public class ReportMemberDAOjdbc implements ReportMemberDAO {
 		return result;
 	}
 
-	private static final String INSERT = "insert into ReportMember(reportedMemberId, reportReason) values(?, ?)";
+	private static final String INSERT = "insert into ReportMember(reportedMemberId, reportReason) values(?, ? )";
 
 	@Override
 	public ReportMemberVO insert(ReportMemberVO bean) {

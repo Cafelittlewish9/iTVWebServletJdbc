@@ -38,8 +38,9 @@ public class ShowDAOjdbc implements ShowDAO {
 	public List<ShowVO> selectJoinMember(int memberId) {
 		ShowVO result = null;
 		List<ShowVO> list = null;
-		try (//Connection conn = datasource.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (
+//				Connection conn=DriverManager.getConnection(URL, USERNAME, PASSWORD);				
+				Connection conn = datasource.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID_JOIN_MEMBER);) {
 			stmt.setInt(1, memberId);
 			ResultSet rset = stmt.executeQuery();
@@ -64,8 +65,9 @@ public class ShowDAOjdbc implements ShowDAO {
 	public List<ShowVO> selectJoinVideo(int memberId) {
 		ShowVO result = null;
 		List<ShowVO> list = null;
-		try (//Connection conn = datasource.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (
+//				Connection conn=DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				Connection conn = datasource.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID_JOIN_VIDEO);) {
 			stmt.setInt(1, memberId);
 			ResultSet rset = stmt.executeQuery();
@@ -89,7 +91,9 @@ public class ShowDAOjdbc implements ShowDAO {
 	@Override
 	public List<ShowVO> selectAll() {
 		List<ShowVO> list = null;
-		try (Connection conn = datasource.getConnection();
+		try (
+//				Connection conn=DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				Connection conn = datasource.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
 				ResultSet rset = stmt.executeQuery();) {
 			list = new ArrayList<ShowVO>();
@@ -111,7 +115,9 @@ public class ShowDAOjdbc implements ShowDAO {
 	@Override
 	public int insert(ShowVO bean) {
 		int result = -1;
-		try (Connection conn = datasource.getConnection();
+		try (
+//				Connection conn=DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				Connection conn = datasource.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
 			if (bean != null) {
 				stmt.setInt(1, bean.getMemberId());
@@ -136,7 +142,9 @@ public class ShowDAOjdbc implements ShowDAO {
 	@Override
 	public int update(java.util.Date showTime, String website, int memberId, java.util.Date showTimed) {
 		int result = -1;
-		try (Connection conn = datasource.getConnection();
+		try (
+//				Connection conn=DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				Connection conn = datasource.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(UPDATE);) {
 			if (showTime != null) {
 				long time = showTime.getTime();
@@ -158,7 +166,9 @@ public class ShowDAOjdbc implements ShowDAO {
 
 	@Override
 	public boolean delete(int memberId, java.util.Date showTime) {
-		try (Connection conn = datasource.getConnection();
+		try (
+//				Connection conn=DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				Connection conn = datasource.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(DELETE);) {
 			stmt.setInt(1, memberId);
 			stmt.setTimestamp(2, new java.sql.Timestamp(showTime.getTime()));
@@ -174,10 +184,13 @@ public class ShowDAOjdbc implements ShowDAO {
 
 	public static void main(String[] args) {
 		ShowDAOjdbc dao = new ShowDAOjdbc();
-		List<ShowVO> list = dao.selectJoinMember(2);
+//		List<ShowVO> list = dao.selectJoinMember(2);
+		List<ShowVO> list = dao.selectJoinVideo(2);
 		for (ShowVO bean : list) {
 			System.out.println(bean);
 			System.out.println(bean.getTitle());
 		}
+		
+		
 	}
 }
