@@ -53,7 +53,7 @@ public class ReportVideoDAOjdbc implements ReportVideoDAO {
 				reportVideo.setReportReason(rs.getString("reportReason"));
 				VideoVO video = new VideoVO();
 				video.setVideoId(rs.getInt("reportedVideoId"));
-				video.setMemberId(rs.getInt("v.memberId"));
+				video.setMemberId(rs.getInt("memberId"));
 				video.setVideoWebsite(rs.getString("videoWebsite"));
 				video.setVideoClassName(rs.getString("videoClassName"));
 				video.setVideoTitle(rs.getString("videoTitle"));
@@ -61,7 +61,7 @@ public class ReportVideoDAOjdbc implements ReportVideoDAO {
 				video.setVideoDescription(rs.getString("videoDescription"));
 				video.setVideoDescriptionModifyTime(ConvertType.convertToLocalTime(rs.getTimestamp("videoDescriptionModifyTime")));
 				MemberVO member = new MemberVO();
-				member.setMemberId(rs.getInt("v.memberId"));
+				member.setMemberId(rs.getInt("memberId"));
 				member.setMemberAccount(rs.getString("memberAccount"));
 				video.setMember(member);
 				reportVideo.setVideo(video);
@@ -116,7 +116,7 @@ public class ReportVideoDAOjdbc implements ReportVideoDAO {
 	public boolean delete(int orderId) {
 		Connection conn = null;
 		boolean result = false;
-		try { conn=ds.getConnection();
+		try {conn=ds.getConnection();
 //			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			PreparedStatement pstmt = conn.prepareStatement(DELETE);
 			pstmt.setInt(1, orderId);

@@ -15,6 +15,6 @@ public interface ShowDAO {
 
 	public int update(java.util.Date showTime, String website, int memberId, java.util.Date showTimed);
 
-	public boolean delete(int memberId, java.util.Date showTime);
+	public boolean delete(int memberId, String website);
 
 }

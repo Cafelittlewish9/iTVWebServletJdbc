@@ -34,7 +34,7 @@ public class VideoCommentsDAOjdbc implements VideoCommentsDAO {
 	}
 	
 	private static final String SELECT_ALL = 
-			"SELECT commentId,memberId,videoId,commentContent,commentTime FROM videoComments vc Join member m ON vc.memberId = m.memberId";
+			"SELECT vc.commentId, vc.memberId, vc.videoId, vc.commentContent, vc.commentTime, m.memberAccount FROM videoComments vc Join member m ON vc.memberId = m.memberId";
 	
 		@Override
 	public List<VideoCommentsVO> selectAll() {
@@ -68,7 +68,7 @@ public class VideoCommentsDAOjdbc implements VideoCommentsDAO {
 	public boolean insert(VideoCommentsVO videoComments) {
 		boolean result = false;
 		try (Connection conn=ds.getConnection();
-//				0Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(INSERT);) {
 			
 			pstmt.setInt(1, videoComments.getMemberId());
