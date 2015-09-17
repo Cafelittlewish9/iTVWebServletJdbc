@@ -18,19 +18,19 @@ import util.ConvertType;
 import util.GC;
 
 public class ShowDAOjdbc implements ShowDAO {
-//	private static final String URL = GC.URL;
-//	private static final String USERNAME = GC.USERNAME;
-//	private static final String PASSWORD = GC.PASSWORD;
+	private static final String URL = GC.URL;
+	private static final String USERNAME = GC.USERNAME;
+	private static final String PASSWORD = GC.PASSWORD;
 	private DataSource datasource;
 
-	public ShowDAOjdbc() {
-		try {
-			InitialContext context = new InitialContext();
-			this.datasource = (DataSource) context.lookup(GC.DATASOURCE);
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-	}
+//	public ShowDAOjdbc() {
+//		try {
+//			InitialContext context = new InitialContext();
+//			this.datasource = (DataSource) context.lookup(GC.DATASOURCE);
+//		} catch (NamingException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	private static final String SELECT_BY_ID_JOIN_MEMBER = "SELECT s.*, broadcastTitle FROM show s Join member m ON website = broadcastWebsite WHERE s.memberId = ? ORDER BY showTime";
 
@@ -38,7 +38,8 @@ public class ShowDAOjdbc implements ShowDAO {
 	public List<ShowVO> selectJoinMember(int memberId) {
 		ShowVO result = null;
 		List<ShowVO> list = null;
-		try (Connection conn = datasource.getConnection();
+		try (//Connection conn = datasource.getConnection();
+				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID_JOIN_MEMBER);) {
 			stmt.setInt(1, memberId);
 			ResultSet rset = stmt.executeQuery();
@@ -63,7 +64,8 @@ public class ShowDAOjdbc implements ShowDAO {
 	public List<ShowVO> selectJoinVideo(int memberId) {
 		ShowVO result = null;
 		List<ShowVO> list = null;
-		try (Connection conn = datasource.getConnection();
+		try (//Connection conn = datasource.getConnection();
+				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID_JOIN_VIDEO);) {
 			stmt.setInt(1, memberId);
 			ResultSet rset = stmt.executeQuery();
