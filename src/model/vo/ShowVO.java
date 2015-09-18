@@ -2,18 +2,26 @@ package model.vo;
 
 import java.text.SimpleDateFormat;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ShowVO {
+	@XmlElement(required=true)
 	private int memberId;
+	@XmlElement(required=true)
 	private java.util.Date showTime;
+	@XmlElement(required=true)
 	private String website;
+	@XmlElement(required=true)
+	private VideoVO video;
+	@XmlElement(required=true)
 	private MemberVO member;
+
 	
-	public MemberVO getMember() {
-		return member;
-	}
-	public void setMember(MemberVO member) {
-		this.member = member;
-	}
 	@Override
 	public String toString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -38,4 +46,18 @@ public class ShowVO {
 	public void setWebsite(String website) {
 		this.website = website;
 	}
+	public VideoVO getVideo() {
+		return video;
+	}
+	public void setVideo(VideoVO video) {
+		this.video = video;
+	}
+	public MemberVO getMember() {
+		return member;
+	}
+	public void setMember(MemberVO member) {
+		this.member = member;
+	}
+	
+	
 }

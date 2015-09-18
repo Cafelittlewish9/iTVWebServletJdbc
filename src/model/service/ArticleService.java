@@ -89,7 +89,7 @@ public class ArticleService {
 		bean.setSubclassNo(subclassNo);
 		bean.setArticleTitle(articleTitle);
 		bean.setArticleContent(articleContent);
-		if (result == true) {
+		if (bean != null) {
 			return dao.insert(bean);
 		}
 		return result;
@@ -104,11 +104,17 @@ public class ArticleService {
 	 *            要修改的文章ID
 	 * @return true 新增成功; false 新增失敗
 	 */
-	public boolean modifyArticle(String articleContent, int articleId) {
+	public boolean modifyArticle(String articleContent, int articleId , int memberId, String subClassNo , String articleTitle) {
 		ArticleVO bean = new ArticleVO();
+		
 		bean.setArticleContent(articleContent);
 		bean.setArticleId(articleId);
+		bean.setMemberId(memberId);
+		bean.setSubclassNo(subClassNo);
+		bean.setArticleTitle(articleTitle);
+		
 		return dao.update(bean);
+
 	}
 
 	/**
@@ -120,10 +126,18 @@ public class ArticleService {
 	 * @see #modifyArticle(String, int)
 	 */
 	public boolean modifyArticle(ArticleVO bean) {
+		boolean result = false;
+		
+		bean.getMemberId();
+		bean.getArticleId();
+		bean.getArticleContent();
+		bean.getSubclassNo();
+		bean.getArticleTitle();
+		
 		if (bean != null) {
 			return dao.update(bean);
 		}
-		return false;
+		return result;
 	}
 
 	/**
@@ -163,11 +177,11 @@ public class ArticleService {
 		ArticleService service = new ArticleService();
 		// System.out.println(service.allArticle());
 		// System.out.println(service.allSubArticle("M"));
-		System.out.println(service.searchByInput(""));
+		System.out.println(service.searchByInput("一天"));
 		// System.out.println(service.searchArticle("Pikachu", "皮卡丘"));
 		// System.out.println(service.addArticle());
 		// System.out.println(service.deleteArticle(1));
-		System.out.println(service.modifyArticle("hey", 12));
+//		System.out.println(service.modifyArticle("hey", 12));
 
 	}
 }

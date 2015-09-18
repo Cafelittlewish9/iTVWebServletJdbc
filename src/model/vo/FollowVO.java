@@ -1,8 +1,18 @@
 package model.vo;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class FollowVO {
+	@XmlElement(required = true)
 	private int memberId;
+	@XmlElement(required = true)
 	private int followId;
+	@XmlElement(required = true)
 	private MemberVO member;
 	
 	@Override

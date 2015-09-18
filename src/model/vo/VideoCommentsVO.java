@@ -2,12 +2,24 @@ package model.vo;
 
 import java.text.SimpleDateFormat;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class VideoCommentsVO {
+	@XmlElement(required = true)
 	private int commentId;
+	@XmlElement(required = true)
 	private int memberId;
+	@XmlElement(required = true)
 	private int videoId;
+	@XmlElement(required = true)
 	private String commentContent;
+	@XmlElement(required = true)
 	private java.util.Date commentTime;
+	@XmlElement(required = true)
 	private MemberVO member;
 	
 	@Override

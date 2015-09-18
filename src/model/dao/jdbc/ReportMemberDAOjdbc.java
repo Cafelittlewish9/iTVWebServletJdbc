@@ -8,6 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.dao.ReportMemberDAO;
 import model.vo.MemberVO;
 import model.vo.ReportMemberVO;
@@ -15,9 +21,18 @@ import util.ConvertType;
 import util.GC;
 
 public class ReportMemberDAOjdbc implements ReportMemberDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
+	public ReportMemberDAOjdbc(){
+		try {
+			Context ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private static final String SELECT_ALL = "SELECT orderId, reportedMemberId, reportTime, reportReason, "
 			+ "memberAccount, memberName, memberNickname, memberPhoto, broadcastTitle, broadcastClassName, "
@@ -27,7 +42,8 @@ public class ReportMemberDAOjdbc implements ReportMemberDAO {
 	@Override
 	public List<ReportMemberVO> selectAll() {
 		List<ReportMemberVO> result = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
 				ResultSet rset = stmt.executeQuery();) {
 			result = new ArrayList<ReportMemberVO>();
@@ -42,8 +58,9 @@ public class ReportMemberDAOjdbc implements ReportMemberDAO {
 				member.setMemberAccount(rset.getString("memberAccount"));
 				member.setMemberName(rset.getString("memberName"));
 				member.setMemberNickname(rset.getString("memberNickname"));
-				Blob b = rset.getBlob("memberPhoto");
-				member.setMemberPhoto(b.getBytes(1, (int)b.length()));
+//				Blob b = rset.getBlob("memberPhoto");
+//				member.setMemberPhoto(b.getBytes(1, (int)b.length()));
+				member.setMemberPhoto(rset.getBytes("memberPhoto"));
 				member.setBroadcastTitle(rset.getString("broadcastTitle"));
 				member.setBroadcastClassName(rset.getString("broadcastClassName"));
 				member.setBroadcastDescription(rset.getString("broadcastDescription"));
@@ -56,12 +73,13 @@ public class ReportMemberDAOjdbc implements ReportMemberDAO {
 		return result;
 	}
 
-	private static final String INSERT = "insert into ReportMember(reportedMemberId, reportReason) values(?, ?)";
+	private static final String INSERT = "insert into ReportMember(reportedMemberId, reportReason) values(?, ? )";
 
 	@Override
 	public ReportMemberVO insert(ReportMemberVO bean) {
 		ReportMemberVO result = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
 			if (bean != null) {
 				stmt.setInt(1, bean.getReportedMemberId());
@@ -81,7 +99,8 @@ public class ReportMemberDAOjdbc implements ReportMemberDAO {
 
 	@Override
 	public boolean delete(int orderId) {
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(DELETE);) {
 			stmt.setInt(1, orderId);
 			int i = stmt.executeUpdate();

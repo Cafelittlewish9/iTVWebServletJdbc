@@ -20,6 +20,5 @@ public interface MemberDAO {
 
 	public int switchSuspend(int memberId, boolean suspendRight);
 	
-	
 
 }

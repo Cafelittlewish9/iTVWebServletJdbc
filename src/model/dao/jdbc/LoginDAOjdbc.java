@@ -7,23 +7,40 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.dao.LoginDAO;
 import model.vo.LoginVO;
 import util.ConvertType;
 import util.GC;
 
 public class LoginDAOjdbc implements LoginDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
 
+	public LoginDAOjdbc(){
+		try {
+			Context ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private static final String SELECT_BY_MEMBERACCOUNT = "select * from Login where memberAccount = ?";
 
 	@Override
 	public List<LoginVO> selectAll(String memberAccount) {
 		LoginVO bean = null;
 		List<LoginVO> list = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_MEMBERACCOUNT);) {
 			stmt.setString(1, memberAccount);
 			ResultSet rset = stmt.executeQuery();
@@ -46,7 +63,8 @@ public class LoginDAOjdbc implements LoginDAO {
 	@Override
 	public List<LoginVO> selectAll() {
 		List<LoginVO> result = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
 				ResultSet rset = stmt.executeQuery();) {
 			result = new ArrayList<LoginVO>();
@@ -68,7 +86,8 @@ public class LoginDAOjdbc implements LoginDAO {
 	@Override
 	public LoginVO select(String memberAccount) {
 		LoginVO bean = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_LAST_TIME);) {
 			stmt.setString(1, memberAccount);
 			ResultSet rset = stmt.executeQuery();
@@ -87,16 +106,17 @@ public class LoginDAOjdbc implements LoginDAO {
 	private static final String INSERT = "insert into Login(ip, memberAccount) values(?, ?)";
 
 	@Override
-	public LoginVO insert(LoginVO bean) {
-		LoginVO result = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+	public boolean insert(LoginVO bean) {
+		boolean result = false;
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
 			if (bean != null) {
 				stmt.setString(1, bean.getIp());
 				stmt.setString(2, bean.getMemberAccount());
 				int i = stmt.executeUpdate();
 				if (i == 1) {
-					result = bean;
+					result = true;
 				}
 			}
 		} catch (SQLException e) {

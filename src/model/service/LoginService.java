@@ -13,10 +13,16 @@ public class LoginService {
 		this.dao=new LoginDAOjdbc();
 	}
 	
+	public boolean login(String memberAccount, String ip) {
+		LoginVO bean = new LoginVO();
+		bean.setMemberAccount(memberAccount);
+		bean.setIp(ip);
+		return dao.insert(bean);
+	}
 	public Collection<LoginVO> loginLog(String memberAccount) {
 		return dao.selectAll(memberAccount);
 	}
-
+	
 	public java.util.Date lastLogin(String memberAccount) {
 		java.util.Date result = null;
 		if (memberAccount != null && memberAccount.trim().length() != 0) {

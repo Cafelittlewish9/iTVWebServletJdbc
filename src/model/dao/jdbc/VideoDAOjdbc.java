@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.dao.VideoDAO;
 import model.vo.MemberVO;
 import model.vo.VideoVO;
@@ -15,23 +19,35 @@ import util.ConvertType;
 import util.GC;
 
 public class VideoDAOjdbc implements VideoDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource datasource;
 
-	private static final String SELECT_BY_ID = "SELECT v.*,m.memberAccount FROM video v Join member m ON v.memberId = m.memberId WHERE videoTitle LIKE ?";
-	
+	public VideoDAOjdbc() {
+		try {
+			InitialContext context = new InitialContext();
+			this.datasource = (DataSource) context.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static final String SELECT_BY_VIDEOTITLE = "SELECT v.*,m.memberAccount FROM video v Join member m ON v.memberId = m.memberId WHERE videoTitle LIKE ?";
+
 	@Override
-	public List<VideoVO> select(String videoTitle) {
+	public List<VideoVO> selectByVideoTitle(String videoTitle) {
 		VideoVO result = null;
 		List<VideoVO> list = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID);) {
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_VIDEOTITLE);) {
 			stmt.setString(1, "%" + videoTitle + "%");
 			ResultSet rset = stmt.executeQuery();
 			list = new ArrayList<VideoVO>();
 			while (rset.next()) {
-				MemberVO bean=new MemberVO();
+				MemberVO bean = new MemberVO();
 				result = new VideoVO();
 				result.setVideoId(rset.getInt("videoId"));
 				result.setMemberId(rset.getInt("memberId"));
@@ -43,7 +59,8 @@ public class VideoDAOjdbc implements VideoDAO {
 				result.setVideoUploadTime(ConvertType.convertToLocalTime(rset.getTimestamp("videoUploadTime")));
 				result.setVideoWatchTimes(rset.getLong("videoWatchTimes"));
 				result.setVideoDescription(rset.getString("videoDescription"));
-				result.setVideoDescriptionModifyTime(ConvertType.convertToLocalTime(rset.getTimestamp("videoDescriptionModifyTime")));
+				result.setVideoDescriptionModifyTime(
+						ConvertType.convertToLocalTime(rset.getTimestamp("videoDescriptionModifyTime")));
 				bean.setMemberAccount(rset.getString("memberAccount"));
 				result.setMember(bean);
 				list.add(result);
@@ -54,12 +71,52 @@ public class VideoDAOjdbc implements VideoDAO {
 		return list;
 	}
 
-	private static final String SELECT_ALL = "SELECT v.*,m.memberAccount FROM video v Join member m ON v.memberId = m.memberId";
+	private static final String SELECT_BY_VIDEOCLASSNAME = "SELECT v.*,m.memberAccount FROM video v Join member m ON v.memberId = m.memberId WHERE videoClassName = ?";
+
+	@Override
+	public List<VideoVO> selectByVideoClassName(String videoClassName) {
+		VideoVO result = null;
+		List<VideoVO> list = null;
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_VIDEOCLASSNAME);) {
+			stmt.setString(1, videoClassName);
+			ResultSet rset = stmt.executeQuery();
+			list = new ArrayList<VideoVO>();
+			while (rset.next()) {
+				MemberVO bean = new MemberVO();
+				result = new VideoVO();
+				result.setVideoId(rset.getInt("videoId"));
+				result.setMemberId(rset.getInt("memberId"));
+				result.setVideoWebsite(rset.getString("videoWebsite"));
+				result.setVideoClassName(rset.getString("videoClassName"));
+				result.setVideoTitle(rset.getString("videoTitle"));
+				result.setVideoName(rset.getString("videoName"));
+				result.setVideoPath(rset.getString("videoPath"));
+				result.setVideoUploadTime(ConvertType.convertToLocalTime(rset.getTimestamp("videoUploadTime")));
+				result.setVideoWatchTimes(rset.getLong("videoWatchTimes"));
+				result.setVideoDescription(rset.getString("videoDescription"));
+				result.setVideoDescriptionModifyTime(
+						ConvertType.convertToLocalTime(rset.getTimestamp("videoDescriptionModifyTime")));
+				bean.setMemberAccount(rset.getString("memberAccount"));
+				result.setMember(bean);
+				list.add(result);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	private static final String SELECT_ALL = "SELECT v.*,m.memberAccount FROM video v Join member m ON v.memberId = m.memberId ORDER BY videoWatchTimes DESC";
 
 	@Override
 	public List<VideoVO> selectAll() {
 		List<VideoVO> list = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
 				ResultSet rset = stmt.executeQuery();) {
 			list = new ArrayList<VideoVO>();
@@ -75,7 +132,11 @@ public class VideoDAOjdbc implements VideoDAO {
 				bean.setVideoUploadTime(ConvertType.convertToLocalTime(rset.getTimestamp("videoUploadTime")));
 				bean.setVideoWatchTimes(rset.getLong("videoWatchTimes"));
 				bean.setVideoDescription(rset.getString("videoDescription"));
-				bean.setVideoDescriptionModifyTime(ConvertType.convertToLocalTime(rset.getTimestamp("videoDescriptionModifyTime")));
+				bean.setVideoDescriptionModifyTime(
+						ConvertType.convertToLocalTime(rset.getTimestamp("videoDescriptionModifyTime")));
+				MemberVO member = new MemberVO();
+				member.setMemberAccount(rset.getString("memberAccount"));
+				bean.setMember(member);
 				list.add(bean);
 			}
 		} catch (SQLException e) {
@@ -88,7 +149,9 @@ public class VideoDAOjdbc implements VideoDAO {
 
 	@Override
 	public boolean insert(VideoVO bean) {
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
 			if (bean != null) {
 				stmt.setInt(1, bean.getMemberId());
@@ -113,8 +176,10 @@ public class VideoDAOjdbc implements VideoDAO {
 	private static final String UPDATE_DESCRIPTION = "update video set videoDescription = ?, videoDescriptionModifyTime = GETUTCDATE() where videoId = ?";
 
 	@Override
-	public boolean update(String videoDescription, java.util.Date videoDescriptionModifyTime, int videoId) {
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+	public boolean update(String videoDescription, int videoId) {
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(UPDATE_DESCRIPTION);) {
 			stmt.setString(1, videoDescription);
 			stmt.setInt(2, videoId);
@@ -127,12 +192,14 @@ public class VideoDAOjdbc implements VideoDAO {
 		}
 		return false;
 	}
-	
+
 	private static final String UPDATE_WATCHTIMES = "update video set videoWatchTimes = ? where videoId = ?";
 
 	@Override
 	public void update(long videoWatchTimes, int videoId) {
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(UPDATE_WATCHTIMES);) {
 			stmt.setLong(1, videoWatchTimes);
 			stmt.setInt(2, videoId);
@@ -146,7 +213,9 @@ public class VideoDAOjdbc implements VideoDAO {
 
 	@Override
 	public boolean delete(int videoId) {
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(DELETE);) {
 			stmt.setInt(1, videoId);
 			int i = stmt.executeUpdate();

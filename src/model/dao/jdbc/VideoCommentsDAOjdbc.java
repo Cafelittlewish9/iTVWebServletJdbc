@@ -8,24 +8,40 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.dao.VideoCommentsDAO;
 import model.vo.MemberVO;
 import model.vo.VideoCommentsVO;
 import util.GC;
 
 public class VideoCommentsDAOjdbc implements VideoCommentsDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
+	
+	public VideoCommentsDAOjdbc(){
+		try {
+			Context ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private static final String SELECT_ALL = 
-			"SELECT commentId,memberId,videoId,commentContent,commentTime FROM videoComments vc Join member m ON vc.memberId = m.memberId";
+			"SELECT vc.commentId, vc.memberId, vc.videoId, vc.commentContent, vc.commentTime, m.memberAccount FROM videoComments vc Join member m ON vc.memberId = m.memberId";
 	
 		@Override
 	public List<VideoCommentsVO> selectAll() {
 		VideoCommentsVO vcvo = new VideoCommentsVO();
 		List<VideoCommentsVO> vcvos = new ArrayList<VideoCommentsVO>();
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL);
 				ResultSet rs = pstmt.executeQuery();) {
 			while (rs.next()) {
@@ -51,7 +67,8 @@ public class VideoCommentsDAOjdbc implements VideoCommentsDAO {
 	@Override
 	public boolean insert(VideoCommentsVO videoComments) {
 		boolean result = false;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(INSERT);) {
 			
 			pstmt.setInt(1, videoComments.getMemberId());
@@ -72,7 +89,8 @@ public class VideoCommentsDAOjdbc implements VideoCommentsDAO {
 	@Override
 	public boolean update(VideoCommentsVO videoComments) {
 		boolean result = false;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(UPDATE);) {
 			pstmt.setString(1, videoComments.getCommentContent());
 			long comment = videoComments.getCommentTime().getTime();
@@ -92,7 +110,8 @@ public class VideoCommentsDAOjdbc implements VideoCommentsDAO {
 	@Override
 	public boolean delete(int commentId) {
 		boolean removeResult = false;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(DELETE);) {
 			pstmt.setInt(1, commentId);
 			int updateCount = pstmt.executeUpdate();

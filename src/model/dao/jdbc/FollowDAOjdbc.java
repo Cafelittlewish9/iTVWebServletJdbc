@@ -8,24 +8,39 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.dao.FollowDAO;
 import model.vo.FollowVO;
 import model.vo.MemberVO;
 import util.GC;
 
 public class FollowDAOjdbc implements FollowDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
+	public FollowDAOjdbc(){
+		try {
+			Context ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 
-	private static final String SELECT_BY_MEMBERID = "SELECT f.memberId, followId, memberAccount FROM Follow f join Member m "
-			+ "ON followId = m.memberId WHERE f.memberId = ?";
+	private static final String SELECT_BY_MEMBERID = "SELECT f.memberId, followId, memberAccount "
+			+ "FROM Follow f join Member m ON followId = m.memberId WHERE f.memberId = ?";
 
 	@Override
 	public List<FollowVO> selectByMemberId(int memberId) {
 		List<FollowVO> list = null;
 		FollowVO follow = null;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_MEMBERID);) {
 			stmt.setInt(1, memberId);
 			ResultSet rset = stmt.executeQuery();
@@ -55,8 +70,8 @@ public class FollowDAOjdbc implements FollowDAO {
 		PreparedStatement stmt = null;
 		ResultSet rset = null;
 
-		try {
-			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try {conn=ds.getConnection();
+//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			stmt = conn.prepareStatement(SELECT_ALL);
 			rset = stmt.executeQuery();
 
@@ -86,7 +101,8 @@ public class FollowDAOjdbc implements FollowDAO {
 	@Override
 	public int insert(FollowVO bean) {
 		int result = -1;
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
 			if (bean != null) {
 				stmt.setInt(1, bean.getMemberId());
@@ -103,7 +119,8 @@ public class FollowDAOjdbc implements FollowDAO {
 
 	@Override
 	public boolean delete(int followId, int memberId) {
-		try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(DELETE);) {
 			stmt.setInt(1, followId);
 			stmt.setInt(2, memberId);

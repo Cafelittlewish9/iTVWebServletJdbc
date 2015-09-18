@@ -2,20 +2,33 @@ package model.vo;
 
 import java.text.SimpleDateFormat;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ReplyArticleVO {
+	@XmlElement(required = true)
 	private int replyArticleId;
+	@XmlElement(required = true)
 	private int memberId;
+	@XmlElement(required = true)
 	private int articleId;
+	@XmlElement(required = true)
 	private String replyContent;
+	@XmlElement(required = true)
 	private java.util.Date publishTime;
+	@XmlElement(required = true)
 	private java.util.Date modifyTime;
-	private MemberVO member;
+	@XmlElement(required = true)
+	private MemberVO member;	
 	
 	@Override
 	public String toString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = sdf.format(publishTime);
-		return replyArticleId + "回覆的文章ID為: " + articleId + " (" + date + ")";
+		return replyArticleId + "回覆的文章ID為: " + articleId + " (" + date + ")"+ "帳號：" + member.getMemberAccount() + "會員照片" + member.getMemberPhoto();
 	}
 	public int getReplyArticleId() {
 		return replyArticleId;

@@ -51,6 +51,15 @@ public class ConvertType {
 		}
 		return result;
 	}
+	public static java.util.Date convertToUTCTime(java.util.Date whichYouWantToConvert) {
+		java.util.Date result = null;
+		if (whichYouWantToConvert != null) {
+			long a = whichYouWantToConvert.getTime();
+			long b = ZonedDateTime.now().getOffset().getTotalSeconds()*1000;
+			result = new java.util.Date(a - b);
+		}
+		return result;
+	}
 
 	public static void main(String[] args) {
 		// System.out.println(TimeZone.getDefault());
