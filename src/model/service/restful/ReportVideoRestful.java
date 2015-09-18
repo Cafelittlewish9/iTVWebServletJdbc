@@ -30,16 +30,6 @@ public class ReportVideoRestful {
 	public Collection<ReportVideoVO> selectAllList(){
 		return dao.selectAll();
 	}
-	
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public boolean addReportVideo(int reportedVideoId,java.util.Date reportTime,String reportReason){
-		ReportVideoVO bean = new ReportVideoVO();
-		bean.setReportedVideoId(reportedVideoId);
-		bean.setReportTime(reportTime);
-		bean.setReportReason(reportReason);
-		return dao.insert(bean);
-	}
 	@DELETE
 	@Path("/{bean}")
 	public boolean deleteVideo(@PathParam("bean")ReportVideoVO bean){
@@ -50,5 +40,14 @@ public class ReportVideoRestful {
 		}else{
 			return false;
 		}	
-	}	
+	}
+
+	
+	public boolean addReportVideo(int reportedVideoId,java.util.Date reportTime,String reportReason){
+		ReportVideoVO bean = new ReportVideoVO();
+		bean.setReportedVideoId(reportedVideoId);
+		bean.setReportTime(reportTime);
+		bean.setReportReason(reportReason);
+		return dao.insert(bean);
+	}
 }

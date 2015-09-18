@@ -40,13 +40,6 @@ public class CloudRestful {
 		}
 		return result;
 	}
-	public Collection<CloudVO> searchFile(int memberId, java.util.Date fromTime,java.util.Date toTime) {
-		Collection<CloudVO> result = null;
-		if (fromTime != null && toTime != null) {
-			result = dao.selectByTime(memberId, fromTime, toTime);
-		}
-		return result;
-	}
 	@GET
 	@Path("/sametype/{memberId}/{fileType}")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
@@ -54,17 +47,6 @@ public class CloudRestful {
 		Collection<CloudVO> result = null;
 		if (fileType != null && fileType != null) {
 			result = dao.selectByFileType(memberId, fileType);
-		}
-		return result;
-	}
-
-	public Collection<CloudVO> searchFile(int memberId, String fileName, java.util.Date fromTime,
-			java.util.Date toTime) {
-		Collection<CloudVO> result = null;
-		if (fileName != null && fileName.trim().length() != 0) {
-			if (fromTime != null && toTime != null) {
-				result = dao.selectByFileNameAndTime(memberId, fileName, fromTime, toTime);
-			}
 		}
 		return result;
 	}
@@ -80,6 +62,36 @@ public class CloudRestful {
 		}
 		return result;
 	}
+	@DELETE
+	@Path("/{fileId}")
+	public boolean deleteFile(@PathParam("fileId")int fileId) {		
+		int temp = dao.delete(fileId);
+		if (temp == 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public Collection<CloudVO> searchFile(int memberId, java.util.Date fromTime,java.util.Date toTime) {
+		Collection<CloudVO> result = null;
+		if (fromTime != null && toTime != null) {
+			result = dao.selectByTime(memberId, fromTime, toTime);
+		}
+		return result;
+	}
+	
+	public Collection<CloudVO> searchFile(int memberId, String fileName, java.util.Date fromTime,
+			java.util.Date toTime) {
+		Collection<CloudVO> result = null;
+		if (fileName != null && fileName.trim().length() != 0) {
+			if (fromTime != null && toTime != null) {
+				result = dao.selectByFileNameAndTime(memberId, fileName, fromTime, toTime);
+			}
+		}
+		return result;
+	}
+	
 	public Collection<CloudVO> searchFile(int memberId, java.util.Date fromTime,java.util.Date toTime,
 			 String fileType) {
 		Collection<CloudVO> result = null;
@@ -103,14 +115,11 @@ public class CloudRestful {
 		}
 		return result;
 	}
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
+	
 	public boolean addFile(int memberId, String fileName, String fileType, String filePath, long fileSize) {
 		boolean result = false;
 		return result;
 	}
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean modifyFile(int fileId, String filePath, long fileSize) {
 		boolean result = false;
 		return result;
@@ -119,15 +128,5 @@ public class CloudRestful {
 	public boolean modifyFileName(int fileId, String fileName, String filePath) {
 		boolean result = false;
 		return result;
-	}
-	@DELETE
-	@Path("/{fileId}")
-	public boolean deleteFile(@PathParam("fileId")int fileId) {		
-		int temp = dao.delete(fileId);
-		if (temp == 1) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+	}	
 }

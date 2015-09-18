@@ -25,19 +25,7 @@ public class ReportMemberRestful {
 		this.dao = new ReportMemberDAOjdbc();
 		this.dao2 = new MemberDAOjdbc();
 	}
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public boolean addReportMember(int reportedMemberId, String reportReason) {
-		ReportMemberVO bean = new ReportMemberVO();
-		bean.setReportedMemberId(reportedMemberId);
-		bean.setReportReason(reportReason);
-		ReportMemberVO demo = dao.insert(bean);
-		if (demo != null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 	public List<ReportMemberVO> selectAll() {
@@ -49,6 +37,19 @@ public class ReportMemberRestful {
 		int result1 = dao2.switchSuspend(bean.getReportedMemberId(), true);
 		boolean result2 = dao.delete(bean.getOrderId());
 		if (result1 == 1 && result2) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	public boolean addReportMember(int reportedMemberId, String reportReason) {
+		ReportMemberVO bean = new ReportMemberVO();
+		bean.setReportedMemberId(reportedMemberId);
+		bean.setReportReason(reportReason);
+		ReportMemberVO demo = dao.insert(bean);
+		if (demo != null) {
 			return true;
 		} else {
 			return false;

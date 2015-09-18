@@ -22,15 +22,24 @@ public class ReplyArticleRestful {
 	public ReplyArticleRestful() {
 		this.dao = new ReplyArticleDAOjdbc();
 	}
+	
 	@GET
 	@Path("/list/{articleId}")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 	public Collection<ReplyArticleVO> listReplyArticle(@PathParam("articleId")int articleId) {
 		return dao.selectByArticleId(articleId);
 	}
+	@DELETE
+	@Path("/{replyArticleId}")
+	public boolean deleteReplyArticle(@PathParam("replyArticleId")int replyArticleId) {
+		int temp = dao.delete(replyArticleId);
+		if (temp == 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean addReplyArticle(int memberId, int articleId, String replyContent) {
 		int temp = dao.insert(memberId, articleId, replyContent);
 		if (temp == 1) {
@@ -40,8 +49,7 @@ public class ReplyArticleRestful {
 		}
 	}
 
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
+
 	public boolean modifyReplyArticle(String replyContent, int replyArticleId) {
 		if (replyContent != null && replyContent.trim().length() != 0) {
 			int temp = dao.update(replyContent, replyArticleId);
@@ -54,14 +62,5 @@ public class ReplyArticleRestful {
 			return false;
 		}
 	}
-	@DELETE
-	@Path("/{replyArticleId}")
-	public boolean deleteReplyArticle(@PathParam("replyArticleId")int replyArticleId) {
-		int temp = dao.delete(replyArticleId);
-		if (temp == 1) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+
 }

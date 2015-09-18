@@ -25,23 +25,16 @@ public class ReportArticleRestful {
 		this.dao = new ReportArticleDAOjdbc();
 		this.dao2 = new ArticleDAOjdbc();
 	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean reportArticle(ReportArticleVO bean) {
+		return dao.insert(bean);
+	}
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 	public Collection<ReportArticleVO> reportArticleList() {
 		return dao.selectAll();
-	}
-
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public boolean reportArticle(int reportedArticleId, String reportReason) {
-		ReportArticleVO bean = new ReportArticleVO();
-		bean.setReportedArticleId(reportedArticleId);
-		bean.setReportReason(reportReason);
-		return dao.insert(bean);
-	}
-
-	public boolean reportArticle(ReportArticleVO bean) {
-		return dao.insert(bean);
 	}
 	@DELETE
 	@Path("/{bean}")
@@ -54,4 +47,12 @@ public class ReportArticleRestful {
 			return false;
 		}
 	}
+
+	public boolean reportArticle(int reportedArticleId, String reportReason) {
+		ReportArticleVO bean = new ReportArticleVO();
+		bean.setReportedArticleId(reportedArticleId);
+		bean.setReportReason(reportReason);
+		return dao.insert(bean);
+	}
+
 }

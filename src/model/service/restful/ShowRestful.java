@@ -22,6 +22,17 @@ public class ShowRestful {
 	public ShowRestful() {
 		this.dao = new ShowDAOjdbc();
 	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Collection<ShowVO> addShow(ShowVO bean) {
+		Collection<ShowVO> list = null;
+		int result = dao.insert(bean);
+		if (result == 1) {
+			list = this.showList(bean.getMemberId());
+		}
+		return list;
+	}
 	@GET
 	@Path("/list/{memberId}")
 	@Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -30,6 +41,17 @@ public class ShowRestful {
 		list.addAll(dao.selectJoinMember(memberId));
 		return list;
 	}
+	@DELETE
+	@Path("/{bean}")
+	public Collection<ShowVO> removeShow(@PathParam("bean")ShowVO bean) {
+		Collection<ShowVO> list = null;
+		boolean result = dao.delete(bean.getMemberId(), bean.getWebsite());
+		if (result) {
+			list = this.showList(bean.getMemberId());
+		}
+		return list;
+	}
+	
 	
 
 	public Collection<ShowVO> addShow(int memberId, java.util.Date showTime, String website) {
@@ -44,19 +66,7 @@ public class ShowRestful {
 		}
 		return list;
 	}
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Collection<ShowVO> addShow(ShowVO bean) {
-		Collection<ShowVO> list = null;
-		int result = dao.insert(bean);
-		if (result == 1) {
-			list = this.showList(bean.getMemberId());
-		}
-		return list;
-	}
 
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Collection<ShowVO> changeShow(java.util.Date showTime, String website, int memberId,
 			java.util.Date showTimed) {
 		Collection<ShowVO> list = null;
@@ -75,8 +85,6 @@ public class ShowRestful {
 		}
 		return list;
 	}
-
-	
 	
 	public Collection<ShowVO> removeShow(int memberId, String website) {
 		Collection<ShowVO> list = null;
@@ -85,24 +93,5 @@ public class ShowRestful {
 			list = this.showList(memberId);
 		}
 		return list;
-	}
-
-	@DELETE
-	@Path("/{bean}")
-	public Collection<ShowVO> removeShow(@PathParam("bean")ShowVO bean) {
-		Collection<ShowVO> list = null;
-		boolean result = dao.delete(bean.getMemberId(), bean.getWebsite());
-		if (result) {
-			list = this.showList(bean.getMemberId());
-		}
-		return list;
-	}
-
-	public static void main(String[] args) {
-//		ShowRestful service = new ShowRestful();
-//		for(ShowVO bean:service.showList(2)){
-//			System.out.println(bean);
-//			System.out.println(bean.getTitle());
-//		}
 	}
 }

@@ -31,18 +31,6 @@ public class BlackRestful {
 	}
 
 	/**
-	 * 增加黑名單
-	 * @param memberId 黑別人的人
-	 * @param blackedId 被黑的人
-	 * @return Collection<BlackVO>
-	 */	
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public boolean insertBlackList(int memberId, int blackedId) {
-		return dao.markBlack(memberId, blackedId);
-	}
-
-	/**
 	 * 查詢所有黑名單
 	 * @param memberId 黑別人的人 
 	 * @return Collection<BlackVO>
@@ -53,17 +41,6 @@ public class BlackRestful {
 	public Collection<BlackVO> searchBlackAccount(@PathParam("memberId")int memberId) {
 		return dao.getList(memberId);
 	}
-
-	/**
-	 * 刪除單一黑名單
-	 * @param memberId 黑別人的人
-	 * @param blackedId 被黑的人
-	 * @return boolean
-	 */
-	public boolean removeBlackAccount(int memberId, int blackedId) {
-		return dao.removeBlack(memberId, blackedId);
-	}
-	
 	/**
 	 * 刪除全部黑名單
 	 * @param memberId 黑別人的人 
@@ -74,13 +51,26 @@ public class BlackRestful {
 	public boolean removeAll(@PathParam("memberId")int memberId) {
 		return dao.removeAll(memberId);
 	}
-
 	
-	public static void main(String[] args) {
-		BlackRestful service = new BlackRestful();
-		boolean bool = service.insertBlackList(1, 3);
-		System.out.println(bool);
-		System.out.println(service.searchBlackAccount(1));
-
+	
+	/**
+	 * 增加黑名單
+	 * @param memberId 黑別人的人
+	 * @param blackedId 被黑的人
+	 * @return Collection<BlackVO>
+	 */	
+	public boolean insertBlackList(int memberId, int blackedId) {
+		return dao.markBlack(memberId, blackedId);
 	}
+
+	/**
+	 * 刪除單一黑名單
+	 * @param memberId 黑別人的人
+	 * @param blackedId 被黑的人
+	 * @return boolean
+	 */
+	public boolean removeBlackAccount(int memberId, int blackedId) {
+		return dao.removeBlack(memberId, blackedId);
+	}	
+	
 }

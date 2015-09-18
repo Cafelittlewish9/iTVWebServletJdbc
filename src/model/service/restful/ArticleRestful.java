@@ -31,7 +31,29 @@ public class ArticleRestful {
 	public ArticleRestful() {
 		this.dao = new ArticleDAOjdbc();
 	}
-
+	
+	/**
+	 * 增加一篇文章
+	 * 
+	 * @param bean
+	 *            必須包含 <b>memberId</b>、<b>subclassNoarticleTitle</b> 以及
+	 *            <b>articleContent</b>
+	 * @return true 新增成功; false 新增失敗
+	 * @see #addArticle(int, String, String, String)
+	 */
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean addArticle(ArticleVO bean) {
+		boolean result = false;
+		bean.getMemberId();
+		bean.getSubclassNo();
+		bean.getArticleTitle();
+		bean.getArticleContent();
+		if (bean != null) {
+			result = dao.insert(bean);
+		}
+		return result;
+	}
 	/**
 	 * 查詢所有文章
 	 * 
@@ -60,29 +82,43 @@ public class ArticleRestful {
 		Collection<ArticleVO> list = dao.selectByInput(keyword,keyword,keyword,keyword);
 		return list;
 	}
-
-
 	/**
-	 * 增加一篇文章
+	 * 修改文章內容
 	 * 
 	 * @param bean
-	 *            必須包含 <b>memberId</b>、<b>subclassNoarticleTitle</b> 以及
-	 *            <b>articleContent</b>
-	 * @return true 新增成功; false 新增失敗
-	 * @see #addArticle(int, String, String, String)
+	 *            必須包含 <b>articleContent</b> 與 <b>articleId</b>
+	 * @return true 修改成功; false 修改失敗
+	 * @see #modifyArticle(String, int)
 	 */
-	
-	public boolean addArticle(ArticleVO bean) {
-		boolean result = false;
-		bean.getMemberId();
-		bean.getSubclassNo();
-		bean.getArticleTitle();
-		bean.getArticleContent();
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean modifyArticle(ArticleVO bean) {
 		if (bean != null) {
-			result = dao.insert(bean);
+			return dao.update(bean);
+		}
+		return false;
+	}
+	/**
+	 * 刪除文章
+	 * 
+	 * @param articleId
+	 *            要刪除的文章ID
+	 * @return true 新增成功; false 新增失敗
+	 * @see #addArticle(ArticleVO)
+	 */
+	@DELETE
+	@Path("/{articleId}")
+	public boolean deleteArticle(@PathParam("articleId")int articleId) {
+		boolean result = false;
+		if (dao.delete(articleId)) {
+			return true;
 		}
 		return result;
 	}
+	
+
+
+	
 
 	/**
 	 * 增加一篇文章
@@ -98,8 +134,6 @@ public class ArticleRestful {
 	 * @return true 新增成功; false 新增失敗
 	 * @see #addArticle(ArticleVO)
 	 */
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean addArticle(int memberId, String subclassNo, String articleTitle, String articleContent) {
 		boolean result = false;
 		ArticleVO bean = new ArticleVO();
@@ -122,8 +156,6 @@ public class ArticleRestful {
 	 *            要修改的文章ID
 	 * @return true 新增成功; false 新增失敗
 	 */
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean modifyArticle(String articleContent, int articleId) {
 		ArticleVO bean = new ArticleVO();
 		bean.setArticleContent(articleContent);
@@ -131,38 +163,9 @@ public class ArticleRestful {
 		return dao.update(bean);
 	}
 
-	/**
-	 * 修改文章內容
-	 * 
-	 * @param bean
-	 *            必須包含 <b>articleContent</b> 與 <b>articleId</b>
-	 * @return true 修改成功; false 修改失敗
-	 * @see #modifyArticle(String, int)
-	 */
-	public boolean modifyArticle(ArticleVO bean) {
-		if (bean != null) {
-			return dao.update(bean);
-		}
-		return false;
-	}
 
-	/**
-	 * 刪除文章
-	 * 
-	 * @param articleId
-	 *            要刪除的文章ID
-	 * @return true 新增成功; false 新增失敗
-	 * @see #addArticle(ArticleVO)
-	 */
-	@DELETE
-	@Path("/{articleId}")
-	public boolean deleteArticle(@PathParam("articleId")int articleId) {
-		boolean result = false;
-		if (dao.delete(articleId)) {
-			return true;
-		}
-		return result;
-	}
+	
+	
 
 	/**
 	 * 刪除文章
@@ -172,7 +175,6 @@ public class ArticleRestful {
 	 * @return true 新增成功; false 新增失敗
 	 * @see #deleteArticle(int)
 	 */
-
 	public boolean deleteArticle(ArticleVO bean) {
 		boolean result = false;
 		if (dao.delete(bean.getArticleId())) {
@@ -180,17 +182,5 @@ public class ArticleRestful {
 		}
 		return result;
 	}
-
-	// 測試程式
-	public static void main(String[] args) {
-		ArticleRestful service = new ArticleRestful();
-		// System.out.println(service.allArticle());
-		// System.out.println(service.allSubArticle("M"));
-		System.out.println(service.searchByInput("一天"));
-		// System.out.println(service.searchArticle("Pikachu", "皮卡丘"));
-		// System.out.println(service.addArticle());
-		// System.out.println(service.deleteArticle(1));
-//		System.out.println(service.modifyArticle("hey", 12));
-
-	}
+	
 }

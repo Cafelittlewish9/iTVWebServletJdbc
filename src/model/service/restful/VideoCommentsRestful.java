@@ -29,8 +29,14 @@ public class VideoCommentsRestful {
 	public List<VideoCommentsVO> selectAllComments(){
 		return dao.selectAll();
 	}
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
+	@DELETE
+	@Path("/{commentId}")
+	public boolean deleteVideoComments(@PathParam("commentId")int commentId){
+		return dao.delete(commentId);
+	}
+	
+	
+	
 	public boolean insertVideoComments(int memberId , int videoId , String commentContent){
 		VideoCommentsVO bean = new VideoCommentsVO();
 		bean.setMemberId(memberId);
@@ -42,8 +48,6 @@ public class VideoCommentsRestful {
 		}
 		return false;
 	}
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean updateVideoComments(String commentsContent , java.sql.Timestamp commentTime , int commentId){
 		VideoCommentsVO bean = new VideoCommentsVO();
 		bean.setCommentContent(commentsContent);
@@ -55,23 +59,6 @@ public class VideoCommentsRestful {
 		}
 		return false;
 	}
-	@DELETE
-	@Path("/{commentId}")
-	public boolean deleteVideoComments(@PathParam("commentId")int commentId){
-		return dao.delete(commentId);
-	}
-	
-	
-	public static void main(String[] args){
-		VideoCommentsRestful service = new VideoCommentsRestful();
-//		boolean bool = service.insertVideoComments(1, 4, "安安");
-//		boolean bool = service.updateVideoComments("修改安安", java.sql.Timestamp.valueOf("1911-01-01 10:10:10.000"), 17);
-		boolean bool = service.deleteVideoComments(17);
-		
-		System.out.println(bool);
-		
-	}
-	
-	
+
 	
 }

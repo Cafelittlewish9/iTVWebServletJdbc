@@ -20,19 +20,12 @@ import model.vo.ReportReplyArticleVO;
 public class ReportReplyArticleRestful {
 	private ReportReplyArticleDAO dao;
 	private ReplyArticleDAO dao2;
-
+	
 	public ReportReplyArticleRestful() {
 		this.dao = new ReportReplyArticleDAOjdbc();
 		this.dao2 = new ReplyArticleDAOjdbc();
 	}
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public boolean addReportReplyArticle(int reportedReplyArticleId, String reportReason) {
-		ReportReplyArticleVO bean = new ReportReplyArticleVO();
-		bean.setReportedReplyArticleId(reportedReplyArticleId);
-		bean.setReportReason(reportReason);
-		return dao.insert(bean);
-	}
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 	public Collection<ReportReplyArticleVO> selectAllList() {
@@ -48,5 +41,13 @@ public class ReportReplyArticleRestful {
 		} else {
 			return false;
 		}
+	}	
+	
+	public boolean addReportReplyArticle(int reportedReplyArticleId, String reportReason) {
+		ReportReplyArticleVO bean = new ReportReplyArticleVO();
+		bean.setReportedReplyArticleId(reportedReplyArticleId);
+		bean.setReportReason(reportReason);
+		return dao.insert(bean);
 	}
+
 }

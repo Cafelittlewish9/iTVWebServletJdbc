@@ -26,9 +26,45 @@ public class MemberRestful {
 		this.dao = new MemberDAOjdbc();
 	}
 
+	// 會員查詢個資
+	@GET
+	@Path("/info/{username}/{password}")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+	public MemberVO checkInfo(@PathParam("username")String username, @PathParam("password")String password) {
+		MemberVO mvo = this.login1(username, password);
+		return mvo;
+	}
+	// ↑是否是指連查詢個資都要輸入一次帳密？
+
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public int update(MemberVO mvo) {
+		int result = -1;
+		if (mvo != null) {
+			mvo.setMemberEmail(mvo.getMemberEmail());
+			mvo.setMemberFB(mvo.getMemberFB());
+			mvo.setMemberGoogle(mvo.getMemberGoogle());
+			mvo.setMemberTwitter(mvo.getMemberTwitter());
+			mvo.setMemberName(mvo.getMemberName());
+			mvo.setMemberNickname(mvo.getMemberNickname());
+			mvo.setMemberBirthday(mvo.getMemberBirthday());
+			mvo.setMemberPhoto(mvo.getMemberPhoto());
+			mvo.setMemberRegisterTime(mvo.getMemberRegisterTime());
+			mvo.setMemberSelfIntroduction(mvo.getMemberSelfIntroduction());
+			mvo.setBroadcastWebsite(mvo.getBroadcastWebsite());
+			mvo.setBroadcastTitle(mvo.getBroadcastTitle());
+			mvo.setBroadcastClassName(mvo.getBroadcastClassName());
+			mvo.setBroadcastTime(mvo.getBroadcastTime());
+			mvo.setBroadcastDescription(mvo.getBroadcastDescription());
+			mvo.setBroadcastWatchTimes(mvo.getBroadcastWatchTimes());
+			result = dao.update(mvo);
+		}
+		return result;
+	}	
+	
+	
+	
 	// registry1採帳號密碼信箱註冊；registry2是採信箱密碼註冊
-//	@POST
-//	@Consumes(MediaType.APPLICATION_JSON)
 	public String registry1(String username, String password, String usermail) throws SQLException {
 		String result = null;
 		MemberVO mvo = new MemberVO();
@@ -50,8 +86,6 @@ public class MemberRestful {
 	}
 
 	// registry1採帳號密碼信箱註冊；registry2是採信箱密碼註冊
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public String registry2(String usermail, String password) throws SQLException {
 		String result = null;
 		MemberVO mvo = new MemberVO();
@@ -132,9 +166,7 @@ public class MemberRestful {
 			// new String(mvo.getMemberPassword()),newPwd);
 			// CharsetEncoder
 			result = "";
-
 		} else {
-
 		}
 		return result;
 	}
@@ -153,42 +185,7 @@ public class MemberRestful {
 	 * i=b; if (i < 0) {i += 256;} return h[i/16] + h[i%16]; }
 	 */
 
-	// 會員查詢個資
-	@GET
-	@Path("/info/{username}/{password}")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-	public MemberVO checkInfo(@PathParam("username")String username, @PathParam("password")String password) {
-		MemberVO mvo = this.login1(username, password);
-		return mvo;
-	}
-	// ↑是否是指連查詢個資都要輸入一次帳密？
 
-	// 更改、測試完成
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
-	public int update(MemberVO mvo) {
-		int result = -1;
-		if (mvo != null) {
-			mvo.setMemberEmail(mvo.getMemberEmail());
-			mvo.setMemberFB(mvo.getMemberFB());
-			mvo.setMemberGoogle(mvo.getMemberGoogle());
-			mvo.setMemberTwitter(mvo.getMemberTwitter());
-			mvo.setMemberName(mvo.getMemberName());
-			mvo.setMemberNickname(mvo.getMemberNickname());
-			mvo.setMemberBirthday(mvo.getMemberBirthday());
-			mvo.setMemberPhoto(mvo.getMemberPhoto());
-			mvo.setMemberRegisterTime(mvo.getMemberRegisterTime());
-			mvo.setMemberSelfIntroduction(mvo.getMemberSelfIntroduction());
-			mvo.setBroadcastWebsite(mvo.getBroadcastWebsite());
-			mvo.setBroadcastTitle(mvo.getBroadcastTitle());
-			mvo.setBroadcastClassName(mvo.getBroadcastClassName());
-			mvo.setBroadcastTime(mvo.getBroadcastTime());
-			mvo.setBroadcastDescription(mvo.getBroadcastDescription());
-			mvo.setBroadcastWatchTimes(mvo.getBroadcastWatchTimes());
-			result = dao.update(mvo);
-		}
-		return result;
-	}
 	
 	// 測完了，沒問題可以動呦吼吼。
 	public int suspendMember(int memberId, boolean suspendRight){
@@ -197,30 +194,5 @@ public class MemberRestful {
 			result =  dao.switchSuspend(memberId, suspendRight);
 		}
 		return result;
-	}
-
-	public static void main(String[] args) throws SQLException {
-		MemberRestful service = new MemberRestful();
-		// MemberVO mvo = service.login1("niceguy", "E");
-		// System.out.println("");
-//		String result = service.registry2("madclown@gmail.com", "E");
-//		System.out.println(result);
-
-		// String result=service.registry1("niceguy", "E","madclown@gmail.com");
-		// System.out.println("registry result="+result);
-		// MemberVO mvo = service.login1("niceguy", "E");
-		// System.out.println("VO info="+mvo);
-
-		 MemberVO mvo = service.login2("Pikachu@gmail.com", "A");
-		 System.out.println("VO info="+mvo);
-
-		// String result = service.changePassword("niceguy",
-		// "madclown@gmail.com", "E");
-		// System.out.println("result="+result);
-		
-		//Member switchSuspend
-//		MemberService memberService = new MemberService();
-//		System.out.println(memberService.suspendMember(7, false));
-
 	}
 }

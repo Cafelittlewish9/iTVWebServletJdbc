@@ -21,8 +21,20 @@ public class FollowRestful {
 	public FollowRestful() {
 		this.dao = new FollowDAOjdbc();
 	}
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
+	
+	@GET
+	@Path("/list/{memberId}")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+	public Collection<FollowVO> followList(@PathParam("memberId")int memberId) {
+		return dao.selectByMemberId(memberId);
+	}
+	
+	@DELETE
+	@Path("/{memberId}/{followId}")
+	public boolean unfollow(@PathParam("memberId")int memberId, @PathParam("followId")int followId) {
+		return dao.delete(memberId, followId);
+	}
+	
 	public boolean follow(int memberId, int followId) {
 		FollowVO bean = new FollowVO();
 		bean.setMemberId(memberId);
@@ -33,16 +45,5 @@ public class FollowRestful {
 		} else {
 			return false;
 		}
-	}
-	@DELETE
-	@Path("/{memberId}/{followId}")
-	public boolean unfollow(@PathParam("memberId")int memberId, @PathParam("followId")int followId) {
-		return dao.delete(memberId, followId);
-	}
-	@GET
-	@Path("/list/{memberId}")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-	public Collection<FollowVO> followList(@PathParam("memberId")int memberId) {
-		return dao.selectByMemberId(memberId);
 	}
 }
