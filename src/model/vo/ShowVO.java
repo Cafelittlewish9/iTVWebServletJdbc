@@ -17,8 +17,8 @@ public class ShowVO {
 	@XmlElement(required=true)
 	private String website;
 	@XmlElement(required=true)
-
 	private VideoVO video;
+	@XmlElement(required=true)
 	private MemberVO member;
 
 	
