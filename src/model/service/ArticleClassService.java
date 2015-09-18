@@ -40,6 +40,9 @@ public class ArticleClassService {
 	 */	
 	public boolean addArticleClass(ArticleClassVO bean) {
 		boolean result = false;
+		bean.getSubclassNo();
+		bean.getSubclassName();
+		bean.getClassName();
 		if (bean != null) {
 			result = dao.insert(bean);
 		}
@@ -65,11 +68,14 @@ public class ArticleClassService {
 	/**
 	 * 修改文章類別
 	 * 
-	 * @param bean 必須包含 <b>articleId</b>
+	 * @param bean 必須包含 <b>SubclassNo</b>、<b>SubclassNo</b>、<b>SubclassNo</b>
 	 * @return true 修改成功; false 修改失敗
 	 */		
 	public boolean updateArticleClass(ArticleClassVO bean) {
 		boolean result = false;
+		bean.getSubclassNo();
+		bean.getSubclassName();
+		bean.getClassName();
 		if (bean != null) {
 			result = dao.update(bean);
 		}

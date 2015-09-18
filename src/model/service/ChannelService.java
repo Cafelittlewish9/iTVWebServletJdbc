@@ -29,6 +29,9 @@ public class ChannelService {
 	}
 
 	public boolean addChannel(ChannelVO bean) {
+		bean.getMemberId();
+		bean.getChannelNo();
+		bean.getBroadcastWebsite();
 		int result = dao.insert(bean);
 		if (result == 1) {
 			return true;
@@ -56,6 +59,7 @@ public class ChannelService {
 		return dao.delete(memberId, channelNo);
 	}
 
+	//return false是成功刪除的意思，注意!!!!
 	public boolean removeAllChannel(int memberId) {
 		return dao.deleteAll(memberId);
 	}

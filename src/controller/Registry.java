@@ -51,7 +51,7 @@ public class Registry extends HttpServlet {
 		}else{
 			try {
 				ms.registry2(username, password);
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

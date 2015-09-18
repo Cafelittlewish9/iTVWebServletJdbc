@@ -25,7 +25,6 @@ public class MemberDAOjdbc implements MemberDAO {
 //	private static final String USERNAME = GC.USERNAME;
 //	private static final String PASSWORD = GC.PASSWORD;
 	private DataSource ds;
-	private static final String INSERT = "INSERT INTO member (memberAccount,memberPassword,memberEmail,broadcastWebsite) VALUES (?, cast( ? as varbinary(50)), ?,?)";
 
 	public MemberDAOjdbc(){
 		try {
@@ -35,6 +34,8 @@ public class MemberDAOjdbc implements MemberDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	private static final String INSERT = "INSERT INTO member (memberAccount,memberPassword,memberEmail,broadcastWebsite) VALUES (?, cast( ? as varbinary(50)), ?,?)";
 	
 	@Override
 	public int insert(MemberVO member) {
@@ -221,7 +222,6 @@ public class MemberDAOjdbc implements MemberDAO {
 		}
 		return result;
 	}
-
 	
 	
 	// 測試程式

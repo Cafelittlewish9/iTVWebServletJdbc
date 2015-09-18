@@ -51,11 +51,11 @@ public class CloudService {
 		return result;
 	}
 
-	public Collection<CloudVO> searchFile(int memberId, String fileName, String fileType) {
+	public Collection<CloudVO> searchFile(int memberId, String fileType, String fileName) {
 		Collection<CloudVO> result = null;
 		if (fileName != null && fileName.trim().length() != 0) {
 			if (fileType != null && fileType.trim().length() != 0) {
-				result = dao.selectByFileNameAndFileType(memberId, fileName, fileType);
+				result = dao.selectByFileNameAndFileType(memberId, fileType, fileName);
 			}
 		}
 		return result;
@@ -85,18 +85,38 @@ public class CloudService {
 		return result;
 	}
 
+	//***********
 	public boolean addFile(int memberId, String fileName, String fileType, String filePath, long fileSize) {
 		boolean result = false;
+		CloudVO bean = new CloudVO();
+		bean.setMemberId(memberId);
+		bean.setFileName(fileName);
+		bean.setFileType(fileType);
+		bean.setFilePath(filePath);
+		bean.setFileSize(fileSize);
+		int i = dao.insert(bean);
+		if(i == 1){
+			return true; 
+		}
 		return result;
 	}
 
 	public boolean modifyFile(int fileId, String filePath, long fileSize) {
 		boolean result = false;
+		int i = dao.updateFile(filePath, fileSize, fileId);
+		if(i == 1){
+			return true; 
+		}
+		
 		return result;
 	}
 
 	public boolean modifyFileName(int fileId, String fileName, String filePath) {
 		boolean result = false;
+		int i = dao.updateFileName(fileId, fileName, filePath);
+		if(i == 1){
+			return true;
+		}
 		return result;
 	}
 
