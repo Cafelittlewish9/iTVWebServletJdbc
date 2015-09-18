@@ -2,7 +2,11 @@ package model.service.restful;
 
 import java.util.Collection;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -18,14 +22,37 @@ public class ChannelService {
 	public ChannelService() {
 		this.dao = new ChannelDAOjdbc();
 	}
-	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean addChannel(ChannelVO bean) {
+		int result = dao.insert(bean);
+		if (result == 1) {
+			return true;
+		}
+		return false;
+	}
 	@GET
 	@Path("/list/{memberId}")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 	public Collection<ChannelVO> allChannel(@PathParam("memberId")int memberId) {
 		return dao.selectByMemberId(memberId);
 	}
-
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean changeChannel(ChannelVO bean) {
+		int result = dao.update(bean.getBroadcastWebsite(), bean.getMemberId(), bean.getChannelNo());
+		if (result == 1) {
+			return true;
+		}
+		return false;
+	}
+	@DELETE
+	@Path("/{memberId}")
+	public boolean removeAllChannel(@PathParam("memberId")int memberId) {
+		return dao.deleteAll(memberId);
+	}
+	
+	
 	public boolean addChannel(int memberId, byte channelNo, String broadcastWebsite) {
 		ChannelVO bean = new ChannelVO();
 		bean.setMemberId(memberId);
@@ -37,15 +64,6 @@ public class ChannelService {
 		}
 		return false;
 	}
-
-	public boolean addChannel(ChannelVO bean) {
-		int result = dao.insert(bean);
-		if (result == 1) {
-			return true;
-		}
-		return false;
-	}
-
 	public boolean changeChannel(String broadcastWebsite, int memberId, byte channelNo) {
 		int result = dao.update(broadcastWebsite, memberId, channelNo);
 		if (result == 1) {
@@ -53,20 +71,8 @@ public class ChannelService {
 		}
 		return false;
 	}
-
-	public boolean changeChannel(ChannelVO bean) {
-		int result = dao.update(bean.getBroadcastWebsite(), bean.getMemberId(), bean.getChannelNo());
-		if (result == 1) {
-			return true;
-		}
-		return false;
-	}
-
 	public boolean removeChannel(int memberId, byte channelNo) {
 		return dao.delete(memberId, channelNo);
 	}
 
-	public boolean removeAllChannel(int memberId) {
-		return dao.deleteAll(memberId);
-	}
 }

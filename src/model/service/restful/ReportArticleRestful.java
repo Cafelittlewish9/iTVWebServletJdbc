@@ -2,8 +2,12 @@ package model.service.restful;
 
 import java.util.Collection;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -21,10 +25,27 @@ public class ReportArticleRestful {
 		this.dao = new ReportArticleDAOjdbc();
 		this.dao2 = new ArticleDAOjdbc();
 	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean reportArticle(ReportArticleVO bean) {
+		return dao.insert(bean);
+	}
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 	public Collection<ReportArticleVO> reportArticleList() {
 		return dao.selectAll();
+	}
+	@DELETE
+	@Path("/{bean}")
+	public boolean deleteArticle(@PathParam("bean")ReportArticleVO bean) {
+		boolean result1 = dao2.delete(bean.getReportedArticleId());
+		boolean result2 = dao.delete(bean.getOrderId());
+		if (result1 && result2) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public boolean reportArticle(int reportedArticleId, String reportReason) {
@@ -34,17 +55,4 @@ public class ReportArticleRestful {
 		return dao.insert(bean);
 	}
 
-	public boolean reportArticle(ReportArticleVO bean) {
-		return dao.insert(bean);
-	}
-
-	public boolean deleteArticle(ReportArticleVO bean) {
-		boolean result1 = dao2.delete(bean.getReportedArticleId());
-		boolean result2 = dao.delete(bean.getOrderId());
-		if (result1 && result2) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 }

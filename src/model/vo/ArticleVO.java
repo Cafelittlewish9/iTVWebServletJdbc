@@ -1,8 +1,6 @@
 package model.vo;
 
 import java.text.SimpleDateFormat;
-
-import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
