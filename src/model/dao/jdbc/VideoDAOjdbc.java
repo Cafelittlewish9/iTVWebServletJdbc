@@ -1,6 +1,7 @@
 package model.dao.jdbc;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,7 +39,9 @@ public class VideoDAOjdbc implements VideoDAO {
 	public List<VideoVO> selectByVideoTitle(String videoTitle) {
 		VideoVO result = null;
 		List<VideoVO> list = null;
-		try (Connection conn = datasource.getConnection();
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_VIDEOTITLE);) {
 			stmt.setString(1, "%" + videoTitle + "%");
 			ResultSet rset = stmt.executeQuery();
@@ -74,7 +77,9 @@ public class VideoDAOjdbc implements VideoDAO {
 	public List<VideoVO> selectByVideoClassName(String videoClassName) {
 		VideoVO result = null;
 		List<VideoVO> list = null;
-		try (Connection conn = datasource.getConnection();
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_VIDEOCLASSNAME);) {
 			stmt.setString(1, videoClassName);
 			ResultSet rset = stmt.executeQuery();
@@ -109,7 +114,9 @@ public class VideoDAOjdbc implements VideoDAO {
 	@Override
 	public List<VideoVO> selectAll() {
 		List<VideoVO> list = null;
-		try (Connection conn = datasource.getConnection();
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
 				ResultSet rset = stmt.executeQuery();) {
 			list = new ArrayList<VideoVO>();
@@ -142,7 +149,10 @@ public class VideoDAOjdbc implements VideoDAO {
 
 	@Override
 	public boolean insert(VideoVO bean) {
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement(INSERT);) {
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
 			if (bean != null) {
 				stmt.setInt(1, bean.getMemberId());
 				stmt.setString(2, bean.getVideoWebsite());
@@ -167,7 +177,9 @@ public class VideoDAOjdbc implements VideoDAO {
 
 	@Override
 	public boolean update(String videoDescription, int videoId) {
-		try (Connection conn = datasource.getConnection();
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(UPDATE_DESCRIPTION);) {
 			stmt.setString(1, videoDescription);
 			stmt.setInt(2, videoId);
@@ -185,7 +197,9 @@ public class VideoDAOjdbc implements VideoDAO {
 
 	@Override
 	public void update(long videoWatchTimes, int videoId) {
-		try (Connection conn = datasource.getConnection();
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(UPDATE_WATCHTIMES);) {
 			stmt.setLong(1, videoWatchTimes);
 			stmt.setInt(2, videoId);
@@ -199,7 +213,10 @@ public class VideoDAOjdbc implements VideoDAO {
 
 	@Override
 	public boolean delete(int videoId) {
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement(DELETE);) {
+		try (
+				Connection conn = datasource.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement stmt = conn.prepareStatement(DELETE);) {
 			stmt.setInt(1, videoId);
 			int i = stmt.executeUpdate();
 			if (i == 1) {

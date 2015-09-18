@@ -78,9 +78,9 @@ public class ShowRestful {
 
 	
 	
-	public Collection<ShowVO> removeShow(int memberId, java.util.Date showTime) {
+	public Collection<ShowVO> removeShow(int memberId, String website) {
 		Collection<ShowVO> list = null;
-		boolean result = dao.delete(memberId, showTime);
+		boolean result = dao.delete(memberId, website);
 		if (result) {
 			list = this.showList(memberId);
 		}
@@ -91,7 +91,7 @@ public class ShowRestful {
 	@Path("/{bean}")
 	public Collection<ShowVO> removeShow(@PathParam("bean")ShowVO bean) {
 		Collection<ShowVO> list = null;
-		boolean result = dao.delete(bean.getMemberId(), bean.getShowTime());
+		boolean result = dao.delete(bean.getMemberId(), bean.getWebsite());
 		if (result) {
 			list = this.showList(bean.getMemberId());
 		}
@@ -99,10 +99,10 @@ public class ShowRestful {
 	}
 
 	public static void main(String[] args) {
-		ShowRestful service = new ShowRestful();
-		for(ShowVO bean:service.showList(2)){
-			System.out.println(bean);
-			System.out.println(bean.getTitle());
-		}
+//		ShowRestful service = new ShowRestful();
+//		for(ShowVO bean:service.showList(2)){
+//			System.out.println(bean);
+//			System.out.println(bean.getTitle());
+//		}
 	}
 }

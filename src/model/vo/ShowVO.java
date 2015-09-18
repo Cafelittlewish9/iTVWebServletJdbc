@@ -17,7 +17,10 @@ public class ShowVO {
 	@XmlElement(required=true)
 	private String website;
 	@XmlElement(required=true)
-	private String title;
+
+	private VideoVO video;
+	private MemberVO member;
+
 	
 	@Override
 	public String toString() {
@@ -43,10 +46,18 @@ public class ShowVO {
 	public void setWebsite(String website) {
 		this.website = website;
 	}
-	public String getTitle() {
-		return title;
+	public VideoVO getVideo() {
+		return video;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setVideo(VideoVO video) {
+		this.video = video;
 	}
+	public MemberVO getMember() {
+		return member;
+	}
+	public void setMember(MemberVO member) {
+		this.member = member;
+	}
+	
+	
 }

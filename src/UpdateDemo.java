@@ -1,7 +1,11 @@
 import model.dao.jdbc.ArticleClassDAOjdbc;
 import model.dao.jdbc.CloudDAOjdbc;
+import model.dao.jdbc.VideoCommentsDAOjdbc;
+import model.dao.jdbc.VideoDAOjdbc;
 import model.vo.ArticleClassVO;
 import model.vo.CloudVO;
+import model.vo.VideoCommentsVO;
+import model.vo.VideoVO;
 
 public class UpdateDemo {
 
@@ -20,16 +24,11 @@ public class UpdateDemo {
 //
 //		DAO.update(bean.getReportedMemberId(), bean.getReportTime(), bean.getReportReason(), bean.getOrderId());
 		
-//		.......................................
-
-		CloudDAOjdbc dao = new CloudDAOjdbc();
-		CloudVO bean = new CloudVO();
+//		........................................
 		
-		
-		System.out.println(dao.updateFile("C:/file/Pikachu/1000000.doc", 4154788, 13));
-		
-		
-		
+		VideoDAOjdbc dao = new VideoDAOjdbc();
+		dao.update(100000, 13);
+		System.out.println();
 		
 		
 	}

@@ -1,5 +1,5 @@
-import model.dao.jdbc.ReportMemberDAOjdbc;
-import model.vo.ReportMemberVO;
+import model.dao.jdbc.VideoDAOjdbc;
+import model.vo.VideoVO;
 
 public class InsertDemo {
 
@@ -21,15 +21,19 @@ public class InsertDemo {
 //		System.out.println(count);
 		
 //		.......................................
-		
-		
-		ReportMemberDAOjdbc dao = new ReportMemberDAOjdbc();
-		ReportMemberVO bean = new ReportMemberVO();
-		bean.setReportedMemberId(4);
-		bean.setReportReason("吵死了");
-	
-		System.out.println(dao.insert(bean));
 
+		VideoDAOjdbc dao = new VideoDAOjdbc();
+		VideoVO bean = new VideoVO();
+		bean.setMemberId(1);
+		bean.setVideoWebsite("http://www.iTV.com/video/Pikachu100");
+		bean.setVideoClassName("生活");
+		bean.setVideoTitle("TEST");
+		bean.setVideoName("TEST");
+		bean.setVideoPath("C:\\video\\Pikachu\\TEST.mp4");
+		bean.setVideoDescription("TEST");
+		
+		System.out.println(dao.insert(bean));
+		
 	}
 
 }

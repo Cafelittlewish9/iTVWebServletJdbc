@@ -59,9 +59,9 @@ public class ShowService {
 		return list;
 	}
 
-	public Collection<ShowVO> removeShow(int memberId, java.util.Date showTime) {
+	public Collection<ShowVO> removeShow(int memberId, String website) {
 		Collection<ShowVO> list = null;
-		boolean result = dao.delete(memberId, showTime);
+		boolean result = dao.delete(memberId, website);
 		if (result) {
 			list = this.showList(memberId);
 		}
@@ -70,7 +70,7 @@ public class ShowService {
 
 	public Collection<ShowVO> removeShow(ShowVO bean) {
 		Collection<ShowVO> list = null;
-		boolean result = dao.delete(bean.getMemberId(), bean.getShowTime());
+		boolean result = dao.delete(bean.getMemberId(), bean.getWebsite());
 		if (result) {
 			list = this.showList(bean.getMemberId());
 		}
@@ -78,10 +78,10 @@ public class ShowService {
 	}
 
 	public static void main(String[] args) {
-		ShowService service = new ShowService();
-		for(ShowVO bean:service.showList(2)){
-			System.out.println(bean);
-			System.out.println(bean.getTitle());
-		}
+//		ShowService service = new ShowService();
+//		for(ShowVO bean:service.showList(2)){
+//			System.out.println(bean);
+//			System.out.println(bean.getTitle());
+//		}
 	}
 }

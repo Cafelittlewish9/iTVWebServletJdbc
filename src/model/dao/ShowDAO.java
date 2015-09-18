@@ -7,6 +7,7 @@ import model.vo.ShowVO;
 public interface ShowDAO {
 
 	public List<ShowVO> selectJoinMember(int memberId);
+	
 	public List<ShowVO> selectJoinVideo(int memberId);
 
 	public List<ShowVO> selectAll();
@@ -15,6 +16,6 @@ public interface ShowDAO {
 
 	public int update(java.util.Date showTime, String website, int memberId, java.util.Date showTimed);
 
-	public boolean delete(int memberId, java.util.Date showTime);
+	public boolean delete(int memberId, String website);
 
 }

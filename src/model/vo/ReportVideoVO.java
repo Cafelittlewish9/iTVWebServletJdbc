@@ -19,12 +19,13 @@ public class ReportVideoVO {
 	private String reportReason;
 	@XmlElement(required = true)
 	private VideoVO video;
+	private MemberVO member;
 	
 	@Override
 	public String toString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = sdf.format(reportTime);
-		return orderId + "被檢舉的影片ID為: " + reportedVideoId + " (" + date + ")";
+		return orderId + "被檢舉的影片ID為: " + reportedVideoId + " (" + date + ")" + video.getMemberId() +video.getMember().getMemberAccount();
 	}
 	public int getOrderId() {
 		return orderId;
@@ -56,4 +57,11 @@ public class ReportVideoVO {
 	public void setVideo(VideoVO video) {
 		this.video = video;
 	}
+	public MemberVO getMember() {
+		return member;
+	}
+	public void setMember(MemberVO member) {
+		this.member = member;
+	}
+	
 }

@@ -1,4 +1,13 @@
-import model.dao.jdbc.ReportMemberDAOjdbc;
+import model.dao.jdbc.ReportReplyArticleDAOjdbc;
+import model.dao.jdbc.ReportVideoDAOjdbc;
+import model.dao.jdbc.ShowDAOjdbc;
+import model.dao.jdbc.VideoCommentsDAOjdbc;
+import model.dao.jdbc.VideoDAOjdbc;
+import model.vo.ReportReplyArticleVO;
+import model.vo.ReportVideoVO;
+import model.vo.ShowVO;
+import model.vo.VideoCommentsVO;
+import model.vo.VideoVO;
 
 public class DeleteDemo {
 
@@ -12,8 +21,9 @@ public class DeleteDemo {
 		
 //		..............................................
 
-		ReportMemberDAOjdbc dao = new ReportMemberDAOjdbc();
-		System.out.println(dao.delete(16));
+		VideoDAOjdbc dao = new VideoDAOjdbc();
+		VideoVO bean = new VideoVO();
+		System.out.println(dao.delete(13));
 		
 		
 	}

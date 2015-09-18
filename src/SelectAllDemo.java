@@ -1,8 +1,7 @@
 import java.util.List;
 
-import model.dao.jdbc.ReportMemberDAOjdbc;
-import model.dao.jdbc.ReportReplyArticleDAOjdbc;
-import model.vo.ReportReplyArticleVO;
+import model.dao.jdbc.VideoDAOjdbc;
+import model.vo.VideoVO;
 
 public class SelectAllDemo {
 
@@ -18,9 +17,9 @@ public class SelectAllDemo {
 		    
 //		..........................................
 		
-		ReportReplyArticleDAOjdbc dao = new ReportReplyArticleDAOjdbc();
-		List<ReportReplyArticleVO> beans = dao.selectAll();
-		for(ReportReplyArticleVO bean:beans){
+		VideoDAOjdbc dao = new VideoDAOjdbc();
+		List<VideoVO> beans = dao.selectByVideoTitle("冬");
+		for(VideoVO bean:beans){
 			System.out.println(bean);
 		}
 		
