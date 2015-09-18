@@ -37,13 +37,12 @@ public class ShowRestful {
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 	public Collection<ShowVO> showList(@PathParam("memberId") int memberId) {
 		Collection<ShowVO> list = dao.selectJoinVideo(memberId);
-		list.addAll(dao.selectJoinMember(memberId));
 		return list;
 	}
 
 	@DELETE
-	@Path("/{bean}")
-	public Collection<ShowVO> removeShow(@PathParam("bean") ShowVO bean) {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Collection<ShowVO> removeShow(ShowVO bean) {
 		Collection<ShowVO> list = null;
 		boolean result = dao.delete(bean.getMemberId(), bean.getWebsite());
 		if (result) {

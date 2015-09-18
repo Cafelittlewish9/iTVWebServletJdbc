@@ -20,19 +20,16 @@ import util.ConvertType;
 import util.GC;
 
 public class ShowDAOjdbc implements ShowDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
 	private DataSource datasource;
 
-//	public ShowDAOjdbc() {
-//		try {
-//			InitialContext context = new InitialContext();
-//			this.datasource = (DataSource) context.lookup(GC.DATASOURCE);
-//		} catch (NamingException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public ShowDAOjdbc() {
+		try {
+			InitialContext context = new InitialContext();
+			this.datasource = (DataSource) context.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private static final String SELECT_BY_ID_JOIN_MEMBER = "SELECT s.*, broadcastTitle FROM show s Join member m ON website = broadcastWebsite WHERE s.memberId = ? ORDER BY showTime";
 

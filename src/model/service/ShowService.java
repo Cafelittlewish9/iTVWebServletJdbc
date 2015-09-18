@@ -14,7 +14,6 @@ public class ShowService {
 
 	public Collection<ShowVO> showList(int memberId) {
 		Collection<ShowVO> list = dao.selectJoinVideo(memberId);
-		list.addAll(dao.selectJoinMember(memberId));
 		return list;
 	}
 
