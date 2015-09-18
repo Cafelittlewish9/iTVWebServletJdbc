@@ -26,6 +26,8 @@ public class ReportVideoService {
 		bean.setReportReason(reportReason);
 		return dao.insert(bean);
 	}
+	
+	//刪除成功為false
 	public boolean deleteVideo(ReportVideoVO bean){
 		boolean result1 = dao2.delete(bean.getReportedVideoId());
 		boolean result2 = dao.delete(bean.getOrderId());

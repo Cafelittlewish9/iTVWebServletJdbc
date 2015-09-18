@@ -21,26 +21,26 @@ import util.ConvertType;
 import util.GC;
 	
 public class ReplyArticleDAOjdbc implements ReplyArticleDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
-//	private DataSource ds;
-//	public ReplyArticleDAOjdbc(){
-//		try {
-//			Context ctx = new InitialContext();
-//			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
-//		} catch (NamingException e) {
-//			e.printStackTrace();
-//		}
-//	}
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
+	public ReplyArticleDAOjdbc(){
+		try {
+			Context ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private static final String SELECT_ALL = "SELECT r.* , m.memberAccount , memberPhoto FROM ReplyArticle r Join member m on r.memberId = m.memberId";
 
 	@Override
 	public List<ReplyArticleVO> selectAll() {
 		List<ReplyArticleVO> list = null;
-		try (//Connection conn=ds.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
 				ResultSet rs = stmt.executeQuery();) {
 			list = new ArrayList<ReplyArticleVO>();
@@ -72,8 +72,8 @@ public class ReplyArticleDAOjdbc implements ReplyArticleDAO {
 	@Override
 	public List<ReplyArticleVO> selectByArticleId(int articleId) {
 		List<ReplyArticleVO> list = null;
-		try (//Connection conn=ds.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ARTICLEID);) {
 			stmt.setInt(1, articleId);
 			ResultSet rs = stmt.executeQuery();
@@ -107,8 +107,8 @@ public class ReplyArticleDAOjdbc implements ReplyArticleDAO {
 	@Override
 	public int insert(int memberId, int articleId, String replyContent) {
 		int result = -1;
-		try (//Connection conn=ds.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
 			stmt.setInt(1, memberId);
 			stmt.setInt(2, articleId);
@@ -126,8 +126,8 @@ public class ReplyArticleDAOjdbc implements ReplyArticleDAO {
 	@Override
 	public int update(String replyContent, int replyArticleId) {
 		int result = -1;
-		try (//Connection conn=ds.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(UPDATE);) {
 			stmt.setString(1, replyContent);
 			stmt.setInt(2, replyArticleId);
@@ -144,8 +144,8 @@ public class ReplyArticleDAOjdbc implements ReplyArticleDAO {
 	@Override
 	public int delete(int replyArticleId) {
 		int result = -1;
-		try (//Connection conn=ds.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(DELETE);) {
 			stmt.setInt(1, replyArticleId);
 			result = stmt.executeUpdate();
