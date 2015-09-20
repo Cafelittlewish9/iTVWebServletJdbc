@@ -1,5 +1,6 @@
 package model.dao.jdbc;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -41,7 +42,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	public int insert(MemberVO member) {
 		// 要先檢查bean是否為null
 		int updateCount = 0;
-		try (Connection conn=ds.getConnection();
+		try (
+				Connection conn=ds.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
 				PreparedStatement pstmt = conn.prepareStatement(INSERT);) {
 			pstmt.setString(1, member.getMemberAccount());
@@ -64,7 +66,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	public int insert2(MemberVO member) {
 		// 要先檢查bean是否為null
 		int updateCount = 0;
-		try (Connection conn=ds.getConnection();
+		try (
+				Connection conn=ds.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
 				PreparedStatement pstmt = conn.prepareStatement(INSERT2);) {
 			pstmt.setString(1, member.getMemberEmail());
@@ -87,7 +90,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	public List<MemberVO> getMemberList() {
 		List<MemberVO> members = null;
 		MemberVO member = null;
-		try (Connection conn=ds.getConnection();
+		try (
+				Connection conn=ds.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(GET_MEMBER_LIST);
 				ResultSet rs = pstmt.executeQuery();) {
@@ -110,7 +114,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	@Override
 	public int getId(String memberAccount) {
 		int result = 0;
-		try (Connection conn=ds.getConnection();
+		try (
+				Connection conn=ds.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
 				PreparedStatement pstmt = conn.prepareStatement(GET_ID);) {
 			pstmt.setString(1, memberAccount);
@@ -133,7 +138,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	public int update(MemberVO member) {
 		// 要先檢查bean是否為null
 		int updateCount = 0;
-		try (Connection conn=ds.getConnection();
+		try (
+				Connection conn=ds.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
 				PreparedStatement pstmt = conn.prepareStatement(UPDATE);) {
 			pstmt.setBytes(1, member.getMemberPassword());
@@ -154,7 +160,7 @@ public class MemberDAOjdbc implements MemberDAO {
 			pstmt.setString(11, member.getBroadcastClassName());
 			if (member.getBroadcastTime() != null) {
 				long broad = member.getBroadcastTime().getTime();
-				pstmt.setTimestamp(12, (Timestamp) new java.util.Date(broad));
+				pstmt.setDate(12, new java.sql.Date(broad));
 			} else {
 				pstmt.setTimestamp(12, null);
 			}
@@ -174,7 +180,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	@Override
 	public MemberVO findByPK(int memberId) {
 		MemberVO member = null;
-		try (Connection conn=ds.getConnection();
+		try (
+				Connection conn=ds.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(FIND_BY_PK);) {
 			pstmt.setInt(1, memberId);
@@ -211,7 +218,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	@Override
 	public int switchSuspend(int memberId, boolean suspendRight) {
 		int result=0;
-		try (Connection conn=ds.getConnection();
+		try (
+				Connection conn=ds.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(SWITCH_SUSPEND);) {
 			pstmt.setBoolean(1, suspendRight);
@@ -223,6 +231,24 @@ public class MemberDAOjdbc implements MemberDAO {
 		return result;
 	}
 	
+	private static final String PHOTO_OUT="select memberPhoto from member where memberId=?";
+	@Override
+	public byte[] photoOut(int memberId) {
+		byte[] result = null;
+		try (
+				Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
+				PreparedStatement pstmt = conn.prepareStatement(PHOTO_OUT);) {
+			pstmt.setInt(1, memberId);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				result = rs.getBytes("memberPhoto");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	// 測試程式
 	public static void main(String[] args) throws SQLException, ParseException {
