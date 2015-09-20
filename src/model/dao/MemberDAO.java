@@ -20,6 +20,11 @@ public interface MemberDAO {
 
 	public int switchSuspend(int memberId, boolean suspendRight);
 	
+	public String getMemberNickname(String memberAccount);
+	
+	public String getMemberAccount(String memberAccount);
+	
 	byte[] photoOut(int memberId);
+
 
 }

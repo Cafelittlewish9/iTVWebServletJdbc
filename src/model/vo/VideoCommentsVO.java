@@ -26,7 +26,7 @@ public class VideoCommentsVO {
 	public String toString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = sdf.format(commentTime);
-		return commentId + "討論的影片ID為: " + videoId + " (" + date + ")";
+		return commentId + "討論的影片ID為: " + videoId + " (" + date + ")" +commentContent;
 	}
 	public int getCommentId() {
 		return commentId;
@@ -73,4 +73,5 @@ public class VideoCommentsVO {
 	public void setMember(MemberVO member) {
 		this.member = member;
 	}
+
 }

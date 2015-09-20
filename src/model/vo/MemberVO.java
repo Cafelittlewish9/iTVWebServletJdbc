@@ -53,7 +53,7 @@ public class MemberVO {
 
 	@Override
 	public String toString() {
-		return memberAccount;
+		return memberAccount ;
 	}
 
 	public int getMemberId() {
@@ -215,4 +215,5 @@ public class MemberVO {
 	public void setSuspendMember(boolean suspendMember) {
 		this.suspendMember = suspendMember;
 	}
+	
 }

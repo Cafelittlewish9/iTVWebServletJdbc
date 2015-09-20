@@ -42,9 +42,11 @@ public class MemberDAOjdbc implements MemberDAO {
 	public int insert(MemberVO member) {
 		// 要先檢查bean是否為null
 		int updateCount = 0;
+		
+
 		try (
 				Connection conn=ds.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(INSERT);) {
 			pstmt.setString(1, member.getMemberAccount());
 			pstmt.setBytes(2, member.getMemberPassword());
@@ -66,6 +68,7 @@ public class MemberDAOjdbc implements MemberDAO {
 	public int insert2(MemberVO member) {
 		// 要先檢查bean是否為null
 		int updateCount = 0;
+
 		try (
 				Connection conn=ds.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
@@ -231,6 +234,46 @@ public class MemberDAOjdbc implements MemberDAO {
 		return result;
 	}
 	
+	 public static final String MEMBER_NICNAME = "Select memberNickname from member where memberAccount =?";
+	 @Override
+	 public String getMemberNickname(String memberAccount){
+		 String result = null;
+		 ResultSet rset = null;
+		 try(Connection conn=ds.getConnection();
+//				 Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				 PreparedStatement stmt = conn.prepareStatement(MEMBER_NICNAME);) {
+			stmt.setString(1, memberAccount);
+			rset = stmt.executeQuery();
+			if(rset.next()){
+				 result = rset.getString("memberNickname");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 
+		 return result;
+	 }
+	 
+	 public static final String MEMBER_ACCOUNT = "SELECT memberAccount FROM member WHERE memberAccount = ?";
+	 @Override
+	 public String getMemberAccount(String memberAccount){
+		 String result = null;
+		 ResultSet rset = null;
+		 try(Connection conn=ds.getConnection();
+//				 Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				 PreparedStatement stmt = conn.prepareStatement(MEMBER_ACCOUNT);) {
+			stmt.setString(1, memberAccount);
+			rset = stmt.executeQuery();
+			if(rset.next()){
+				 result = rset.getString("memberAccount");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 
+		 return result;
+	 }
+	
 	private static final String PHOTO_OUT="select memberPhoto from member where memberId=?";
 	@Override
 	public byte[] photoOut(int memberId) {
@@ -254,6 +297,7 @@ public class MemberDAOjdbc implements MemberDAO {
 	public static void main(String[] args) throws SQLException, ParseException {
 		
 		MemberDAO temp = new MemberDAOjdbc();
+		System.out.println(temp.getMemberAccount("Pikachu"));
 //		// memberDao的insert，與insert2的差異在於用戶需輸入memberAccount
 //		MemberVO member1 = new MemberVO();
 //		// member1.setMemberAccount("");
@@ -278,7 +322,7 @@ public class MemberDAOjdbc implements MemberDAO {
 		// }
 
 //		 memberDao的getId
-		 System.out.print(temp.getId("shekx"));
+//		 System.out.print(temp.getId("shekx"));
 
 		// memberDao的find by PrimaryKey
 		// MemberVO member3 = temp.findByPK(3);
