@@ -5,6 +5,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.fileupload.FileItem;
+
 @XmlRootElement(name="Member")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MemberVO {

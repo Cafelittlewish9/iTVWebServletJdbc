@@ -189,6 +189,12 @@ public class MemberService {
 		return result;
 	}
 
+	public byte[] getPhoto(int memberId){
+		byte[] result=dao.photoOut(memberId);
+		return result;
+	}
+	
+	
 	public static void main(String[] args) throws SQLException {
 		MemberService service = new MemberService();
 		// MemberVO mvo = service.login1("niceguy", "E");
@@ -196,13 +202,15 @@ public class MemberService {
 //		String result = service.registry2("madclown@gmail.com", "E");
 //		System.out.println(result);
 
+		service.insertMD5Password("AA", "AA@gmail.com", "123");
+		
 		// String result=service.registry1("niceguy", "E","madclown@gmail.com");
 		// System.out.println("registry result="+result);
 		// MemberVO mvo = service.login1("niceguy", "E");
 		// System.out.println("VO info="+mvo);
 
-		 MemberVO mvo = service.login2("Pikachu@gmail.com", "A");
-		 System.out.println("VO info="+mvo);
+//		 MemberVO mvo = service.login2("Pikachu@gmail.com", "A");
+//		 System.out.println("VO info="+mvo);
 
 		// String result = service.changePassword("niceguy",
 		// "madclown@gmail.com", "E");
