@@ -2,6 +2,8 @@ package model.service;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collection;
+
 import model.dao.MemberDAO;
 import model.dao.jdbc.MemberDAOjdbc;
 import model.vo.MemberVO;
@@ -143,6 +145,7 @@ public class MemberService {
 		return mvo;
 	}
 	// ↑是否是指連查詢個資都要輸入一次帳密？
+	
 
 	// 更改、測試完成
 	public int update(MemberVO mvo) {
@@ -174,6 +177,14 @@ public class MemberService {
 		int result = -1;
 		if(memberId!=0){
 			result =  dao.switchSuspend(memberId, suspendRight);
+		}
+		return result;
+	}
+	
+	public String getMemberNickname(String memberAccount){
+		String result = null;
+		if(memberAccount!=null){
+			result = dao.getMemberNickname(memberAccount);
 		}
 		return result;
 	}

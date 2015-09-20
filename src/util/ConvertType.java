@@ -1,5 +1,7 @@
 package util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -57,6 +59,17 @@ public class ConvertType {
 			long a = whichYouWantToConvert.getTime();
 			long b = ZonedDateTime.now().getOffset().getTotalSeconds()*1000;
 			result = new java.util.Date(a - b);
+		}
+		return result;
+	}
+	private static SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd");
+	public static java.util.Date convertDate(String data) {
+		java.util.Date result = null;
+		try {
+			result = sFormat.parse(data);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			result = new java.util.Date(0);
 		}
 		return result;
 	}
