@@ -35,19 +35,6 @@ public class MemberDAOjdbc implements MemberDAO {
 			e.printStackTrace();
 		}
 	}
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
-//	private DataSource ds;
-//
-//	public MemberDAOjdbc(){
-//		try {
-//			Context ctx = new InitialContext();
-//			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
-//		} catch (NamingException e) {
-//			e.printStackTrace();
-//		}
-//	}
 	
 	@Override
 	public int insert(MemberVO member) {
@@ -55,11 +42,6 @@ public class MemberDAOjdbc implements MemberDAO {
 		int updateCount = 0;
 		try (Connection conn=ds.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
-		
-
-		try (
-//				Connection conn=ds.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(INSERT);) {
 			pstmt.setString(1, member.getMemberAccount());
 			pstmt.setBytes(2, member.getMemberPassword());
@@ -241,14 +223,38 @@ public class MemberDAOjdbc implements MemberDAO {
 		return result;
 	}
 	private static final String GET_ONE_ACCOUNT ="SELECT memberAccount FROM member WHERE memberAccount = ?";
+	@Override
+	public MemberVO getAccount(String memberAccount) {
+		MemberVO member = null;
+		try {
+			Connection conn = ds.getConnection();
+			member = new MemberVO();
+			// Connection conn = DriverManager.getConnection(URL, USERNAME,
+			// PASSWORD);
+			PreparedStatement pstmt = conn.prepareStatement(GET_ONE_ACCOUNT);
+
+			pstmt.setString(1, memberAccount);
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				member.setMemberAccount(rs.getString("memberAccount"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return member;
+	}
+	
+	
 	
 	 public static final String MEMBER_NICNAME = "Select memberNickname from member where memberAccount =?";
 	 @Override
 	 public String getMemberNickname(String memberAccount){
 		 String result = null;
 		 ResultSet rset = null;
-		 try(//Connection conn=ds.getConnection();
-				 Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		 try(
+				 Connection conn=ds.getConnection();
+//				 Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				 PreparedStatement stmt = conn.prepareStatement(MEMBER_NICNAME);) {
 			stmt.setString(1, memberAccount);
 			rset = stmt.executeQuery();
@@ -267,8 +273,9 @@ public class MemberDAOjdbc implements MemberDAO {
 	 public String getMemberAccount(String memberAccount){
 		 String result = null;
 		 ResultSet rset = null;
-		 try(//Connection conn=ds.getConnection();
-				 Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		 try(
+				 Connection conn=ds.getConnection();
+//				 Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				 PreparedStatement stmt = conn.prepareStatement(MEMBER_ACCOUNT);) {
 			stmt.setString(1, memberAccount);
 			rset = stmt.executeQuery();
@@ -278,26 +285,17 @@ public class MemberDAOjdbc implements MemberDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		 
 		 return result;
 	 }
 	
 	private static final String PHOTO_OUT="select memberPhoto from member where memberId=?";
 	@Override
-	public MemberVO getAccount(String memberAccount){
-		MemberVO member =null;	
-		try {
-			Connection conn=ds.getConnection();
-			member = new MemberVO();
-//			Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-			PreparedStatement pstmt = conn.prepareStatement(GET_ONE_ACCOUNT);
-
-			pstmt.setString(1,memberAccount);
 	public byte[] photoOut(int memberId) {
 		byte[] result = null;
+		MemberVO member=new MemberVO();
 		try (
-//				Connection conn=ds.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
+				Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
 				PreparedStatement pstmt = conn.prepareStatement(PHOTO_OUT);) {
 			pstmt.setInt(1, memberId);
 			ResultSet rs = pstmt.executeQuery();
@@ -307,11 +305,9 @@ public class MemberDAOjdbc implements MemberDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
-		return member;
+		}
+		return result;
 	}
-	
-	
 	
 	
 	private static final String FIND_BY_MEMBER_ACCOUNT= "SELECT memberId,memberAccount,memberEmail,memberFB,memberGoogle,memberTwitter,memberName,"
@@ -322,8 +318,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	public MemberVO findByMemberAccount(String memberAccount) {
 		MemberVO member = null;
 		try (
-//				Connection conn=ds.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(FIND_BY_MEMBER_ACCOUNT);) {
 			pstmt.setString(1, memberAccount);
 			ResultSet rs = pstmt.executeQuery();
@@ -448,6 +444,11 @@ public class MemberDAOjdbc implements MemberDAO {
 		 
 		 
 	}
+
+
+
+
+	
 
 
 }

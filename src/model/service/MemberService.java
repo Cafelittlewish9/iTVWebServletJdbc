@@ -192,6 +192,14 @@ public class MemberService {
 		return result;
 	}
 
+	public String getMemberNickname(String memberAccount){
+		return dao.getMemberNickname(memberAccount);
+	}
+	
+	public MemberVO getOneMember(String memberAccount){
+		return dao.getAccount(memberAccount);		
+	}
+	
 	public static void main(String[] args) throws SQLException {
 		MemberService service = new MemberService();
 		// MemberVO mvo = service.login1("niceguy", "E");
@@ -216,9 +224,4 @@ public class MemberService {
 //		System.out.println(memberService.suspendMember(7, false));
 
 	}
-	
-	public MemberVO getOneMember(String memberAccount){
-		return dao.getAccount(memberAccount);		
-	}
-	
 }
