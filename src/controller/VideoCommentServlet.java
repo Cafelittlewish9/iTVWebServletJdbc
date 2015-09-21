@@ -8,11 +8,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.service.MemberService;
 import model.service.VideoCommentsService;
@@ -34,7 +36,7 @@ public class VideoCommentServlet extends HttpServlet {
 		this.doPost(request, response);
 	}
 
-	//還沒測試請見諒
+	//尚未測試
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		request.setCharacterEncoding("UTF-8");
@@ -70,8 +72,7 @@ public class VideoCommentServlet extends HttpServlet {
 					errors.put("memberAccount", "請勿刪除其他會員留言");
 				}
 			}
-			
-		}	
+		}
 		
 		//轉換資料
 		int convertVideoId =0;

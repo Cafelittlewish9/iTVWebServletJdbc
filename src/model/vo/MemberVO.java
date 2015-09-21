@@ -53,7 +53,7 @@ public class MemberVO {
 
 	@Override
 	public String toString() {
-		return memberAccount ;
+		return memberAccount;
 	}
 
 	public int getMemberId() {

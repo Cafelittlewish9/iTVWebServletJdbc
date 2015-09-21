@@ -1,9 +1,4 @@
-import java.util.List;
-
-import model.dao.jdbc.ChannelDAOjdbc;
-import model.dao.jdbc.LoginDAOjdbc;
-import model.vo.ChannelVO;
-import model.vo.LoginVO;
+import model.service.MemberService;
 
 public class SelectByDemo {
 
@@ -17,8 +12,8 @@ public class SelectByDemo {
 //		
 //		..........................................
 		
-		LoginDAOjdbc dao = new LoginDAOjdbc();
-		System.out.println(dao.select("Pikachu"));
+		MemberService service = new MemberService();
+		System.out.println(service.showMemberInfo("Pikachu", "A"));
 		
 		
 		

@@ -23,6 +23,10 @@ public interface MemberDAO {
 	public String getMemberNickname(String memberAccount);
 	
 	byte[] photoOut(int memberId);
+	
+	public String getMemberAccount(String memberAccount);
+	
+	public MemberVO findByMemberAccount(String memberAccount);
 
 
 }

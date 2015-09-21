@@ -146,6 +146,17 @@ public class MemberService {
 	}
 	// ↑是否是指連查詢個資都要輸入一次帳密？
 	
+	
+	public MemberVO showMemberInfo(String memberAccount , String password){
+		MemberVO result = this.login1(memberAccount, password);
+		if(result!=null){
+			MemberVO showMemberInfo = dao.findByMemberAccount(memberAccount);
+			return showMemberInfo;
+		}
+		return result;
+	}
+	
+	
 
 	// 更改、測試完成
 	public int update(MemberVO mvo) {
