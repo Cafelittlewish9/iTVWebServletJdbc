@@ -39,6 +39,7 @@ public class Login extends HttpServlet {
 		if(username==null || username.length()==0) {
 			errors.put("username", "請輸入註冊信箱");
 		}
+		
 		if(password==null || password.length()==0) {
 			errors.put("password", "請輸入密碼");
 		}

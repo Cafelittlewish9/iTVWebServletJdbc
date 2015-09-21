@@ -32,10 +32,11 @@ public class ReportMemberService {
 		return dao.selectAll();
 	}
 
+	//刪除成功為false
 	public boolean deleteReportMember(ReportMemberVO bean) {
-		int result1 = dao2.switchSuspend(bean.getReportedMemberId(), true);
+		int result1 = bean.getReportedMemberId();
 		boolean result2 = dao.delete(bean.getOrderId());
-		if (result1 == 1 && result2) {
+		if (result1 == 1 && result2 == true) {
 			return true;
 		} else {
 			return false;

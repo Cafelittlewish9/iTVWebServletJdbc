@@ -1,20 +1,16 @@
 package model.service.restful;
 
 import java.util.Collection;
-
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
 import model.dao.ReplyArticleDAO;
 import model.dao.jdbc.ReplyArticleDAOjdbc;
 import model.vo.ReplyArticleVO;
+
 @Path("/replyArticle")
 public class ReplyArticleRestful {
 	private ReplyArticleDAO dao;
@@ -22,16 +18,17 @@ public class ReplyArticleRestful {
 	public ReplyArticleRestful() {
 		this.dao = new ReplyArticleDAOjdbc();
 	}
-	
+
 	@GET
 	@Path("/list/{articleId}")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-	public Collection<ReplyArticleVO> listReplyArticle(@PathParam("articleId")int articleId) {
+	public Collection<ReplyArticleVO> listReplyArticle(@PathParam("articleId") int articleId) {
 		return dao.selectByArticleId(articleId);
 	}
+
 	@DELETE
 	@Path("/{replyArticleId}")
-	public boolean deleteReplyArticle(@PathParam("replyArticleId")int replyArticleId) {
+	public boolean deleteReplyArticle(@PathParam("replyArticleId") int replyArticleId) {
 		int temp = dao.delete(replyArticleId);
 		if (temp == 1) {
 			return true;
@@ -48,7 +45,6 @@ public class ReplyArticleRestful {
 			return false;
 		}
 	}
-
 
 	public boolean modifyReplyArticle(String replyContent, int replyArticleId) {
 		if (replyContent != null && replyContent.trim().length() != 0) {

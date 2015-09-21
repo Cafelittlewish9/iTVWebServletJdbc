@@ -1,5 +1,5 @@
 package model.vo;
-
+//使用RESTfulservice的servlet，但不曉得與一般的servlet差在哪裡
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;

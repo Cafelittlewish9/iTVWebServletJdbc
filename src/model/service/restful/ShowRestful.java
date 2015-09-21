@@ -1,20 +1,18 @@
 package model.service.restful;
 
 import java.util.Collection;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
 import model.dao.ShowDAO;
 import model.dao.jdbc.ShowDAOjdbc;
 import model.vo.ShowVO;
+
 @Path("/show")
 public class ShowRestful {
 	private ShowDAO dao;
@@ -33,17 +31,18 @@ public class ShowRestful {
 		}
 		return list;
 	}
+
 	@GET
 	@Path("/list/{memberId}")
-	@Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-	public Collection<ShowVO> showList(@PathParam("memberId")int memberId) {
+	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+	public Collection<ShowVO> showList(@PathParam("memberId") int memberId) {
 		Collection<ShowVO> list = dao.selectJoinVideo(memberId);
-		list.addAll(dao.selectJoinMember(memberId));
 		return list;
 	}
+
 	@DELETE
-	@Path("/{bean}")
-	public Collection<ShowVO> removeShow(@PathParam("bean")ShowVO bean) {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Collection<ShowVO> removeShow(ShowVO bean) {
 		Collection<ShowVO> list = null;
 		boolean result = dao.delete(bean.getMemberId(), bean.getWebsite());
 		if (result) {
@@ -51,8 +50,6 @@ public class ShowRestful {
 		}
 		return list;
 	}
-	
-	
 
 	public Collection<ShowVO> addShow(int memberId, java.util.Date showTime, String website) {
 		Collection<ShowVO> list = null;
@@ -85,7 +82,7 @@ public class ShowRestful {
 		}
 		return list;
 	}
-	
+
 	public Collection<ShowVO> removeShow(int memberId, String website) {
 		Collection<ShowVO> list = null;
 		boolean result = dao.delete(memberId, website);

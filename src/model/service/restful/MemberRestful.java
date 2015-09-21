@@ -2,16 +2,13 @@ package model.service.restful;
 
 import java.sql.SQLException;
 import java.util.Arrays;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
 import model.dao.MemberDAO;
 import model.dao.jdbc.MemberDAOjdbc;
 import model.vo.MemberVO;
@@ -30,7 +27,7 @@ public class MemberRestful {
 	@GET
 	@Path("/info/{username}/{password}")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-	public MemberVO checkInfo(@PathParam("username")String username, @PathParam("password")String password) {
+	public MemberVO checkInfo(@PathParam("username") String username, @PathParam("password") String password) {
 		MemberVO mvo = this.login1(username, password);
 		return mvo;
 	}
@@ -60,10 +57,8 @@ public class MemberRestful {
 			result = dao.update(mvo);
 		}
 		return result;
-	}	
-	
-	
-	
+	}
+
 	// registry1採帳號密碼信箱註冊；registry2是採信箱密碼註冊
 	public String registry1(String username, String password, String usermail) throws SQLException {
 		String result = null;
@@ -185,13 +180,11 @@ public class MemberRestful {
 	 * i=b; if (i < 0) {i += 256;} return h[i/16] + h[i%16]; }
 	 */
 
-
-	
 	// 測完了，沒問題可以動呦吼吼。
-	public int suspendMember(int memberId, boolean suspendRight){
+	public int suspendMember(int memberId, boolean suspendRight) {
 		int result = -1;
-		if(memberId!=0){
-			result =  dao.switchSuspend(memberId, suspendRight);
+		if (memberId != 0) {
+			result = dao.switchSuspend(memberId, suspendRight);
 		}
 		return result;
 	}

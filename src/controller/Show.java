@@ -27,8 +27,8 @@ public class Show extends HttpServlet {
 		HttpSession session = request.getSession();
 		MemberVO member = (MemberVO) session.getAttribute("user");
 		Collection<ShowVO> showList = service.showList(2);
-		String path = request.getContextPath();
-		session.setAttribute("showlist", showList);
+		request.setAttribute("showlist", showList);
+		request.getRequestDispatcher("").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

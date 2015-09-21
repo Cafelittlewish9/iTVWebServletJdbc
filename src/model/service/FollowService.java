@@ -24,6 +24,7 @@ public class FollowService {
 		}
 	}
 
+	//!!!!是反過來的，例如輸入(1,2) 在資料庫裡會消失的是 "memberID:2 followID:1"!!!!!
 	public boolean unfollow(int memberId, int followId) {
 		return dao.delete(memberId, followId);
 	}

@@ -1,10 +1,22 @@
 package model.vo;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class BroadcastOrderVO {
+	@XmlElement(required = true)
 	private String memberAccount;
+	@XmlElement(required = true)
 	private String broadcastWebsite;
+	@XmlElement(required = true)
 	private String broadcastTitle;
+	@XmlElement(required = true)
 	private java.util.Date broadcastTime;
+	@XmlElement(required = true)
 	private long broadcastWatchTimes;
 
 	@Override

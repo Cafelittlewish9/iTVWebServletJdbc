@@ -1,39 +1,26 @@
-import model.dao.jdbc.VideoDAOjdbc;
-import model.vo.VideoVO;
+import model.dao.jdbc.MemberDAOjdbc;
+import model.service.MemberService;
+import model.vo.MemberVO;
 
 public class InsertDemo {
 
-	public static void main(String[] args) {
+	public static void main(String[] args){
+		
+		MemberService service = new MemberService();
+		MemberVO bean = new MemberVO();
 
-//		※ReportMemberDAOJdbc
+//		測MD5
+//		System.out.println(service.insertMD5Password("FUN", "FUN@gmail.com", ""));
+//		System.out.println(service.checkInfo("FUN", "ec3c3c7db7934f8209807928f36fad96"));
 		
-//		ReportMemberDAOJdbc DAO = new ReportMemberDAOJdbc();
-//		ReportMemberVO bean = new ReportMemberVO();
-//		java.util.Date date = new java.util.Date();
-//
-//		bean.setOrderId(10);
-//		bean.setReportedMemberId(3);
-//		bean.setReportTime(date);
-////		bean.setReportTime(java.sql.Date.valueOf("2015-06-07"));
-//		bean.setReportReason("一直噴水柱");
-//		ReportMemberVO count = DAO.insert(bean);
-//
-//		System.out.println(count);
 		
-//		.......................................
+		
+		
+		
+		
+		
+		
 
-		VideoDAOjdbc dao = new VideoDAOjdbc();
-		VideoVO bean = new VideoVO();
-		bean.setMemberId(1);
-		bean.setVideoWebsite("http://www.iTV.com/video/Pikachu100");
-		bean.setVideoClassName("生活");
-		bean.setVideoTitle("TEST");
-		bean.setVideoName("TEST");
-		bean.setVideoPath("C:\\video\\Pikachu\\TEST.mp4");
-		bean.setVideoDescription("TEST");
-		
-		System.out.println(dao.insert(bean));
-		
 	}
 
 }
