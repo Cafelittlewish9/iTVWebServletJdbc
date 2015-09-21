@@ -1,6 +1,9 @@
 package model.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
 import model.dao.ShowDAO;
 import model.dao.jdbc.ShowDAOjdbc;
 import model.vo.ShowVO;
@@ -38,7 +41,7 @@ public class ShowService {
 		return list;
 	}
 
-	//console 出現null pointer exception但移除成功
+	// console 出現null pointer exception但移除成功
 	public Collection<ShowVO> removeShow(int memberId, String website) {
 		Collection<ShowVO> list = null;
 		boolean result = dao.delete(memberId, website);
@@ -48,7 +51,7 @@ public class ShowService {
 		return list;
 	}
 
-	//console 出現null pointer exception但移除成功
+	// console 出現null pointer exception但移除成功
 	public Collection<ShowVO> removeShow(ShowVO bean) {
 		Collection<ShowVO> list = null;
 		boolean result = dao.delete(bean.getMemberId(), bean.getWebsite());
@@ -59,10 +62,11 @@ public class ShowService {
 	}
 
 	public static void main(String[] args) {
-//		ShowService service = new ShowService();
-//		for(ShowVO bean:service.showList(2)){
-//			System.out.println(bean);
+		ShowService service = new ShowService();
+		for(ShowVO bean:service.showList(2)){
+			System.out.println(bean);
 //			System.out.println(bean.getTitle());
-//		}
+		}
 	}
 }
+
