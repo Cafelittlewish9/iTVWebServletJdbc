@@ -9,17 +9,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.service.restful.ArticleRestful;
+import model.service.restful.BroadcastOrderRestful;
 import model.vo.ArticleVO;
-@WebServlet("/article")
-public class ArticleServlet extends javax.servlet.http.HttpServlet{
+import model.vo.BroadcastOrderVO;
+@WebServlet("/broadcastOrder")
+public class BroadcastOrderRServlet extends javax.servlet.http.HttpServlet{
     private static final long serialVersionUID = 2010L;
-    private ArticleRestful service = null;
+    private BroadcastOrderRestful service = null;
     
 //    public void setArticleRestful(ArticleRestful service){
 //        this.service = service;
 //    }
     public void init() throws ServletException{
-    	service = new ArticleRestful();
+    	service = new BroadcastOrderRestful();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -35,63 +37,55 @@ public class ArticleServlet extends javax.servlet.http.HttpServlet{
     public void insert(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException{
 //    	接收資料
-    	String memberId =request.getParameter("memberId");
-        String subclassNo=request.getParameter("subclassNo");
-        String articleTitle=request.getParameter("articleTitle");
-        String articleContent=request.getParameter("articleContent");
-//      String watchTimes=request.getParameter("watchTimes");
-        //watchTimes的計數應該是寫在servlet or service裡，但怎麼做還是不太知道
+    	String memberAccount =request.getParameter("memberAccount");
+        String broadcastTitle=request.getParameter("broadcastTitle");
+//      String broadcastTime=request.getParameter("broadcastTime");
+//      String broadcastWatchTimes=request.getParameter("broadcastWatchTimes");
+        //一樣，計數應該是寫在servlet or service裡，但怎麼做還是不太知道
 //      轉換型別
-        int id=Integer.parseInt(memberId);
         long time=new java.util.Date().getTime();
-        java.sql.Timestamp publishTime=new java.sql.Timestamp(time);
+        java.sql.Timestamp broadcastTime=new java.sql.Timestamp(time);
 //      呼叫model
-        ArticleVO bean = new ArticleVO();
-        bean.setMemberId(id);
-        bean.setSubclassNo(subclassNo);
-        bean.setArticleTitle(articleTitle);
-        bean.setArticleContent(articleContent);
-        bean.setPublishTime(publishTime);
-        bean.setModifyTime(publishTime);
-        service.addArticle(bean);
+        BroadcastOrderVO bean = new BroadcastOrderVO();
+        bean.setMemberAccount(memberAccount);
+        bean.setBroadcastWebsite("http://itvvm.cloudapp.net/ITV/LiveShow?memberAccount="+memberAccount);
+        bean.setBroadcastTitle(broadcastTitle);
+        bean.setBroadcastTime(broadcastTime);
+        //開台時間其實實況主應該要能選擇，不過想限定成實況主按下開始實況按鈕時才送入DB
+        //DB表有限定memberAccount不能重複，代表實況主不能在頁面上指定開台時間
+        service.createBroadcast(bean);
 //      setAttribute共享資訊並轉交
-        request.setAttribute("articleList", service.allArticle());
+        request.setAttribute("broadcastOrderList", service.broadcastOrder());
     }
-    //要如何只讓作者本人及管理員看到刪除這顆按鈕?權限角色?!
+
+    //其實這個應該做在結束實況的按鈕上
     public void delete(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException{
-        String articleId = request.getParameter("articleId");
-        int id=Integer.parseInt(articleId);
-        service.deleteArticle(id);
-        request.setAttribute("articleList", service.allArticle());
+    	String memberAccount =request.getParameter("memberAccount");
+    	BroadcastOrderVO bean = new BroadcastOrderVO();
+        bean.setMemberAccount(memberAccount);
+        service.removeBroadcast(bean);//為什麼要用上一個bean去刪除，其實用memberAccount就好…
+        request.setAttribute("broadcastOrderList", service.broadcastOrder());
     }
 
     public void list(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException{
     	String keyword =request.getParameter("keyword");
     	//搜尋可能無法這麼便宜行事
-        request.setAttribute("articleList", service.searchByInput(keyword));        
+        request.setAttribute("articleList", service.searchBroadcast(keyword));        
     }
     
     public void update(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException{
-    	String articleId=request.getParameter("articleId");
-    	String memberId = request.getParameter("memberId");
-        String subclassNo=request.getParameter("subclassNo");
-        String articleTitle=request.getParameter("articleTitle");
-        String articleContent=request.getParameter("articleContent");
-    	int id=Integer.parseInt(memberId);
-        long time=new java.util.Date().getTime();
-        java.sql.Timestamp modifyTime=new java.sql.Timestamp(time);
-        ArticleVO bean = new ArticleVO();
-        bean.setMemberId(id);
-        bean.setSubclassNo(subclassNo);
-        bean.setArticleTitle(articleTitle);
-        bean.setArticleContent(articleContent);
-        bean.setModifyTime(modifyTime); 
-        service.modifyArticle(bean);
-        request.setAttribute("articleList", service.searchByInput(articleId));
-        //改完應該會想再看一下同一篇文章吧
+    	//開台後其實唯一能改的就只有broadcastTitle，帳號原本就不能改，網址是站方配的
+    	//實況主要改時間別無他法只能先刪掉舊有的實況再開一次
+    	String memberAccount =request.getParameter("memberAccount");
+    	String broadcastTitle=request.getParameter("broadcastTitle");
+    	BroadcastOrderVO bean = new BroadcastOrderVO();
+        bean.setBroadcastTitle(broadcastTitle);
+        service.changeTitle(bean);
+        request.setAttribute("articleList", service.searchBroadcast(memberAccount));
+        //改完應該會想再看一下吧
     }
     
     public void processRequest(HttpServletRequest request, HttpServletResponse response) 

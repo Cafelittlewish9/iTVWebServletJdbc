@@ -1,15 +1,15 @@
 package model.vo;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.fileupload.FileItem;
-
 @XmlRootElement(name="Member")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MemberVO {
+public class MemberVO implements Serializable {
 	@XmlElement(required = true)
 	private int memberId;
 	@XmlElement(required = true)
@@ -53,7 +53,7 @@ public class MemberVO {
 
 	@Override
 	public String toString() {
-		return memberAccount ;
+		return memberAccount;
 	}
 
 	public int getMemberId() {
@@ -215,5 +215,4 @@ public class MemberVO {
 	public void setSuspendMember(boolean suspendMember) {
 		this.suspendMember = suspendMember;
 	}
-	
 }

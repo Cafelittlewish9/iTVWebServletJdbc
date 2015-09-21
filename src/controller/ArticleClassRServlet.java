@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.service.restful.ArticleClassRestful;
 import model.vo.ArticleClassVO;
 @WebServlet("/articleClass")
-public class ArticleClassServlet extends javax.servlet.http.HttpServlet{
+public class ArticleClassRServlet extends javax.servlet.http.HttpServlet{
     private static final long serialVersionUID = 2010L;
     private ArticleClassRestful service = null;
     
