@@ -1,7 +1,10 @@
 package controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -9,16 +12,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import javax.servlet.http.Part;
 
 import model.service.MemberService;
 import model.vo.MemberVO;
-@WebServlet("/fileupload")
+@WebServlet(name = "Photo", urlPatterns = {"/upload.do"})
 public class Photo extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -33,12 +31,54 @@ public class Photo extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//boolean isMultipart = ServletFileUpload.isMultipartContent(request);	
+//		Part memberPhoto=request.getPart("memberPhoto");
+//		String filename=request.getParameter("memberPhoto");
+//		int id=Integer.parseInt(request.getParameter("memberId"));
+//		InputStream is=memberPhoto.getInputStream();
+//		ByteArrayOutputStream swapStream = new ByteArrayOutputStream(); 
+////		byte[] buff = new byte[(int)memberPhoto.getSize()];  
+////		int rc = 0; 
+////		while ((rc = is.read(buff, 0, 100)) > 0) { 
+////		swapStream.write(buff, 0, rc); 
+////		} 
+//		OutputStream out = new FileOutputStream("d://" + filename);
+//        byte[] buffer = new byte[1024];
+//        int length = -1;
+//        while ((length = is.read(buffer)) != -1) {
+//            out.write(buffer, 0, length);
+//        }
+//        is.close();
+//        out.close();
+//        }
+		System.out.println("小貝");
+		Part filePart1 = request.getPart("memberPhoto");
+		System.out.println("你別死呀~~~~~~~~");
+        String header = filePart1.getHeader("Content-Disposition");
+        String filename = header.substring(
+        		header.indexOf("filename=\"") + 10, header.lastIndexOf("\""));
+        
+        InputStream in = filePart1.getInputStream();
+        
+        OutputStream out = new FileOutputStream("d:/png/" + filename);
+        byte[] buffer = new byte[1024];
+        int length = -1;
+        while ((length = in.read(buffer)) != -1) {
+            out.write(buffer, 0, length);
+        }
+        
+        out.close();
+        in.close();
+    }
+		
+		
+}
+/*
+ //boolean isMultipart = ServletFileUpload.isMultipartContent(request);	
 		
 		//Create a factory for disk-based file items
 		DiskFileItemFactory factory = new DiskFileItemFactory();
-		/*DiskFileItemFactory factory = new DiskFileItemFactory(
-				yourMaxMemorySize, yourTempDirectory);*/
+		DiskFileItemFactory factory = new DiskFileItemFactory(
+				yourMaxMemorySize, yourTempDirectory);
 		
 		//Set factory constraints
 		//factory.setSizeThreshold(yourMaxMemorySize); 
@@ -93,8 +133,8 @@ public class Photo extends HttpServlet {
 			    }    
 			    request.getRequestDispatcher("tester.html").forward(request, response);
 			  }
-}
-/*
+
+－－－
 <%@ page language="java" pageEncoding="UTF-8"%>  
 <%@page import="java.sql.ResultSet"%>  
 <%@page import="java.io.File"%>  

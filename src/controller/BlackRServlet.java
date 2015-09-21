@@ -7,19 +7,21 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.service.restful.ShowRestful;
-import model.vo.ShowVO;
-import util.ConvertType;
-@WebServlet("/showServlet")
-public class ShowServlet extends javax.servlet.http.HttpServlet{
+
+import model.service.restful.ArticleRestful;
+import model.service.restful.BlackRestful;
+import model.vo.ArticleVO;
+import model.vo.BlackVO;
+@WebServlet("/black")
+public class BlackRServlet extends javax.servlet.http.HttpServlet{
     private static final long serialVersionUID = 2010L;
-    private ShowRestful service = null;
+    private BlackRestful service = null;
     
-//    public void setShowRestful(ShowRestful service){
+//    public void setBlackRestful(BlackRestful service){
 //        this.service = service;
 //    }
     public void init() throws ServletException{
-    	service = new ShowRestful();
+    	service = new BlackRestful();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -36,57 +38,41 @@ public class ShowServlet extends javax.servlet.http.HttpServlet{
         throws ServletException, IOException{
 //    	接收資料
     	String memberId =request.getParameter("memberId");
-        String website=request.getParameter("website");
-//        String video=request.getParameter("video");
-//        String member=request.getParameter("member");
+    	String blackedId=request.getParameter("blackedId");
 //      轉換型別
         int id=Integer.parseInt(memberId);
-        java.util.Date time=new java.util.Date();
+        int bid=Integer.parseInt(blackedId);
+        //還是應該用bid去求出被黑的人的memberAccount?!
 //      呼叫model
-        ShowVO bean = new ShowVO();//bean要set以上東西才成為一個bean
-        bean.setMemberId(id);
-        bean.setShowTime(time);
-        bean.setWebsite(website);
-        service.addShow(bean);
+        service.insertBlackList(id, bid);
 //      setAttribute共享資訊並轉交
-        request.setAttribute("showList", service.showList(id));
+        request.setAttribute("blackList", service.searchBlackAccount(id));
     }
-    
+    //要如何只讓作者本人及管理員看到刪除這顆按鈕?權限角色?!
     public void delete(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException{
-        String memberId = request.getParameter("memberId");
+    	String memberId =request.getParameter("memberId");
+    	String blackedId=request.getParameter("blackedId");
         int id=Integer.parseInt(memberId);
-        String website=request.getParameter("website");
-        service.removeShow(id, website);
-        request.setAttribute("showList", service.showList(id));
+        int bid=Integer.parseInt(blackedId);
+        service.removeBlackAccount(id, bid);
+        request.setAttribute("blackList", service.searchBlackAccount(id));
     }
+    
+    public void removeAll(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException{
+        	String memberId =request.getParameter("memberId");
+            int id=Integer.parseInt(memberId);
+            service.removeAll(id);
+            request.setAttribute("blackList", service.searchBlackAccount(id));
+        }
 
     public void list(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException{
+    	//沒有人可以看別人的黑名單，應該管理員也一樣…管理員如果閒到去看用戶設定的黑名單，那就增加管理員的工作量！
     	String memberId =request.getParameter("memberId");
     	int id=Integer.parseInt(memberId);
-    	request.setAttribute("showList", service.showList(id));        
-    }
-    
-    public void update(HttpServletRequest request, HttpServletResponse response) 
-        throws ServletException, IOException{
-    	String memberId = request.getParameter("memberId");
-    	int id=Integer.parseInt(memberId);
-    	String showTime=request.getParameter("showTime");
-//    	java.util.Date time=ConvertType.convertToUTCTime(showTime);
-        java.util.Date time = null;
-    	if(showTime!=null && showTime.length()!=0) {
-    		time = ConvertType.convertToUtilDate(showTime);
-    		if(new java.util.Date(0).equals(time)) {
-//    			errors.put("make", "Make must be a date of YYYY-MM-DD");
-    		}
-    	}    	
-        String website=request.getParameter("website");
-//        String video=request.getParameter("video");
-//        String member=request.getParameter("member");
-        ShowVO bean = new ShowVO();
-      //service.changeShow(bean, showTime);
-      request.setAttribute("showList", service.showList(id));
+        request.setAttribute("blackList", service.searchBlackAccount(id));        
     }
     
     public void processRequest(HttpServletRequest request, HttpServletResponse response) 
@@ -98,16 +84,16 @@ public class ShowServlet extends javax.servlet.http.HttpServlet{
         if(operation!=null){
 			 if (operation.equals("insert")) {
 				insert(request, response);
-				viewName = "show.html";
+				viewName = ".html";
 			} else if (operation.equals("delete")) {
 				delete(request, response);
-				viewName = "show.html";
+				viewName = ".html";
 			} else if (operation.equals("list")) {
 				list(request, response);
-				viewName = "show.html";
-			} else if (operation.equals("update")) {
-				update(request, response);
-				viewName = "show.html";
+				viewName = ".html";
+			} else if (operation.equals("removeAll")) {
+				removeAll(request, response);
+				viewName = ".html";
 			}
         }
 

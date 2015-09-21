@@ -15,7 +15,7 @@ import model.service.LoginService;
 import model.service.MemberService;
 import model.vo.MemberVO;
 
-@WebServlet("/login")
+@WebServlet("/login/")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService ms;
@@ -30,41 +30,39 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		String username = request.getParameter("memberAccount");
+		String password = request.getParameter("memberPassword");
+		String operation=request.getParameter("operation");
 		String path = request.getContextPath();
 		
 		Map<String, String> errors = new HashMap<String, String>();
 		request.setAttribute("error", errors);
 		if(username==null || username.length()==0) {
-			errors.put("username", "請輸入註冊信箱");
+			errors.put("username", "請輸入帳號");
 		}
 		
 		if(password==null || password.length()==0) {
 			errors.put("password", "請輸入密碼");
 		}
-		
 		if(errors!=null && !errors.isEmpty()) {
 			request.getRequestDispatcher(
-					"LoginPage.html").forward(request, response);
+					"NewFile.html").forward(request, response);
 			return ;
 		}
 		
-		MemberVO bean = ms.login2(username, password);
-		
-		if(bean==null) {
-			errors.put("password", "登入失敗，請再試一遍");//放在session裡
-			
-			request.getRequestDispatcher(
-					"LoginPage.html").forward(request, response);
-			return ;
-		} else {
-			HttpSession session = request.getSession();
-			String ip=request.getRemoteAddr();//有個ip and then?
-			
-			session.setAttribute("user", bean);	
-			response.sendRedirect(path+"/index.html");
+		MemberVO bean = ms.login1(username, password);
+		if(operation!=null && operation.equals("登入")&& bean != null){		
+				HttpSession session = request.getSession();
+				String ip = request.getRemoteAddr();// 有個ip and then?
+				session.setAttribute("user", bean);
+				response.sendRedirect(path + "/HomePageVersion3.jsp");
+				return;
+		} else if (operation!=null && operation.equals("提取密碼")){
+			request.getRequestDispatcher("LoginPage.html").forward(request, response);//送去客服頁面
 			return;
+		}else{
+			errors.put("password", "登入失敗，請再試一遍");// 放在session裡
+			request.getRequestDispatcher("show.html").forward(request, response);
 		}
 	}
 

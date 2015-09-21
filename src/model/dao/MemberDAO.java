@@ -13,12 +13,18 @@ public interface MemberDAO {
 	public List<MemberVO> getMemberList();
 
 	public int getId(String memberAccount);
+	
+	public MemberVO getAccount(String memberAccount);
 
 	public int update(MemberVO member);
 
 	public MemberVO findByPK(int memberId);
 
 	public int switchSuspend(int memberId, boolean suspendRight);
+<<<<<<< HEAD
+	
+	
+=======
 	
 	public String getMemberNickname(String memberAccount);
 	
@@ -28,5 +34,6 @@ public interface MemberDAO {
 	
 	public MemberVO findByMemberAccount(String memberAccount);
 
+>>>>>>> branch 'master' of https://github.com/Cafelittlewish9/iTVWebServletJdbc.git
 
 }
