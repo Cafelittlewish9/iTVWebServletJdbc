@@ -257,17 +257,15 @@ public class MemberDAOjdbc implements MemberDAO {
 		}
 		return member;
 	}
-
-	public static final String MEMBER_NICNAME = "Select memberNickname from member where memberAccount =?";
-
-	@Override
-	public String getMemberNickname(String memberAccount) {
-		String result = null;
-		ResultSet rset = null;
-		try (Connection conn = ds.getConnection();
-				// Connection conn = DriverManager.getConnection(URL, USERNAME,
-				// PASSWORD);
-				PreparedStatement stmt = conn.prepareStatement(MEMBER_NICNAME);) {
+	 public static final String MEMBER_NICKNAME = "Select memberNickname from member where memberAccount =?";
+	 @Override
+	 public String getMemberNickname(String memberAccount){
+		 String result = null;
+		 ResultSet rset = null;
+		 try(
+				 Connection conn=ds.getConnection();
+//				 Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				 PreparedStatement stmt = conn.prepareStatement(MEMBER_NICKNAME);) {
 			stmt.setString(1, memberAccount);
 			rset = stmt.executeQuery();
 			if (rset.next()) {
@@ -323,7 +321,7 @@ public class MemberDAOjdbc implements MemberDAO {
 		return result;
 	}
 
-	private static final String FIND_BY_MEMBER_ACCOUNT = "SELECT memberId,memberAccount,memberEmail,memberFB,memberGoogle,memberTwitter,memberName,"
+	private static final String FIND_BY_MEMBER_ACCOUNT= "SELECT memberId,memberAccount,memberEmail,memberFB,memberGoogle,memberTwitter,memberName,"
 			+ "memberNickname,memberBirthday,memberPhoto,memberRegisterTime,memberSelfIntroduction,"
 			+ "broadcastWebsite,broadcastTitle,broadcastClassName,broadcastTime,broadcastDescription,"
 			+ "broadcastWatchTimes FROM member WHERE memberAccount=?";
@@ -471,6 +469,9 @@ public class MemberDAOjdbc implements MemberDAO {
 		// MemberVO bean = temp.getAccount("pikachu");
 		// System.out.println("memberAccount : "+bean);
 
+		 
+		// 查詢 memberAccount 
+//		 MemberVO bean = temp.getAccount("pikachu");
+//		 System.out.println("memberAccount : "+bean);
 	}
-
 }

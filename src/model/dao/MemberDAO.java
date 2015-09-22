@@ -25,7 +25,7 @@ public interface MemberDAO {
 
 	public String getMemberNickname(String memberAccount);
 
-	byte[] photoOut(int memberId);
+	public byte[] photoOut(int memberId);
 
 	public String getMemberAccount(String memberAccount);
 
