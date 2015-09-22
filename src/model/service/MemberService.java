@@ -2,10 +2,10 @@ package model.service;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+
 import model.dao.MemberDAO;
 import model.dao.jdbc.MemberDAOjdbc;
 import model.vo.MemberVO;
-import util.ServicePasswordChange;
 
 //註冊後轉update頁面要由controller處理
 //查詢、修改個人資料、搜尋會員
@@ -17,57 +17,43 @@ public class MemberService {
 	}
 
 	// registry1採帳號密碼信箱註冊；registry2是採信箱密碼註冊
-	public String registry1(String username, String password, String usermail) {
+	public String registry1(String username, String password, String usermail) throws SQLException {
 		String result = null;
 		MemberVO mvo = new MemberVO();
-		
-		try {
-			
-			if (username.length() == 0) {
-				result = "Please keyin a username.";
+		if (username.length() == 0) {
+			result = "Please keyin a username.";
+		} else {
+			if (dao.getId(username) != 0) {
+				result = "Please change another username.";
 			} else {
-				if (dao.getId(username) != 0) {
-					result = "Please change another username.";
-				} else {
-					mvo.setMemberAccount(username);
-					mvo.setMemberPassword(password.getBytes());
-					mvo.setMemberEmail(usermail);
-					// mvo.setMemberRegisterTime(new java.util.Date());
-					dao.insert(mvo);
-					result = "success";
-				}
+				mvo.setMemberAccount(username);
+				mvo.setMemberPassword(password.getBytes());
+				mvo.setMemberEmail(usermail);
+				// mvo.setMemberRegisterTime(new java.util.Date());
+				dao.insert(mvo);
+				result = "success";
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		
 		return result;
 	}
 
 	// registry1採帳號密碼信箱註冊；registry2是採信箱密碼註冊
-	public String registry2(String usermail, String password){
+	public String registry2(String usermail, String password) throws SQLException {
 		String result = null;
 		MemberVO mvo = new MemberVO();
-		try {
-			
-			if (usermail.length() == 0) {
-				result = "Please keyin a your mail.";
+		if (usermail.length() == 0) {
+			result = "Please keyin a your mail.";
+		} else {
+			if (dao.getId(usermail.substring(0, usermail.indexOf("@"))) != 0) {
+				result = "Please change another mail address to registry.";
 			} else {
-				if (dao.getId(usermail.substring(0, usermail.indexOf("@"))) != 0) {
-					result = "Please change another mail address to registry.";
-				} else {
-					mvo.setMemberAccount(usermail.substring(0, usermail.indexOf("@")));
-					mvo.setMemberPassword(password.getBytes());
-					mvo.setMemberEmail(usermail);
-					// mvo.setMemberRegisterTime(new java.util.Date());
-					dao.insert2(mvo);
-					result = "success";
-				}
+				mvo.setMemberAccount(usermail.substring(0, usermail.indexOf("@")));
+				mvo.setMemberPassword(password.getBytes());
+				mvo.setMemberEmail(usermail);
+				// mvo.setMemberRegisterTime(new java.util.Date());
+				dao.insert2(mvo);
+				result = "success";
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return result;
 	}
@@ -119,23 +105,39 @@ public class MemberService {
 		}
 		return result;
 	}
-	
-	//↓↓↓↓↓↓↓↓雖然很討厭他，但我還是測完了，但請再幫我測一次感恩。
-	public String insertMD5Password(String memberAccount, String usermail , String newPassword){
-		MemberVO mvo = this.login1(memberAccount, usermail);// 透過帳密拿到該會員的資料
-		String result = "你打錯了!!!!";
-		if (mvo != null || dao.getId(usermail.substring(0, usermail.indexOf("@"))) != 0) {
-			String replace = Math.random() * 100 + "";// 亂數產生一組數字去轉成md5回傳給使用者
-			newPassword = ServicePasswordChange.getMD5Endocing(replace);
-			byte[] temp = newPassword.getBytes();
-			mvo.setMemberPassword(temp);
-			if (dao.update(mvo) == 1) {
-				result = "這是輸進資料庫的MD5 : "+newPassword;
-			}
+
+	// 用戶忘記密碼
+	public String retrivePwd(String usermail) {
+		String result = null;
+		if (dao.getId(usermail.substring(0, usermail.indexOf("@"))) != 0) {
+			double replace = Math.random() * 100;// 亂數產生一組數字去轉成md5回傳給使用者
+			MemberVO mvo = new MemberVO();
+			MemberService service = new MemberService();
+			// String newPwd=md5("");
+			// service.changePassword(usermail.substring(0,usermail.indexOf("@")),
+			// new String(mvo.getMemberPassword()),newPwd);
+			// CharsetEncoder
+			result = "";
+
+		} else {
+
 		}
 		return result;
-	} 
-	//↑↑↑↑↑↑↑雖然很討厭他，但我還是測完了，但請再幫我測一次感恩。
+	}
+
+	/*
+	 * public static String md5(String str) { String md5=null; try {
+	 * MessageDigest md=MessageDigest.getInstance("MD5"); byte[]
+	 * barr=md.digest(str.getBytes()); //將 byte 陣列加密 StringBuffer sb=new
+	 * StringBuffer(); //將 byte 陣列轉成 16 進制 for (int i=0; i < barr.length; i++)
+	 * {sb.append(byte2Hex(barr[i]));} String hex=sb.toString();
+	 * md5=hex.toUpperCase(); //一律轉成大寫 } catch(Exception e)
+	 * {e.printStackTrace();} return md5; }
+	 * 
+	 * public static String byte2Hex(byte b) { String[]
+	 * h={"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"}; int
+	 * i=b; if (i < 0) {i += 256;} return h[i/16] + h[i%16]; }
+	 */
 
 	// 會員查詢個資
 	public MemberVO checkInfo(String username, String password) {
@@ -143,6 +145,18 @@ public class MemberService {
 		return mvo;
 	}
 	// ↑是否是指連查詢個資都要輸入一次帳密？
+	
+	
+	public MemberVO showMemberInfo(String memberAccount , String password){
+		MemberVO result = this.login1(memberAccount, password);
+		if(result!=null){
+			MemberVO showMemberInfo = dao.findByMemberAccount(memberAccount);
+			return showMemberInfo;
+		}
+		return result;
+	}
+	
+	
 
 	// 更改、測試完成
 	public int update(MemberVO mvo) {
@@ -178,6 +192,14 @@ public class MemberService {
 		return result;
 	}
 
+	public String getMemberNickname(String memberAccount){
+		return dao.getMemberNickname(memberAccount);
+	}
+	
+	public MemberVO getOneMember(String memberAccount){
+		return dao.getAccount(memberAccount);		
+	}
+	
 	public static void main(String[] args) throws SQLException {
 		MemberService service = new MemberService();
 		// MemberVO mvo = service.login1("niceguy", "E");

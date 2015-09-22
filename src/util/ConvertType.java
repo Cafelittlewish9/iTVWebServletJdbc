@@ -1,5 +1,7 @@
 package util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -42,6 +44,18 @@ public class ConvertType {
 		return result;
 	}
 
+	private static SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd");
+	public static java.util.Date convertToUtilDate(String whichYouWantToConvert){
+		java.util.Date result = null;
+		try {
+			result = sFormat.parse(whichYouWantToConvert);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			result = new java.util.Date(0);
+		}
+		return result;
+	}
+	
 	public static java.util.Date convertToLocalTime(java.util.Date whichYouWantToConvert) {
 		java.util.Date result = null;
 		if (whichYouWantToConvert != null) {

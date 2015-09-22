@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.naming.InitialContext;
@@ -20,12 +21,15 @@ import util.ConvertType;
 import util.GC;
 
 public class ShowDAOjdbc implements ShowDAO {
-	private DataSource datasource;
+	// private static final String URL = GC.URL;
+	// private static final String USERNAME = GC.USERNAME;
+	// private static final String PASSWORD = GC.PASSWORD;
+	private DataSource ds;
 
 	public ShowDAOjdbc() {
 		try {
 			InitialContext context = new InitialContext();
-			this.datasource = (DataSource) context.lookup(GC.DATASOURCE);
+			this.ds = (DataSource) context.lookup(GC.DATASOURCE);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
@@ -37,9 +41,9 @@ public class ShowDAOjdbc implements ShowDAO {
 	public List<ShowVO> selectJoinMember(int memberId) {
 		ShowVO result = null;
 		List<ShowVO> list = null;
-		try (
-				Connection conn = datasource.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn = ds.getConnection();
+				// Connection conn = DriverManager.getConnection(URL, USERNAME,
+				// PASSWORD);
 
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID_JOIN_MEMBER);) {
 			stmt.setInt(1, memberId);
@@ -67,9 +71,9 @@ public class ShowDAOjdbc implements ShowDAO {
 	public List<ShowVO> selectJoinVideo(int memberId) {
 		ShowVO result = null;
 		List<ShowVO> list = null;
-		try (
-				Connection conn = datasource.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn = ds.getConnection();
+				// Connection conn = DriverManager.getConnection(URL, USERNAME,
+				// PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID_JOIN_VIDEO);) {
 			stmt.setInt(1, memberId);
 			ResultSet rset = stmt.executeQuery();
@@ -97,8 +101,9 @@ public class ShowDAOjdbc implements ShowDAO {
 		List<ShowVO> list = null;
 		try (
 
-				Connection conn = datasource.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		Connection conn = ds.getConnection();
+				// Connection conn = DriverManager.getConnection(URL, USERNAME,
+				// PASSWORD);
 
 				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
 				ResultSet rset = stmt.executeQuery();) {
@@ -123,8 +128,9 @@ public class ShowDAOjdbc implements ShowDAO {
 		int result = -1;
 		try (
 
-				Connection conn = datasource.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		Connection conn = ds.getConnection();
+				// Connection conn = DriverManager.getConnection(URL, USERNAME,
+				// PASSWORD);
 
 				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
 			if (bean != null) {
@@ -139,7 +145,7 @@ public class ShowDAOjdbc implements ShowDAO {
 		return result;
 	}
 
-	//======沒註解，因為要implement進來才行。======
+	// ======沒註解，因為要implement進來才行。======
 	private static final String UPDATE = "update show set showTime = ?, website = ? where memberId = ? and showTime = ?";
 
 	@Override
@@ -147,8 +153,9 @@ public class ShowDAOjdbc implements ShowDAO {
 		int result = -1;
 		try (
 
-				Connection conn = datasource.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		Connection conn = ds.getConnection();
+				// Connection conn = DriverManager.getConnection(URL, USERNAME,
+				// PASSWORD);
 
 				PreparedStatement stmt = conn.prepareStatement(UPDATE);) {
 			if (showTime != null) {
@@ -166,16 +173,16 @@ public class ShowDAOjdbc implements ShowDAO {
 		}
 		return result;
 	}
-	//======沒註解，因為要implement進來才行。======
+	// ======沒註解，因為要implement進來才行。======
 
 	private static final String DELETE = "delete from show where memberId = ? and website = ?";
 
 	@Override
 
 	public boolean delete(int memberId, String website) {
-		try (
-				Connection conn = datasource.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn = ds.getConnection();
+				// Connection conn = DriverManager.getConnection(URL, USERNAME,
+				// PASSWORD);
 
 				PreparedStatement stmt = conn.prepareStatement(DELETE);) {
 			stmt.setInt(1, memberId);
@@ -192,16 +199,12 @@ public class ShowDAOjdbc implements ShowDAO {
 
 	public static void main(String[] args) {
 
-//		ShowDAOjdbc dao = new ShowDAOjdbc();
-//		List<ShowVO> list = dao.selectJoinMember(2);
-//		for (ShowVO bean : list) {
-//			System.out.println(bean);
+		ShowDAOjdbc dao = new ShowDAOjdbc();
+		List<ShowVO> list = dao.selectJoinMember(2);
+		for (ShowVO bean : list) {
+			System.out.println(bean);
 //			System.out.println(bean.getTitle());
-//		}
-
 		}
-		
-		
 
-	
+	}
 }

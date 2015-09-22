@@ -13,6 +13,8 @@ public interface MemberDAO {
 	public List<MemberVO> getMemberList();
 
 	public int getId(String memberAccount);
+	
+	public MemberVO getAccount(String memberAccount);
 
 	public int update(MemberVO member);
 
@@ -20,5 +22,14 @@ public interface MemberDAO {
 
 	public int switchSuspend(int memberId, boolean suspendRight);
 	
+	
+	public String getMemberNickname(String memberAccount);
+	
+	byte[] photoOut(int memberId);
+	
+	public String getMemberAccount(String memberAccount);
+	
+	public MemberVO findByMemberAccount(String memberAccount);
+
 
 }
