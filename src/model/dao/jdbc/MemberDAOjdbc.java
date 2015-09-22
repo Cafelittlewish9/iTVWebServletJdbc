@@ -55,11 +55,6 @@ public class MemberDAOjdbc implements MemberDAO {
 		int updateCount = 0;
 		try (Connection conn=ds.getConnection();
 //				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
-		
-
-		try (
-//				Connection conn=ds.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(INSERT);) {
 			pstmt.setString(1, member.getMemberAccount());
 			pstmt.setBytes(2, member.getMemberPassword());
@@ -282,17 +277,17 @@ public class MemberDAOjdbc implements MemberDAO {
 		 return result;
 	 }
 	
-	private static final String PHOTO_OUT="select memberPhoto from member where memberId=?";
+	
 	@Override
 	public MemberVO getAccount(String memberAccount){
 		MemberVO member =null;	
-		try {
+		/*try {
 			Connection conn=ds.getConnection();
 			member = new MemberVO();
 //			Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			PreparedStatement pstmt = conn.prepareStatement(GET_ONE_ACCOUNT);
-
 			pstmt.setString(1,memberAccount);
+			
 	public byte[] photoOut(int memberId) {
 		byte[] result = null;
 		try (
@@ -307,12 +302,9 @@ public class MemberDAOjdbc implements MemberDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
+		}		*/
 		return member;
 	}
-	
-	
-	
 	
 	private static final String FIND_BY_MEMBER_ACCOUNT= "SELECT memberId,memberAccount,memberEmail,memberFB,memberGoogle,memberTwitter,memberName,"
 			+ "memberNickname,memberBirthday,memberPhoto,memberRegisterTime,memberSelfIntroduction,"
@@ -354,7 +346,25 @@ public class MemberDAOjdbc implements MemberDAO {
 		return member;
 	}
 	
+	private static final String PHOTO_OUT="INSERT INTO member where memberPhoto=? AND memberId=?";
 	
+	@Override
+	public int photoOut(byte[] memberPhoto,int memberId) {
+		int result=0;
+		MemberVO member = null;
+		try (
+				Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement pstmt = conn.prepareStatement(PHOTO_OUT);) {
+			pstmt.setBytes(1, memberPhoto);
+			pstmt.setInt(2,memberId);
+			result = pstmt.executeUpdate();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
 	// 測試程式
@@ -448,6 +458,4 @@ public class MemberDAOjdbc implements MemberDAO {
 		 
 		 
 	}
-
-
 }
