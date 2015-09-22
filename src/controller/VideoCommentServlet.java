@@ -115,17 +115,17 @@ public class VideoCommentServlet extends HttpServlet {
 		
 		//導向View
 		
-		//傳送資料庫內的留言
-		VideoCommentsService videoCommentsService = new VideoCommentsService();
-		if(videoCommentsService.selectAllComments()!=null){
-			Collection<VideoCommentsVO> showComments = service.selectAllComments();
-			if(showComments!=null){
-				request.setAttribute("showComments", showComments);
-			}else {
-				request.setAttribute("showComments", showComments);
-			}
-			request.getRequestDispatcher("PlayVideo.jsp").forward(request, response);
-		}
+//		//傳送資料庫內的留言
+//		VideoCommentsService videoCommentsService = new VideoCommentsService();
+//		if(videoCommentsService.selectAllComments()!=null){
+//			Collection<VideoCommentsVO> showComments = service.selectAllComments();
+//			if(showComments!=null){
+//				request.setAttribute("showComments", showComments);
+//			}else {
+//				request.setAttribute("showComments", showComments);
+//			}
+//			request.getRequestDispatcher("PlayVideo.jsp").forward(request, response);
+//		}
 		
 		//傳送會員暱稱
 		if(memberService.getMemberNickname(memberAccount)!=null && memberAccount.equals(checkMemberInfo)){
@@ -136,8 +136,12 @@ public class VideoCommentServlet extends HttpServlet {
 			request.getRequestDispatcher("PlayVideo.jsp").forward(request, response);
 		}
 		
-		//Insert, Update, Delete
-		if(sendComment != null && sendComment.equals("insert")){
+		//select, Insert, Update, Delete
+		if(sendComment != null && sendComment.equals("select")){
+			Collection<VideoCommentsVO> showComments = service.selectAllComments();
+			request.setAttribute("showComments", showComments);
+			request.getRequestDispatcher("PlayVideo.jsp").forward(request, response);
+		}else if(sendComment != null && sendComment.equals("insert")){
 			boolean result = service.insertVideoComments(convertMemberId, convertVideoId, commentContent);//commentContent不知道有沒有抓到東西:(
 			if(!result){
 				request.setAttribute("insert", 0);
