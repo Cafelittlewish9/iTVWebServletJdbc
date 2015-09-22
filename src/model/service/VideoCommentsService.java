@@ -1,6 +1,5 @@
 package model.service;
 
-import java.util.Date;
 import java.util.List;
 
 import model.dao.VideoCommentsDAO;
@@ -16,6 +15,9 @@ public class VideoCommentsService {
 	
 	public List<VideoCommentsVO> selectAllComments(){
 		return dao.selectAll();
+	}
+	public List<VideoCommentsVO> videoCommentsList(int videoId){
+		return dao.selectByVideoId(videoId);
 	}
 	
 	public boolean insertVideoComments(int memberId , int videoId , String commentContent){

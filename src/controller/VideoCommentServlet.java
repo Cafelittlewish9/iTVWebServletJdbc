@@ -5,16 +5,18 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import org.json.JSONObject;
 
 import model.service.MemberService;
 import model.service.VideoCommentsService;
@@ -24,7 +26,7 @@ import util.ConvertType;
 
 @WebServlet("/VideoCommentServlet")
 public class VideoCommentServlet extends HttpServlet {
-	VideoCommentsService service;
+	private VideoCommentsService service;
 
 	@Override
 	public void init() throws ServletException {
@@ -33,7 +35,21 @@ public class VideoCommentServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		this.doPost(request, response);
+		
+		String query = request.getQueryString();
+		
+		int videoId = ConvertType.convertToInt(query.substring(query.indexOf("=") + 1));
+		List<VideoCommentsVO> list = service.videoCommentsList(videoId);
+		
+		JSONObject jsonObj = new JSONObject();
+		for(VideoCommentsVO bean:list) {
+			String b64 = java.util.Base64.getEncoder().encodeToString(bean.getMember().getMemberPhoto());
+			bean.getMember().setMemberNickname(b64);
+		}
+		jsonObj.put("list", list);
+		System.out.println(jsonObj);
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(jsonObj.toString());
 	}
 
 	//尚未測試

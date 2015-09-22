@@ -1,5 +1,6 @@
 package model.dao.jdbc;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -36,27 +37,14 @@ public class MemberDAOjdbc implements MemberDAO {
 		}
 	}
 
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
-	// private DataSource ds;
-	//
-	// public MemberDAOjdbc(){
-	// try {
-	// Context ctx = new InitialContext();
-	// this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
-	// } catch (NamingException e) {
-	// e.printStackTrace();
-	// }
-	// }
-
 	@Override
 	public int insert(MemberVO member) {
 		// 要先檢查bean是否為null
 		int updateCount = 0;
-		try (
-				// Connection conn=ds.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+		try (Connection conn = ds.getConnection();
+				// Connection conn = DriverManager.getConnection(URL, USERNAME,
+				// PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(INSERT);) {
 			pstmt.setString(1, member.getMemberAccount());
 			pstmt.setBytes(2, member.getMemberPassword());
@@ -248,6 +236,26 @@ public class MemberDAOjdbc implements MemberDAO {
 	}
 
 	private static final String GET_ONE_ACCOUNT = "SELECT memberAccount FROM member WHERE memberAccount = ?";
+	
+	@Override
+	public MemberVO getAccount(String memberAccount) {
+		MemberVO member = null;
+		try {
+			Connection conn = ds.getConnection();
+			member = new MemberVO();
+			// Connection conn = DriverManager.getConnection(URL, USERNAME,
+			// PASSWORD);
+			PreparedStatement pstmt = conn.prepareStatement(GET_ONE_ACCOUNT);
+			pstmt.setString(1, memberAccount);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				member.setMemberAccount(rs.getString("memberAccount"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return member;
+	}
 
 	public static final String MEMBER_NICNAME = "Select memberNickname from member where memberAccount =?";
 
@@ -255,8 +263,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	public String getMemberNickname(String memberAccount) {
 		String result = null;
 		ResultSet rset = null;
-		try (// Connection conn=ds.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(MEMBER_NICNAME);) {
 			stmt.setString(1, memberAccount);
 			rset = stmt.executeQuery();
@@ -276,8 +284,8 @@ public class MemberDAOjdbc implements MemberDAO {
 	public String getMemberAccount(String memberAccount) {
 		String result = null;
 		ResultSet rset = null;
-		try (// Connection conn=ds.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		try (Connection conn=ds.getConnection();
+//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(MEMBER_ACCOUNT);) {
 			stmt.setString(1, memberAccount);
 			rset = stmt.executeQuery();
@@ -294,38 +302,26 @@ public class MemberDAOjdbc implements MemberDAO {
 	private static final String PHOTO_OUT = "select memberPhoto from member where memberId=?";
 
 	@Override
-	public MemberVO getAccount(String memberAccount){
-		MemberVO member =null;	
-		try {
-			Connection conn=ds.getConnection();
-			member = new MemberVO();
-//			Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-			PreparedStatement pstmt = conn.prepareStatement(GET_ONE_ACCOUNT);
-			pstmt.setString(1,memberAccount);
+	public byte[] photoOut(int memberId) {
+		byte[] result = null;
+		MemberVO member = new MemberVO();
+		try (Connection conn = ds.getConnection();
+				// Connection conn = DriverManager.getConnection(URL, USERNAME,
+				// PASSWORD);
+				PreparedStatement pstmt = conn.prepareStatement(PHOTO_OUT);) {
+			pstmt.setInt(1, memberId);
 			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()){
+
+			while (rs.next()) {
 				member.setMemberAccount(rs.getString("memberAccount"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
-		return member;
+		}
+		return result;
 	}
 
-	@Override
-	public byte[] photoOut(int memberId) {
-////	public byte[] photoOut(int memberId) {
-////	byte[] result = null;
-////	try (
-//////			Connection conn=ds.getConnection();
-////			Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);				
-////			PreparedStatement pstmt = conn.prepareStatement(PHOTO_OUT);) {
-////		pstmt.setInt(1, memberId);
-
-		return null;
-	}
-
-	private static final String FIND_BY_MEMBER_ACCOUNT = "SELECT memberId,memberAccount,memberEmail,memberFB,memberGoogle,memberTwitter,memberName,"
+	private static final String FIND_BY_MEMBER_ACCOUNT= "SELECT memberId,memberAccount,memberEmail,memberFB,memberGoogle,memberTwitter,memberName,"
 			+ "memberNickname,memberBirthday,memberPhoto,memberRegisterTime,memberSelfIntroduction,"
 			+ "broadcastWebsite,broadcastTitle,broadcastClassName,broadcastTime,broadcastDescription,"
 			+ "broadcastWatchTimes FROM member WHERE memberAccount=?";
@@ -333,38 +329,58 @@ public class MemberDAOjdbc implements MemberDAO {
 	@Override
 	public MemberVO findByMemberAccount(String memberAccount) {
 		MemberVO member = null;
-		try (
-				// Connection conn=ds.getConnection();
-				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+		try (Connection conn = ds.getConnection();
+				// Connection conn = DriverManager.getConnection(URL, USERNAME,
+				// PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(FIND_BY_MEMBER_ACCOUNT);) {
-			pstmt.setString(1, memberAccount);
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				member = new MemberVO();
-				member.setMemberId(rs.getInt("memberId"));
-				member.setMemberAccount(rs.getString("memberAccount"));
-				member.setMemberEmail(rs.getString("memberEmail"));
-				member.setMemberFB(rs.getString("memberFB"));
-				member.setMemberGoogle(rs.getString("memberGoogle"));
-				member.setMemberTwitter(rs.getString("memberTwitter"));
-				member.setMemberName(rs.getString("memberName"));
-				member.setMemberNickname(rs.getString("memberNickname"));
-				member.setMemberBirthday(rs.getDate("memberBirthday"));
-				member.setMemberPhoto(rs.getBytes("memberPhoto"));
-				member.setMemberRegisterTime(ConvertType.convertToLocalTime(rs.getDate("memberRegisterTime")));
-				member.setMemberSelfIntroduction(rs.getString("memberSelfIntroduction"));
-				member.setBroadcastWebsite(rs.getString("broadcastWebsite"));
-				member.setBroadcastTitle(rs.getString("broadcastTitle"));
-				member.setBroadcastClassName(rs.getString("broadcastClassName"));
-				member.setBroadcastTime(ConvertType.convertToLocalTime(rs.getTimestamp("broadcastTime")));
-				member.setBroadcastDescription(rs.getString("broadcastDescription"));
-				member.setBroadcastWatchTimes(rs.getLong("broadcastWatchTimes"));
+				pstmt.setString(1, memberAccount);
+				ResultSet rs = pstmt.executeQuery();
+				if (rs.next()) {
+					member = new MemberVO();
+					member.setMemberId(rs.getInt("memberId"));
+					member.setMemberAccount(rs.getString("memberAccount"));
+					member.setMemberEmail(rs.getString("memberEmail"));
+					member.setMemberFB(rs.getString("memberFB"));
+					member.setMemberGoogle(rs.getString("memberGoogle"));
+					member.setMemberTwitter(rs.getString("memberTwitter"));
+					member.setMemberName(rs.getString("memberName"));
+					member.setMemberNickname(rs.getString("memberNickname"));
+					member.setMemberBirthday(rs.getDate("memberBirthday"));
+					member.setMemberPhoto(rs.getBytes("memberPhoto"));
+					member.setMemberRegisterTime(ConvertType.convertToLocalTime(rs.getDate("memberRegisterTime")));
+					member.setMemberSelfIntroduction(rs.getString("memberSelfIntroduction"));
+					member.setBroadcastWebsite(rs.getString("broadcastWebsite"));
+					member.setBroadcastTitle(rs.getString("broadcastTitle"));
+					member.setBroadcastClassName(rs.getString("broadcastClassName"));
+					member.setBroadcastTime(ConvertType.convertToLocalTime(rs.getTimestamp("broadcastTime")));
+					member.setBroadcastDescription(rs.getString("broadcastDescription"));
+					member.setBroadcastWatchTimes(rs.getLong("broadcastWatchTimes"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return member;
 	}
+
+	private static final String UPDATE_PHOTO = "UPDATE Member SET memberPhoto = ? WHERE memberAccount = ?";
+
+	@Override
+	public int updatePhoto(String memberAccount, InputStream photo) {
+		int result = -1;
+		try (Connection conn = ds.getConnection();
+				// Connection conn = DriverManager.getConnection(URL, USERNAME,
+				// PASSWORD);
+				PreparedStatement stmt = conn.prepareStatement(UPDATE_PHOTO);) {
+			stmt.setBinaryStream(1, photo);
+			stmt.setString(2, memberAccount);
+			result = stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 
 	// 測試程式
 	public static void main(String[] args) throws SQLException, ParseException {
@@ -455,6 +471,9 @@ public class MemberDAOjdbc implements MemberDAO {
 		// MemberVO bean = temp.getAccount("pikachu");
 		// System.out.println("memberAccount : "+bean);
 
+		// 查詢 memberAccount 
+//		 MemberVO bean = temp.getAccount("pikachu");
+//		 System.out.println("memberAccount : "+bean);
 	}
 
 }
