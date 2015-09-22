@@ -1,5 +1,6 @@
 package model.service;
 
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Arrays;
 
@@ -199,6 +200,10 @@ public class MemberService {
 	public MemberVO getOneMember(String memberAccount){
 		return dao.getAccount(memberAccount);		
 	}
+	
+	public int changePhoto(String memberAccount, InputStream photo) {
+		return dao.updatePhoto(memberAccount, photo);
+	} 
 	
 	public static void main(String[] args) throws SQLException {
 		MemberService service = new MemberService();
