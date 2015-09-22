@@ -30,4 +30,5 @@ public interface MemberDAO {
 	
 	public MemberVO findByMemberAccount(String memberAccount);
 
+
 }
