@@ -49,8 +49,8 @@ public class VideoRestful {
 	}
 
 	@DELETE
-	@Path("/{videoId}")
-	public boolean removeVideo(@PathParam("videoId") int videoId) {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean removeVideo(int videoId) {
 		return dao.delete(videoId);
 	}
 

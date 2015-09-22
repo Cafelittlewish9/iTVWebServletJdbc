@@ -1,4 +1,4 @@
-//$(function(){
+$(function(){
 //	$('#videos_div1').empty();
 //	$.ajax({
 //		url:'VideoServlet',
@@ -32,7 +32,7 @@
 		$(this).addClass('active');
 		$('#videos_div1').empty();
 		$.ajax({
-			url:'VideoServlet',
+			url:'/RESTful/video/videoClassName/生活',
 			type:'get',
 // 			data:{'categoryID':1},
 			dataType:"json",
@@ -197,13 +197,13 @@
 		$(this).addClass('active');
 		$('#videos_div1').empty();
 		$.ajax({
-			url:'VideoServlet',
+			url:'RESTful/video/videoClassName/生活',
 			type:'get',
 			dataType:"json",
 			success:function(data){
 				$.each(data,function(i,v){
-					
-					if(v.videoClassName=="Daily"){
+					console.log(data);
+//					if(v.videoClassName=="Daily"){
 						var vn = v.videoName.substring(0,25);
 						var vd = v.videoDescription;
 						if(vd==null){
@@ -219,7 +219,7 @@
 								"<span class='font-right'><div style='width:200px; display:inline-block' class='font-right'><p>"+vd+"</p></div></span></a><br>"+
 								"<span id='v_watchtimes'>"+v.videoWatchTimes+ "views</span><br></td>"+
 								"</div>");
-					}
+//					}
 				});
 			}
 		})
