@@ -124,26 +124,14 @@ public class MemberService {
 	}
 
 	// 更改、測試完成
-	public int update(MemberVO mvo) {
-		int result = -1;
-		if (mvo != null) {
-			mvo.setMemberEmail(mvo.getMemberEmail());
-			mvo.setMemberFB(mvo.getMemberFB());
-			mvo.setMemberGoogle(mvo.getMemberGoogle());
-			mvo.setMemberTwitter(mvo.getMemberTwitter());
-			mvo.setMemberName(mvo.getMemberName());
-			mvo.setMemberNickname(mvo.getMemberNickname());
-			mvo.setMemberBirthday(mvo.getMemberBirthday());
-			mvo.setMemberPhoto(mvo.getMemberPhoto());
-			mvo.setMemberRegisterTime(mvo.getMemberRegisterTime());
-			mvo.setMemberSelfIntroduction(mvo.getMemberSelfIntroduction());
-			mvo.setBroadcastWebsite(mvo.getBroadcastWebsite());
-			mvo.setBroadcastTitle(mvo.getBroadcastTitle());
-			mvo.setBroadcastClassName(mvo.getBroadcastClassName());
-			mvo.setBroadcastTime(mvo.getBroadcastTime());
-			mvo.setBroadcastDescription(mvo.getBroadcastDescription());
-			mvo.setBroadcastWatchTimes(mvo.getBroadcastWatchTimes());
-			result = dao.update(mvo);
+	public boolean update(MemberVO bean) {
+		boolean result = false;
+		int temp = -1;
+		if (bean != null) {
+			temp = dao.update(bean);
+			if (temp == 1) {
+				result = true;
+			}
 		}
 		return result;
 	}
@@ -163,16 +151,15 @@ public class MemberService {
 
 	public boolean memberAccountHasBeanUsed(String memberAccount) {
 		boolean result = false;
-		MemberVO bean = dao.findByMemberAccount(memberAccount);
-		if (bean != null) {
+		String temp = dao.getMemberAccount(memberAccount);
+		if (temp != null) {
 			result = true;
 		}
 		return result;
 	}
 
-	public boolean changePhoto(String memberAccount, byte[] photo) {
+	public boolean changePhoto(MemberVO bean, byte[] photo) {
 		boolean result = false;
-		MemberVO bean = dao.findByMemberAccount(memberAccount);
 		bean.setMemberPhoto(photo);
 		if (dao.update(bean) == 1) {
 			result = true;
