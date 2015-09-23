@@ -46,14 +46,16 @@ public class Login extends HttpServlet {
 		}
 		if(errors!=null && !errors.isEmpty()) {
 			request.getRequestDispatcher(
-					"NewFile.html").forward(request, response);
+					"Login.jsp").forward(request, response);
 			return ;
 		}
 		
 		MemberVO bean = ms.login1(username, password);
+		
 		if(operation!=null && operation.equals("登入")&& bean != null){		
 				HttpSession session = request.getSession();
-				String ip = request.getRemoteAddr();// 有個ip and then?
+				String ip = request.getRemoteAddr();
+				ls.login(username, ip);
 				session.setAttribute("user", bean);
 				response.sendRedirect(path + "/HomePageVersion3.jsp");
 				return;

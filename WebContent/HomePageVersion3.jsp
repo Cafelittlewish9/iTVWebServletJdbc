@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.io.* , java.lang.Math"%>
+    pageEncoding="UTF-8" session="true" import="java.io.* , java.lang.Math"%>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -63,6 +63,7 @@ $(function(){
 			}
 		})
 })
+// alert("${user.memberAccount}");
 </script>
 
 </head>
@@ -99,7 +100,7 @@ $(function(){
 
 <center>
         <div style="background:white; width:93%; margin:50px 0px 50px 0px">
-        
+        <a href="showServlet?operation=list" STYLE="text-decoration:none" type="hidden">
 			<table>
 				<tr>
 					<div style="height:40px;text-align:left;;text-align:center;">
@@ -112,7 +113,7 @@ $(function(){
 					</div>
 				</tr>
 			</table>
-			
+		</a>	
 		</div>
 </center>
 
