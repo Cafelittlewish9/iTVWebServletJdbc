@@ -1,12 +1,3 @@
-import model.dao.jdbc.ArticleClassDAOjdbc;
-import model.dao.jdbc.CloudDAOjdbc;
-import model.dao.jdbc.VideoCommentsDAOjdbc;
-import model.dao.jdbc.VideoDAOjdbc;
-import model.vo.ArticleClassVO;
-import model.vo.CloudVO;
-import model.vo.VideoCommentsVO;
-import model.vo.VideoVO;
-
 public class UpdateDemo {
 
 	public static void main(String[] args) {
@@ -25,11 +16,6 @@ public class UpdateDemo {
 //		DAO.update(bean.getReportedMemberId(), bean.getReportTime(), bean.getReportReason(), bean.getOrderId());
 		
 //		........................................
-		
-		VideoDAOjdbc dao = new VideoDAOjdbc();
-		dao.update(100000, 13);
-		System.out.println();
-		
 		
 	}
 

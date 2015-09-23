@@ -73,34 +73,34 @@ public class Registry extends HttpServlet {
 			return;
 		}
 		
-		MemberVO bean=ms.login1(username, password);
-		if(operation!=null && operation.equals("註冊")&& bean != null){
-			errorMsg.add("帳號已存在，請再輸入其他帳號");		
-		}else{
-			try {
-				ms.registry1(username, password, usermail);
-				bean.setMemberNickname(nickname);
-				bean.setMemberBirthday(ConvertType.convertToUtilDate(birthday));
-				bean.setBroadcastWebsite(broadcastWebsite);
-				ms.update(bean);
-			} catch (Exception e) {
-				e.printStackTrace();
-				errors.put("Exception", e.getMessage());
-		        RequestDispatcher failureView = request.getRequestDispatcher("/Login.jsp");
-		        failureView.forward(request, response);
-			}
-		}
+//		MemberVO bean=ms.login1(username, password);
+//		if(operation!=null && operation.equals("註冊")&& bean != null){
+//			errorMsg.add("帳號已存在，請再輸入其他帳號");		
+//		}else{
+//			try {
+//				ms.registry1(username, password, usermail);
+//				bean.setMemberNickname(nickname);
+//				bean.setMemberBirthday(ConvertType.convertToUtilDate(birthday));
+//				bean.setBroadcastWebsite(broadcastWebsite);
+//				ms.update(bean);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				errors.put("Exception", e.getMessage());
+//		        RequestDispatcher failureView = request.getRequestDispatcher("/Login.jsp");
+//		        failureView.forward(request, response);
+//			}
+//		}
 		
 		
-		request.setAttribute("UserIdkey", bean);
-		if(errorMsg.isEmpty()){
-			request.getRequestDispatcher("HomePageVersion3.jsp").forward(request, response);
-			return ;
-		}else{
-			request.getRequestDispatcher("Login.jsp").forward(request, response);
-			return ;
-		}
-		
+//		request.setAttribute("UserIdkey", bean);
+//		if(errorMsg.isEmpty()){
+//			request.getRequestDispatcher("HomePageVersion3.jsp").forward(request, response);
+//			return ;
+//		}else{
+//			request.getRequestDispatcher("Login.jsp").forward(request, response);
+//			return ;
+//		}
+//		
 	}
 
 	@Override

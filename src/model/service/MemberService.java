@@ -1,9 +1,7 @@
 package model.service;
 
-import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Collection;
 
 import model.dao.MemberDAO;
 import model.dao.jdbc.MemberDAOjdbc;
@@ -118,7 +116,7 @@ public class MemberService {
 	// ↑↑↑↑↑↑↑雖然很討厭他，但我還是測完了，但請再幫我測一次感恩。
 
 	// 會員查詢個資
-	public MemberVO checkInfo(String username, String password) {
+	public MemberVO showMemberInfo(String username, String password) {
 		MemberVO mvo = this.login1(username, password);
 		return mvo;
 	}

@@ -95,7 +95,7 @@ $(function () {
 						<div id="l_input2" class="input-group">
 							<span class="input-group-addon" id="basic-addon1">密碼</span>
 							<input id="memberPassword" type="text" name="memberPassword"
-								class="form-control" maxlength="6" placeholder="請輸入"
+								class="form-control" maxlength="20" placeholder="請輸入"
 								aria-describedby="basic-addon1">
 						</div>
 						<div id="l_input3" class="input-group">
@@ -107,7 +107,7 @@ $(function () {
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">暱稱</span>
 							<input id="memberNickname" type="text" name="memberNickname"
-								class="form-control" maxlength="10" placeholder="請輸入"
+								class="form-control" maxlength="40" placeholder="請輸入"
 								aria-describedby="basic-addon1">
 						</div>
 						<div class="input-group">
@@ -169,7 +169,7 @@ $(function () {
 				
 				<div id="l_input2-1"  class="input-group">
 					  <span  class="input-group-addon" id="basic-addon1">密碼</span>
-					  <input id="Login_memberPassword" type="text" name="memberPassword" class="form-control" maxlength="6" placeholder="請輸入" aria-describedby="basic-addon1">
+					  <input id="Login_memberPassword" type="text" name="memberPassword" class="form-control" maxlength="20" placeholder="請輸入" aria-describedby="basic-addon1">
 				</div>
 				
 				
