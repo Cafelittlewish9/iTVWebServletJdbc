@@ -17,34 +17,34 @@ public class ReplyArticleService {
 		return dao.selectByArticleId(articleId);
 	}
 
-	public boolean addReplyArticle(int memberId, int articleId, String replyContent) {
-		int temp = dao.insert(memberId, articleId, replyContent);
-		if (temp == 1) {
-			return true;
-		} else {
-			return false;
+	public boolean addReplyArticle(ReplyArticleVO bean) {
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.insert(bean);
+			if (temp == 1) {
+				result = true;
+			}
 		}
+		return result;
 	}
 
-	public boolean modifyReplyArticle(String replyContent, int replyArticleId) {
-		if (replyContent != null && replyContent.trim().length() != 0) {
-			int temp = dao.update(replyContent, replyArticleId);
+	public boolean modifyReplyArticle(ReplyArticleVO bean) {
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.update(bean);
 			if (temp == 1) {
-				return true;
-			} else {
-				return false;
+				result = true;
 			}
-		} else {
-			return false;
 		}
+		return result;
 	}
 
 	public boolean deleteReplyArticle(int replyArticleId) {
+		boolean result = false;
 		int temp = dao.delete(replyArticleId);
 		if (temp == 1) {
-			return true;
-		} else {
-			return false;
+			result = true;
 		}
+		return result;
 	}
 }

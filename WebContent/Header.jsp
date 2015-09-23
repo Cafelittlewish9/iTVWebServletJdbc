@@ -59,9 +59,7 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="padding:0px">
 								<div class="stream-title--image">
-			              
-					                <img src="img/photo.png" />
-					              
+					                <img src="data:image/jpg;base64,${LoginOK.memberNickname}" />
 					            </div >
 					            </a>
 								<ul class="dropdown-menu" role="menu">
@@ -88,22 +86,17 @@
 					</div>
 				</c:if>
 			
-			
 			<c:if test="${empty LoginOK }">
-			
 	          <div class="header-home--nav">
 	            
 <!-- 	              <a class="header-home--link login" href="/accounts/login/" id="woopra_login">Login</a> -->
 <!-- 	              <a class="header-home--link signup" href="/accounts/signup/" id="woopra_sign_up">Sign up</a> -->
-
-				<button type="button" class="header-home--link login" data-toggle="modal" data-target="#Login">登入</button>
-				<button type="button" class="header-home--link signup" id="signup" data-toggle="modal" data-target="#SignUp">註冊</button>
-	            
+					<button type="button" class="header-home--link login" data-toggle="modal" data-target="#Login">登入</button>
+					<button type="button" class="header-home--link signup" id="signup" data-toggle="modal" data-target="#SignUp">註冊</button>
 	              <a class="header-home--link shows" href="LiveStream.jsp" style="height:39px;text-decoration: none">觀賞實況</a>
 	          </div>
+	          </c:if>
 	        </div>
-			
-			</c:if>
 			
     </header>
 <!-- </body> -->

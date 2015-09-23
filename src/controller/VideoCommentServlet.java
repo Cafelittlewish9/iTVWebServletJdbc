@@ -36,9 +36,7 @@ public class VideoCommentServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		String query = request.getQueryString();
-		
-		int videoId = ConvertType.convertToInt(query.substring(query.indexOf("=") + 1));
+		int videoId = ConvertType.convertToInt(request.getParameter("videoId"));
 		List<VideoCommentsVO> list = service.videoCommentsList(videoId);
 		
 		JSONObject jsonObj = new JSONObject();

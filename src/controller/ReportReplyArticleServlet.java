@@ -107,10 +107,9 @@ public class ReportReplyArticleServlet extends HttpServlet {
 			}
 			request.getRequestDispatcher("").forward(request, response); //目前沒有頁面
 		}
-		
-		//檢舉文章、管理員後台刪除檢舉
+		//檢舉文章、管理員後台刪除檢舉s
 		if(sendReportArticle != null & sendReportArticle.equals("insert")){
-			boolean result = reportReplyArticleService.addReportReplyArticle(convertReportedReplyArticleId, reportReason);
+			boolean result = reportReplyArticleService.addReportReplyArticle(bean);
 			if(!result){
 				request.setAttribute("insert", 0);
 			}else{

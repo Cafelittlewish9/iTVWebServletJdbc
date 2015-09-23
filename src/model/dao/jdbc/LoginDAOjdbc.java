@@ -13,113 +13,102 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+
 import model.dao.LoginDAO;
 import model.vo.LoginVO;
+import model.vo.ReplyArticleVO;
 import util.ConvertType;
 import util.GC;
+import util.HibernateUtil;
 
 public class LoginDAOjdbc implements LoginDAO {
-//	private static final String URL = GC.URL;
-//	private static final String USERNAME = GC.USERNAME;
-//	private static final String PASSWORD = GC.PASSWORD;
-	private DataSource ds;
+	// private static final String URL = GC.URL;
+	// private static final String USERNAME = GC.USERNAME;
+	// private static final String PASSWORD = GC.PASSWORD;
+	// private DataSource ds;
+	//
+	// public LoginDAOjdbc(){
+	// try {
+	// Context ctx = new InitialContext();
+	// this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+	// } catch (NamingException e) {
+	// e.printStackTrace();
+	// }
+	// }
 
-	public LoginDAOjdbc(){
-		try {
-			Context ctx = new InitialContext();
-			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private static final String SELECT_BY_MEMBERACCOUNT = "select * from Login where memberAccount = ?";
+	// private static final String SELECT_BY_MEMBERACCOUNT = "select * from
+	// Login where memberAccount = ?";
 
 	@Override
 	public List<LoginVO> selectAll(String memberAccount) {
-		LoginVO bean = null;
 		List<LoginVO> list = null;
-		try (Connection conn=ds.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_MEMBERACCOUNT);) {
-			stmt.setString(1, memberAccount);
-			ResultSet rset = stmt.executeQuery();
-			list = new ArrayList<LoginVO>();
-			while (rset.next()) {
-				bean = new LoginVO();
-				bean.setMemberAccount(rset.getString("memberAccount"));
-				bean.setIp(rset.getString("ip"));
-				bean.setLoginTime(ConvertType.convertToLocalTime(rset.getTimestamp("loginTime")));
-				list.add(bean);
-			}
-		} catch (SQLException e) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from LoginVO where memberAccount = ?").setParameter(0, memberAccount);
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return list;
 	}
 
-	private static final String SELECT_ALL = "select * from Login";
+	// private static final String SELECT_ALL = "select * from Login";
 
 	@Override
 	public List<LoginVO> selectAll() {
-		List<LoginVO> result = null;
-		try (Connection conn=ds.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
-				ResultSet rset = stmt.executeQuery();) {
-			result = new ArrayList<LoginVO>();
-			while (rset.next()) {
-				LoginVO bean = new LoginVO();
-				bean.setLoginTime(ConvertType.convertToLocalTime(rset.getTimestamp("loginTime")));
-				bean.setIp(rset.getString("ip"));
-				bean.setMemberAccount(rset.getString("memberAccount"));
-				result.add(bean);
-			}
-		} catch (SQLException e) {
+		List<LoginVO> list = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from LoginVO");
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
-		return result;
+		return list;
 	}
 
-	private static final String SELECT_LAST_TIME = "SELECT TOP 1 * FROM Login WHERE memberAccount = ? ORDER BY logintime DESC";
+	// private static final String SELECT_LAST_TIME = "SELECT TOP 1 * FROM Login
+	// WHERE memberAccount = ? ORDER BY logintime DESC";
 
 	@Override
 	public LoginVO select(String memberAccount) {
 		LoginVO bean = null;
-		try (Connection conn=ds.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-				PreparedStatement stmt = conn.prepareStatement(SELECT_LAST_TIME);) {
-			stmt.setString(1, memberAccount);
-			ResultSet rset = stmt.executeQuery();
-			if (rset.next()) {
-				bean = new LoginVO();
-				bean.setLoginTime(ConvertType.convertToLocalTime(rset.getTimestamp("loginTime")));
-				bean.setIp(rset.getString("ip"));
-				bean.setMemberAccount(rset.getString("memberAccount"));
-			}
-		} catch (SQLException e) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session
+					.createQuery("from LoginVO where memberAccount = ? ORDER BY logintime DESC")
+					.setParameter(0, memberAccount);
+			bean = (LoginVO) query.list().get(0);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return bean;
 	}
 
-	private static final String INSERT = "insert into Login(ip, memberAccount) values(?, ?)";
+//	private static final String INSERT = "insert into Login(ip, memberAccount) values(?, ?)";
 
 	@Override
-	public boolean insert(LoginVO bean) {
-		boolean result = false;
-		try (Connection conn=ds.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
-			if (bean != null) {
-				stmt.setString(1, bean.getIp());
-				stmt.setString(2, bean.getMemberAccount());
-				int i = stmt.executeUpdate();
-				if (i == 1) {
-					result = true;
-				}
-			}
-		} catch (SQLException e) {
+	public int insert(LoginVO bean) {
+		int result = -1;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			session.saveOrUpdate(bean);
+			session.getTransaction().commit();
+			result = 1;
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return result;

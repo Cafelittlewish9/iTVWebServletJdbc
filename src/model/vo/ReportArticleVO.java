@@ -1,5 +1,6 @@
 package model.vo;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -9,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ReportArticleVO {
+public class ReportArticleVO implements Serializable {
 	@XmlElement(required = true)
 	private int orderId;
 	@XmlElement(required = true)

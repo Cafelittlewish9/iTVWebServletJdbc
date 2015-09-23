@@ -126,7 +126,7 @@ public class ReportArticleServlet extends HttpServlet {
 		
 		//檢舉文章、管理員後台刪除檢舉
 		if(sendReportArticle != null && sendReportArticle.equals("insert")){
-			boolean result = reportArticleService.reportArticle(bean);
+			boolean result = reportArticleService.addReportArticle(bean);
 			if(!result){
 				request.setAttribute("insert", 0);
 			}else{

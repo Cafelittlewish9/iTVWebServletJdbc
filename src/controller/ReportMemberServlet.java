@@ -111,7 +111,7 @@ public class ReportMemberServlet extends HttpServlet {
 		
 		//檢舉影片、管理員後台刪除檢舉
 		if(sendReportMember!=null && sendReportMember.equals("insert")){
-			boolean result = reportMemberService.addReportMember(convertReportedMemberId, reportReason);
+			boolean result = reportMemberService.addReportMember(bean);
 			if(!result){
 				request.setAttribute("insert", 0);
 			}else{

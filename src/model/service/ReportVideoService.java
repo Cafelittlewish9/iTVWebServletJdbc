@@ -19,22 +19,25 @@ public class ReportVideoService {
 	public Collection<ReportVideoVO> selectAllList(){
 		return dao.selectAll();
 	}
-	public boolean addReportVideo(int reportedVideoId,java.util.Date reportTime,String reportReason){
-		ReportVideoVO bean = new ReportVideoVO();
-		bean.setReportedVideoId(reportedVideoId);
-		bean.setReportTime(reportTime);
-		bean.setReportReason(reportReason);
-		return dao.insert(bean);
+	public boolean addReportVideo(ReportVideoVO bean){
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.insert(bean);
+			if (temp == 1) {
+				result = true;
+			}
+		}
+		return result;
 	}
 	
 	//刪除成功為false
 	public boolean deleteVideo(ReportVideoVO bean){
-		boolean result1 = dao2.delete(bean.getReportedVideoId());
-		boolean result2 = dao.delete(bean.getOrderId());
-		if(result1 && result2){
+		int result1 = dao2.delete(bean.getVideo().getVideoId());
+		int result2 = dao.delete(bean.getOrderId());
+		if (result1 == 1 && result2 == 1) {
 			return true;
-		}else{
+		} else {
 			return false;
-		}	
+		}
 	}	
 }

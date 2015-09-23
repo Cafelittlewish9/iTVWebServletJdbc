@@ -84,13 +84,13 @@ $(function () {
 			</div>
 			<div class="modal-body">
 				<!-- 		<div class="upload-form"> -->
-				<form id="SignUp_form" action="<c:url value="registry.do" />"> method="post">
+				<form id="SignUp_form" action="<c:url value="registry" />"> method="post">
 					<fieldset style="text-align: center">
 						<div id="l_input1" class="input-group">
 							<span class="input-group-addon" id="basic-addon1">帳號</span> 
 							<input id="memberAccount" type="text" name="memberAccount"
 								class="form-control" placeholder="請輸入"
-								aria-describedby="basic-addon1">
+								aria-describedby="basic-addon1" value="${ param.memberAccount }">
 						</div>
 						<div id="l_input2" class="input-group">
 							<span class="input-group-addon" id="basic-addon1">密碼</span>
@@ -159,7 +159,7 @@ $(function () {
       
       <div class="modal-body">
 <!-- 		<div class="upload-form"> -->
-			<form id="Login_form" method="post" action="<c:url value="login/" />">
+			<form id="Login_form" method="post" action="<c:url value='/loginAjaxs' />">
 				<fieldset style="text-align:center">
 				
 				<div id="l_input1-1"  class="input-group">

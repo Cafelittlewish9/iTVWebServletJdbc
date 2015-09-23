@@ -1,6 +1,5 @@
 package model.dao;
 
-import java.io.InputStream;
 import java.util.List;
 
 import model.vo.MemberVO;
@@ -15,8 +14,6 @@ public interface MemberDAO {
 
 	public int getId(String memberAccount);
 
-	public MemberVO getAccount(String memberAccount);
-
 	public int update(MemberVO member);
 
 	public MemberVO findByPK(int memberId);
@@ -30,6 +27,8 @@ public interface MemberDAO {
 	public String getMemberAccount(String memberAccount);
 
 	public MemberVO findByMemberAccount(String memberAccount);
+	
+	public MemberVO findByEmail(String email);
 
-	public int updatePhoto(String memberAccount, InputStream photo);
+	public int updatePhoto(int memberId, byte[] photo);
 }

@@ -12,6 +12,6 @@ public interface FollowDAO {
 
 	public int insert(FollowVO bean);
 
-	public boolean delete(int followId, int memberId);
+	public int delete(int followId, int memberId);
 
 }

@@ -1,6 +1,10 @@
 package model.vo;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -8,31 +12,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class VideoVO {
-//	@XmlElement(required = true)
+public class VideoVO implements Serializable {
+	@XmlElement(required = true)
 	private int videoId;
-//	@XmlElement(required = true)
+	@XmlElement(required = true)
 	private int memberId;
-//	@XmlElement(required = true)
+	@XmlElement(required = true)
 	private String videoWebsite;
-//	@XmlElement(required = true)
+	@XmlElement(required = true)
 	private String videoClassName;
-//	@XmlElement(required = true)
+	@XmlElement(required = true)
 	private String videoTitle;
-//	@XmlElement(required = true)
+	@XmlElement(required = true)
 	private String videoName;
-//	@XmlElement(required = true)
+	@XmlElement(required = true)
 	private String videoPath;
-//	@XmlElement(required = true)
+	@XmlElement(required = true)
 	private java.util.Date videoUploadTime;
-//	@XmlElement(required = true)
+	@XmlElement(required = true)
 	private long videoWatchTimes;
-//	@XmlElement(required = true)
+	@XmlElement(required = true)
 	private String videoDescription;
-//	@XmlElement(required = true)
+	@XmlElement(required = true)
 	private java.util.Date videoDescriptionModifyTime;
-//	@XmlElement(required = true)
+	@XmlElement(required = true)
 	private MemberVO member;
+	@XmlElement(required = true)
+	private Set<VideoCommentsVO> videoComments = new LinkedHashSet<VideoCommentsVO>();
 
 	@Override
 	public String toString() {
@@ -137,4 +143,11 @@ public class VideoVO {
 		this.member = member;
 	}
 
+	public Set<VideoCommentsVO> getVideoComments() {
+		return videoComments;
+	}
+
+	public void setVideoComments(Set<VideoCommentsVO> videoComments) {
+		this.videoComments = videoComments;
+	}
 }

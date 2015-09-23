@@ -12,12 +12,10 @@ public interface VideoDAO {
 
 	public List<VideoVO> selectAll();
 
-	public boolean insert(VideoVO bean);
+	public int insert(VideoVO bean);
 
-	public boolean update(String videoDescription, int videoId);
+	public int update(VideoVO bean);
 
-	public void update(long videoWatchTimes, int videoId);
-
-	public boolean delete(int videoId);
+	public int delete(int videoId);
 
 }

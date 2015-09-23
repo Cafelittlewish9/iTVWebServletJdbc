@@ -26,16 +26,35 @@ public class VideoService {
 	}
 
 	public boolean uploadVideo(VideoVO bean) {
-		return dao.insert(bean);
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.insert(bean);
+			if (temp == 1) {
+				result = true;
+			}
+		}
+		return result;
 	}
 
 	// 只能改videoDescription，另外兩個參數是應資料庫而要求的
-	public boolean updateVideo(String videoDescription, int videoId) {
-		return dao.update(videoDescription, videoId);
+	public boolean updateVideo(VideoVO bean) {
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.update(bean);
+			if (temp == 1) {
+				result = true;
+			}
+		}
+		return result;
 	}
 
 	public boolean removeVideo(int videoId) {
-		return dao.delete(videoId);
+		boolean result = false;
+		int temp = dao.delete(videoId);
+		if (temp == 1) {
+			result = true;
+		}
+		return result;
 	}
 
 	// 不知道是否應該要有一個全刪的方法

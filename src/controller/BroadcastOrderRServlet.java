@@ -48,7 +48,7 @@ public class BroadcastOrderRServlet extends javax.servlet.http.HttpServlet{
 //      呼叫model
         BroadcastOrderVO bean = new BroadcastOrderVO();
         bean.setMemberAccount(memberAccount);
-        bean.setBroadcastWebsite("http://itvvm.cloudapp.net/ITV/LiveShow?memberAccount="+memberAccount);
+        bean.setBroadcastSite("http://itvvm.cloudapp.net/ITV/LiveShow?memberAccount="+memberAccount);
         bean.setBroadcastTitle(broadcastTitle);
         bean.setBroadcastTime(broadcastTime);
         //開台時間其實實況主應該要能選擇，不過想限定成實況主按下開始實況按鈕時才送入DB

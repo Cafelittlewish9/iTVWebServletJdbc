@@ -10,10 +10,10 @@ public interface VideoCommentsDAO {
 	
 	public List<VideoCommentsVO> selectByVideoId(int videoId);
 
-	public boolean insert(VideoCommentsVO videoComments);
+	public int insert(VideoCommentsVO videoComments);
 
-	public boolean update(VideoCommentsVO videoComments);
+	public int update(VideoCommentsVO videoComments);
 
-	public boolean delete(int commentId);
+	public int delete(int commentId);
 
 }

@@ -85,47 +85,44 @@ public class CloudService {
 		return result;
 	}
 
-	//***********
-	public boolean addFile(int memberId, String fileName, String fileType, String filePath, long fileSize) {
+	// ***********
+	public boolean addFile(CloudVO bean) {
 		boolean result = false;
-		CloudVO bean = new CloudVO();
-		bean.setMemberId(memberId);
-		bean.setFileName(fileName);
-		bean.setFileType(fileType);
-		bean.setFilePath(filePath);
-		bean.setFileSize(fileSize);
-		int i = dao.insert(bean);
-		if(i == 1){
-			return true; 
+		if (bean != null) {
+			int temp = dao.insert(bean);
+			if (temp == 1) {
+				result = true;
+			}
 		}
 		return result;
 	}
 
-	public boolean modifyFile(int fileId, String filePath, long fileSize) {
+	public boolean modifyFile(CloudVO bean) {
 		boolean result = false;
-		int i = dao.updateFile(filePath, fileSize, fileId);
-		if(i == 1){
-			return true; 
+		if (bean != null) {
+			int temp = dao.updateFile(bean);
+			if (temp == 1) {
+				result = true;
+			}
 		}
-		
 		return result;
 	}
 
 	public boolean modifyFileName(int fileId, String fileName, String filePath) {
 		boolean result = false;
 		int i = dao.updateFileName(fileId, fileName, filePath);
-		if(i == 1){
+		if (i == 1) {
 			return true;
 		}
 		return result;
 	}
 
 	public boolean deleteFile(int fileId) {
+		boolean result = false;
 		int temp = dao.delete(fileId);
 		if (temp == 1) {
-			return true;
-		} else {
-			return false;
+			result = true;
 		}
+		return result;
 	}
 }

@@ -12,10 +12,10 @@ public interface BroadcastOrderDAO {
 	
 	public BroadcastOrderVO selectByMemberAccount(String memberAccount);
 
-	public int insert(String memberAccount, String broadcastWebsite, String broadcastTitle, java.util.Date broadcastTime);
+	public int insert(BroadcastOrderVO bean);
 
-	public int update(String broadcastTitle, String memberAccount);
+	public int update(BroadcastOrderVO bean);
 
-	public boolean delete(String memberAccount);
+	public int delete(String memberAccount);
 
 }

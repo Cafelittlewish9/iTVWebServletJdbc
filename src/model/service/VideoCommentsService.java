@@ -20,32 +20,35 @@ public class VideoCommentsService {
 		return dao.selectByVideoId(videoId);
 	}
 	
-	public boolean insertVideoComments(int memberId , int videoId , String commentContent){
-		VideoCommentsVO bean = new VideoCommentsVO();
-		bean.setMemberId(memberId);
-		bean.setVideoId(videoId);
-		bean.setCommentContent(commentContent);
-		boolean result = dao.insert(bean);
-		if(result == true){
-			return true;
+	public boolean insertVideoComments(VideoCommentsVO bean){
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.insert(bean);
+			if (temp == 1) {
+				result = true;
+			}
 		}
-		return false;
+		return result;
 	}
 	
-	public boolean updateVideoComments(String commentsContent , java.sql.Timestamp commentTime , int commentId){
-		VideoCommentsVO bean = new VideoCommentsVO();
-		bean.setCommentContent(commentsContent);
-		bean.setCommentTime(commentTime);
-		bean.setCommentId(commentId);
-		boolean result = dao.update(bean);
-		if(result == true){
-			return true;
+	public boolean updateVideoComments(VideoCommentsVO bean){
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.update(bean);
+			if (temp == 1) {
+				result = true;
+			}
 		}
-		return false;
+		return result;
 	}
 	
 	public boolean deleteVideoComments(int commentId){
-		return dao.delete(commentId);
+		boolean result = false;
+		int temp = dao.delete(commentId);
+		if (temp == 1) {
+			result = true;
+		}
+		return result;
 	}
 	
 	

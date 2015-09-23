@@ -21,21 +21,21 @@ public class ReportArticleService {
 		return dao.selectAll();
 	}
 
-	public boolean reportArticle(int reportedArticleId, String reportReason) {
-		ReportArticleVO bean = new ReportArticleVO();
-		bean.setReportedArticleId(reportedArticleId);
-		bean.setReportReason(reportReason);
-		return dao.insert(bean);
-	}
-
-	public boolean reportArticle(ReportArticleVO bean) {
-		return dao.insert(bean);
+	public boolean addReportArticle(ReportArticleVO bean) {
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.insert(bean);
+			if (temp == 1) {
+				result = true;
+			}
+		}
+		return result;
 	}
 
 	public boolean deleteArticle(ReportArticleVO bean) {
-		boolean result1 = dao2.delete(bean.getReportedArticleId());
-		boolean result2 = dao.delete(bean.getOrderId());
-		if (result1 && result2) {
+		int result1 = dao2.delete(bean.getArticle());
+		int result2 = dao.delete(bean.getOrderId());
+		if (result1 == 1 && result2 == 1) {
 			return true;
 		} else {
 			return false;

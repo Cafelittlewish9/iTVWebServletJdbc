@@ -1,19 +1,13 @@
 package util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
-import java.util.List;
 
 import model.dao.ArticleDAO;
 import model.dao.LoginDAO;
 import model.dao.jdbc.ArticleDAOjdbc;
 import model.dao.jdbc.LoginDAOjdbc;
-import model.vo.ArticleVO;
 
 public class ConvertType {
 
@@ -123,12 +117,6 @@ public class ConvertType {
 
 		ArticleDAO temp = new ArticleDAOjdbc();
 		LoginDAO dao = new LoginDAOjdbc();
-
-		List<ArticleVO> beans = temp.selectByInput("", "", "Pikachu", "");
-		for (ArticleVO b : beans) {
-			java.util.Date time1 = ConvertType.convertToLocalTime(b.getPublishTime());
-			System.out.println(time1);
-		}
 
 		/*
 		 * List<LoginVO> bean = dao.selectAll("Pikachu"); for (LoginVO a : bean)

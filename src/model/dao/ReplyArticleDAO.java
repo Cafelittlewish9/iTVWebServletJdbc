@@ -10,9 +10,9 @@ public interface ReplyArticleDAO {
 
 	public List<ReplyArticleVO> selectByArticleId(int articleId);
 
-	public int insert(int memberId, int articleId, String replyContent);
+	public int insert(ReplyArticleVO bean);
 
-	public int update(String replyContent, int replyArticleId);
+	public int update(ReplyArticleVO bean);
 
 	public int delete(int replyArticleId);
 
