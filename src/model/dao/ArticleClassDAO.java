@@ -12,10 +12,10 @@ public interface ArticleClassDAO {
 	
 	public ArticleClassVO selectBySubclassName(String subclassName);
 
-	public boolean insert(ArticleClassVO bean);
+	public int insert(ArticleClassVO bean);
 
-	public boolean update(ArticleClassVO bean);
+	public int update(ArticleClassVO bean);
 
-	public boolean delete(String subclassNo);
+	public int delete(String subclassNo);
 
 }

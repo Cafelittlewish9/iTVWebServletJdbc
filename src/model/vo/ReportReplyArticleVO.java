@@ -1,5 +1,6 @@
 package model.vo;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -8,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ReportReplyArticleVO {
+public class ReportReplyArticleVO implements Serializable {
 	@XmlElement(required = true)
 	private int orderId;
 	@XmlElement(required = true)
@@ -19,7 +20,6 @@ public class ReportReplyArticleVO {
 	private String reportReason;
 	@XmlElement(required = true)
 	private ReplyArticleVO replyArticle;
-	private MemberVO member;
 
 	@Override
 	public String toString() {
@@ -56,11 +56,5 @@ public class ReportReplyArticleVO {
 	}
 	public void setReplyArticle(ReplyArticleVO replyArticle) {
 		this.replyArticle = replyArticle;
-	}
-	public MemberVO getMember() {
-		return member;
-	}
-	public void setMember(MemberVO member) {
-		this.member = member;
 	}
 }

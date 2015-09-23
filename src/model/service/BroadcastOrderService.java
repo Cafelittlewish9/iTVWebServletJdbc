@@ -27,24 +27,34 @@ public class BroadcastOrderService {
 
 	public BroadcastOrderVO createBroadcast(BroadcastOrderVO bean) {
 		BroadcastOrderVO result = null;
-		int temp = dao.insert(bean.getMemberAccount(), bean.getBroadcastWebsite(), bean.getBroadcastTitle(),
-				bean.getBroadcastTime());
-		if (temp == 1) {
-			bean = dao.selectByMemberAccount(bean.getMemberAccount());
+		if (bean != null) {
+			int temp = dao.insert(bean);
+			if (temp == 1) {
+				result = dao.selectByMemberAccount(bean.getMemberAccount());
+			}
 		}
 		return result;
 	}
 
 	public boolean changeTitle(BroadcastOrderVO bean) {
-		int temp = dao.update(bean.getBroadcastTitle(), bean.getMemberAccount());
-		if (temp == 1) {
-			return true;
-		} else {
-			return false;
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.update(bean);
+			if (temp == 1) {
+				result = true;
+			}
 		}
+		return result;
 	}
 
-	public boolean removeBroadcast(BroadcastOrderVO bean) {
-		return dao.delete(bean.getMemberAccount());
+	public boolean removeBroadcast(String memberAccount) {
+		boolean result = false;
+		if (memberAccount != null && memberAccount.trim().length() != 0) {
+			int temp = dao.delete(memberAccount);
+			if (temp == 1) {
+				result = true;
+			}
+		}
+		return result;
 	}
 }

@@ -6,12 +6,14 @@ import model.vo.VideoCommentsVO;
 
 public interface VideoCommentsDAO {
 
-	List<VideoCommentsVO> selectAll();
+	public List<VideoCommentsVO> selectAll();
+	
+	public List<VideoCommentsVO> selectByVideoId(int videoId);
 
-	boolean insert(VideoCommentsVO videoComments);
+	public int insert(VideoCommentsVO videoComments);
 
-	boolean update(VideoCommentsVO videoComments);
+	public int update(VideoCommentsVO videoComments);
 
-	boolean delete(int commentId);
+	public int delete(int commentId);
 
 }

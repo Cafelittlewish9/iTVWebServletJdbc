@@ -20,53 +20,34 @@ public class ShowService {
 		return list;
 	}
 
-	public Collection<ShowVO> addShow(int memberId, String website) {
-		Collection<ShowVO> list = null;
-		ShowVO bean = new ShowVO();
-		bean.setMemberId(memberId);
-		bean.setWebsite(website);
-		int result = dao.insert(bean);
-		if (result == 1) {
-			list = this.showList(memberId);
+	public boolean addShow(ShowVO bean) {
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.insert(bean);
+			if (temp == 1) {
+				result = true;
+			}
 		}
-		return list;
-	}
-
-	public Collection<ShowVO> addShow(ShowVO bean) {
-		Collection<ShowVO> list = null;
-		int result = dao.insert(bean);
-		if (result == 1) {
-			list = this.showList(bean.getMemberId());
-		}
-		return list;
+		return result;
 	}
 
 	// console 出現null pointer exception但移除成功
-	public Collection<ShowVO> removeShow(int memberId, String website) {
-		Collection<ShowVO> list = null;
-		boolean result = dao.delete(memberId, website);
-		if (result) {
-			list = this.showList(memberId);
+	public boolean removeShow(ShowVO bean) {
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.insert(bean);
+			if (temp == 1) {
+				result = true;
+			}
 		}
-		return list;
-	}
-
-	// console 出現null pointer exception但移除成功
-	public Collection<ShowVO> removeShow(ShowVO bean) {
-		Collection<ShowVO> list = null;
-		boolean result = dao.delete(bean.getMemberId(), bean.getWebsite());
-		if (result) {
-			list = this.showList(bean.getMemberId());
-		}
-		return list;
+		return result;
 	}
 
 	public static void main(String[] args) {
 		ShowService service = new ShowService();
-		for(ShowVO bean:service.showList(2)){
+		for (ShowVO bean : service.showList(2)) {
 			System.out.println(bean);
-//			System.out.println(bean.getTitle());
+			// System.out.println(bean.getTitle());
 		}
 	}
 }
-

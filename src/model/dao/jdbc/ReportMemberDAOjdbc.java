@@ -1,119 +1,95 @@
 package model.dao.jdbc;
 
-import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 import model.dao.ReportMemberDAO;
-import model.vo.MemberVO;
 import model.vo.ReportMemberVO;
-import util.ConvertType;
-import util.GC;
+import util.HibernateUtil;
 
 public class ReportMemberDAOjdbc implements ReportMemberDAO {
-//	private static final String URL = GC.URL;
-//	private static final String USERNAME = GC.USERNAME;
-//	private static final String PASSWORD = GC.PASSWORD;
-	private DataSource ds;
-	public ReportMemberDAOjdbc(){
-		try {
-			Context ctx = new InitialContext();
-			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static final String SELECT_ALL = "SELECT orderId, reportedMemberId, reportTime, reportReason, "
-			+ "memberAccount, memberName, memberNickname, memberPhoto, broadcastTitle, broadcastClassName, "
-			+ "broadcastDescription FROM ReportMember JOIN Member ON reportedMemberId = memberId "
-			+ "ORDER BY reportTime DESC";
+	// private static final String URL = GC.URL;
+	// private static final String USERNAME = GC.USERNAME;
+	// private static final String PASSWORD = GC.PASSWORD;
+	// private DataSource ds;
+	// public ReportMemberDAOjdbc(){
+	// try {
+	// Context ctx = new InitialContext();
+	// this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+	// } catch (NamingException e) {
+	// e.printStackTrace();
+	// }
+	// }
+	//
+	// private static final String SELECT_ALL = "SELECT orderId,
+	// reportedMemberId, reportTime, reportReason, "
+	// + "memberAccount, memberName, memberNickname, memberPhoto,
+	// broadcastTitle, broadcastClassName, "
+	// + "broadcastDescription FROM ReportMember JOIN Member ON reportedMemberId
+	// = memberId "
+	// + "ORDER BY reportTime DESC";
 
 	@Override
 	public List<ReportMemberVO> selectAll() {
-		List<ReportMemberVO> result = null;
-		try (Connection conn=ds.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
-				ResultSet rset = stmt.executeQuery();) {
-			result = new ArrayList<ReportMemberVO>();
-			while (rset.next()) {
-				ReportMemberVO bean = new ReportMemberVO();
-				bean.setOrderId(rset.getInt("orderId"));
-				bean.setReportedMemberId(rset.getInt("reportedMemberId"));
-				bean.setReportTime(ConvertType.convertToLocalTime(rset.getTimestamp("reportTime")));
-				bean.setReportReason(rset.getString("reportReason"));
-				MemberVO member = new MemberVO();
-				member.setMemberId(rset.getInt("reportedMemberId"));
-				member.setMemberAccount(rset.getString("memberAccount"));
-				member.setMemberName(rset.getString("memberName"));
-				member.setMemberNickname(rset.getString("memberNickname"));
-//				Blob b = rset.getBlob("memberPhoto");
-//				member.setMemberPhoto(b.getBytes(1, (int)b.length()));
-				member.setMemberPhoto(rset.getBytes("memberPhoto"));
-				member.setBroadcastTitle(rset.getString("broadcastTitle"));
-				member.setBroadcastClassName(rset.getString("broadcastClassName"));
-				member.setBroadcastDescription(rset.getString("broadcastDescription"));
-				bean.setMember(member);
-				result.add(bean);
-			}
-		} catch (SQLException e) {
+		List<ReportMemberVO> list = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from ReportMemberVO order by orderId asc");
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+//	private static final String INSERT = "insert into ReportMember(reportedMemberId, reportReason) values(?, ? )";
+
+	@Override
+	public int insert(ReportMemberVO reportMember) {
+		int result = -1;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			session.saveOrUpdate(reportMember);
+			session.getTransaction().commit();
+			result = 1;
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return result;
 	}
 
-	private static final String INSERT = "insert into ReportMember(reportedMemberId, reportReason) values(?, ? )";
+//	private static final String DELETE = "delete from ReportMember where orderId = ?";
 
 	@Override
-	public ReportMemberVO insert(ReportMemberVO bean) {
-		ReportMemberVO result = null;
-		try (Connection conn=ds.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
-			if (bean != null) {
-				stmt.setInt(1, bean.getReportedMemberId());
-				stmt.setString(2, bean.getReportReason());
-				int i = stmt.executeUpdate();
-				if (i == 1) {
-					result = bean;
-				}
-			}
-		} catch (SQLException e) {
+	public int delete(int orderId) {
+		int result = -1;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("delete from ReportMemberVO where orderId = ?").setParameter(0, orderId);
+			result = query.executeUpdate();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return result;
-	}
-
-	private static final String DELETE = "delete from ReportMember where orderId = ?";
-
-	@Override
-	public boolean delete(int orderId) {
-		try (Connection conn=ds.getConnection();
-//				Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-				PreparedStatement stmt = conn.prepareStatement(DELETE);) {
-			stmt.setInt(1, orderId);
-			int i = stmt.executeUpdate();
-			if (i == 1) {
-				return true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
 	}
 
 	public static void main(String[] args) {
 		ReportMemberDAO temp = new ReportMemberDAOjdbc();
+		List<ReportMemberVO> list = temp.selectAll();
+		for (ReportMemberVO bean : list) {
+			System.out.println(bean.getOrderId());
+			System.out.println(bean.getMember().getMemberAccount());
+			System.out.println(bean.getMember().getMemberPassword());
+		}
 	}
 }

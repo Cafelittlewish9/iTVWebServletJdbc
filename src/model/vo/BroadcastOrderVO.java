@@ -1,5 +1,7 @@
 package model.vo;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -7,11 +9,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BroadcastOrderVO {
+public class BroadcastOrderVO implements Serializable {
 	@XmlElement(required = true)
 	private String memberAccount;
 	@XmlElement(required = true)
-	private String broadcastWebsite;
+	private String broadcastSite;
 	@XmlElement(required = true)
 	private String broadcastTitle;
 	@XmlElement(required = true)
@@ -21,7 +23,7 @@ public class BroadcastOrderVO {
 
 	@Override
 	public String toString() {
-		return memberAccount + "標題: " + broadcastTitle + "網址: " + broadcastWebsite + System.lineSeparator();
+		return memberAccount + "標題: " + broadcastTitle + "網址: " + broadcastSite + System.lineSeparator();
 	}
 
 	public String getMemberAccount() {
@@ -32,12 +34,12 @@ public class BroadcastOrderVO {
 		this.memberAccount = memberAccount;
 	}
 
-	public String getBroadcastWebsite() {
-		return broadcastWebsite;
+	public String getBroadcastSite() {
+		return broadcastSite;
 	}
 
-	public void setBroadcastWebsite(String broadcastWebsite) {
-		this.broadcastWebsite = broadcastWebsite;
+	public void setBroadcastSite(String broadcastSite) {
+		this.broadcastSite = broadcastSite;
 	}
 
 	public String getBroadcastTitle() {

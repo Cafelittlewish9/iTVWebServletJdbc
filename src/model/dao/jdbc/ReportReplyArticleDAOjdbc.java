@@ -14,101 +14,66 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+
 import model.dao.ReportReplyArticleDAO;
 import model.vo.MemberVO;
 import model.vo.ReplyArticleVO;
 import model.vo.ReportReplyArticleVO;
+import model.vo.ReportVideoVO;
 import util.ConvertType;
 import util.GC;
+import util.HibernateUtil;
 
 public class ReportReplyArticleDAOjdbc implements ReportReplyArticleDAO {
 //	private static final String URL = GC.URL;
 //	private static final String USERNAME = GC.USERNAME;
 //	private static final String PASSWORD = GC.PASSWORD;
-	private DataSource ds;
-	public ReportReplyArticleDAOjdbc(){
-		try {
-			Context ctx = new InitialContext();
-			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-	}
-	private static final String SELECT_ALL = "SELECT orderId, reportedReplyArticleId, reportTime, reportReason, "
-			+ "r.memberId, replyContent, modifyTime, memberAccount, memberPhoto FROM ReportReplyArticle "
-			+ "JOIN ReplyArticle r ON reportedReplyArticleId = replyArticleId JOIN Member m ON r.memberId = "
-			+ "m.memberId ORDER BY reportTime DESC";
+//	private DataSource ds;
+//	public ReportReplyArticleDAOjdbc(){
+//		try {
+//			Context ctx = new InitialContext();
+//			this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
+//		} catch (NamingException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	private static final String SELECT_ALL = "SELECT orderId, reportedReplyArticleId, reportTime, reportReason, "
+//			+ "r.memberId, replyContent, modifyTime, memberAccount, memberPhoto FROM ReportReplyArticle "
+//			+ "JOIN ReplyArticle r ON reportedReplyArticleId = replyArticleId JOIN Member m ON r.memberId = "
+//			+ "m.memberId ORDER BY reportTime DESC";
 
 	@Override
 	public List<ReportReplyArticleVO> selectAll() {
 		List<ReportReplyArticleVO> list = null;
-		ReportReplyArticleVO reportReplyArticle = null;
-		Connection conn = null;
-		try {conn=ds.getConnection();
-//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL);
-			ResultSet rs = pstmt.executeQuery();
-			list = new ArrayList<ReportReplyArticleVO>();
-			while (rs.next()) {
-				reportReplyArticle = new ReportReplyArticleVO();
-				reportReplyArticle.setOrderId(rs.getInt("orderId"));
-				reportReplyArticle.setReportedReplyArticleId(rs.getInt("reportedReplyArticleId"));
-				reportReplyArticle.setReportTime(ConvertType.convertToLocalTime(rs.getTimestamp("reportTime")));
-				reportReplyArticle.setReportReason(rs.getString("reportReason"));
-				ReplyArticleVO replyArticle = new ReplyArticleVO();
-				replyArticle.setReplyArticleId(rs.getInt("reportedReplyArticleId"));
-				replyArticle.setMemberId(rs.getInt("memberId"));
-				replyArticle.setReplyContent(rs.getString("replyContent"));
-				replyArticle.setModifyTime(ConvertType.convertToLocalTime(rs.getTimestamp("modifyTime")));
-				MemberVO member = new MemberVO();
-//				member.setMemberId(rs.getInt("memberId"));
-				member.setMemberAccount(rs.getString("memberAccount"));
-//				Blob b = rs.getBlob("memberPhoto");
-//				member.setMemberPhoto(b.getBytes(0, (int)b.length()));
-				member.setMemberPhoto(rs.getBytes("memberPhoto"));
-				replyArticle.setMember(member);
-				reportReplyArticle.setReplyArticle(replyArticle);
-				list.add(reportReplyArticle);
-			}
-		} catch (SQLException e) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from ReportReplyArticleVO order by orderId asc");
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 		return list;
 	}
 
-	private static final String INSERT = "INSERT INTO ReportReplyArticle(reportedReplyArticleId, reportReason) VALUES(?, ?)";
+//	private static final String INSERT = "INSERT INTO ReportReplyArticle(reportedReplyArticleId, reportReason) VALUES(?, ?)";
 
 	@Override
-	public boolean insert(ReportReplyArticleVO reportReplyArticle) {
-		Connection conn = null;
-		boolean result = false;
-		try {conn=ds.getConnection();
-//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-			PreparedStatement pstmt = conn.prepareStatement(INSERT);
-			pstmt.setInt(1, reportReplyArticle.getReportedReplyArticleId());
-			pstmt.setString(2, reportReplyArticle.getReportReason());
-			int demo = pstmt.executeUpdate();
-			if (demo == 1) {
-				result = true;
-			}
-		} catch (SQLException e) {
+	public int insert(ReportReplyArticleVO reportReplyArticle) {
+		int result = -1;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			session.saveOrUpdate(reportReplyArticle);
+			session.getTransaction().commit();
+			result = 1;
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 		return result;
 	}
@@ -116,27 +81,17 @@ public class ReportReplyArticleDAOjdbc implements ReportReplyArticleDAO {
 	private static final String DELETE = "DELETE FROM ReportReplyArticle WHERE orderId = ?";
 
 	@Override
-	public boolean delete(int orderId) {
-		Connection conn = null;
-		boolean result = false;
-		try {conn=ds.getConnection();
-//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-			PreparedStatement pstmt = conn.prepareStatement(DELETE);
-			pstmt.setInt(1, orderId);
-			int demo = pstmt.executeUpdate();
-			if (demo == 1) {
-				result = true;
-			}
-		} catch (SQLException e) {
+	public int delete(int orderId) {
+		int result = -1;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("delete from ReportReplyArticleVO where orderId = ?").setParameter(0, orderId);
+			result = query.executeUpdate();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 		return result;
 	}
@@ -144,16 +99,16 @@ public class ReportReplyArticleDAOjdbc implements ReportReplyArticleDAO {
 	public static void main(String[] args) {
 		ReportReplyArticleDAO dao = new ReportReplyArticleDAOjdbc();
 		// INSERT
-		ReportReplyArticleVO temp1 = new ReportReplyArticleVO();
-		temp1.setOrderId(11);
-		temp1.setReportedReplyArticleId(12);
-		temp1.setReportTime(new java.util.Date());
-		temp1.setReportReason("測試新增");
-		boolean test1 = dao.insert(temp1);
-		System.out.println(test1);
-		// DELETE
-		boolean test3 = dao.delete(50);
-		System.out.println(test3);
+//		ReportReplyArticleVO temp1 = new ReportReplyArticleVO();
+//		temp1.setOrderId(11);
+//		temp1.setReportedReplyArticleId(12);
+//		temp1.setReportTime(new java.util.Date());
+//		temp1.setReportReason("測試新增");
+//		boolean test1 = dao.insert(temp1);
+//		System.out.println(test1);
+//		// DELETE
+//		boolean test3 = dao.delete(50);
+//		System.out.println(test3);
 		// SELECT_ALL
 		List<ReportReplyArticleVO> list = dao.selectAll();
 		for (ReportReplyArticleVO dept : list) {
@@ -161,6 +116,7 @@ public class ReportReplyArticleDAOjdbc implements ReportReplyArticleDAO {
 			System.out.println(dept.getReportedReplyArticleId() + ",");
 			System.out.println(dept.getReportTime() + ",");
 			System.out.println(dept.getReportReason());
+			System.out.println(dept.getReplyArticle().getMember().getMemberEmail());
 		}
 	}
 }

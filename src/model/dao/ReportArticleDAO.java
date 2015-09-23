@@ -8,8 +8,8 @@ public interface ReportArticleDAO {
 
 	public List<ReportArticleVO> selectAll();
 
-	public boolean insert(ReportArticleVO reportArticle);
+	public int insert(ReportArticleVO reportArticle);
 
-	public boolean delete(int orderId);
+	public int delete(int orderId);
 
 }

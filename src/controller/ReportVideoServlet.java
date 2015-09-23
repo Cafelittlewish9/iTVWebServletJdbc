@@ -119,7 +119,7 @@ public class ReportVideoServlet extends HttpServlet {
 		
 		//檢舉影片、管理員後台刪除檢舉
 		if(sendReportVideoMessage != null && sendReportVideoMessage.equals("insert")){
-			boolean result = reportVideoService.addReportVideo(convertReportedVideoId, convertreportTime, reportReason);
+			boolean result = reportVideoService.addReportVideo(bean);
 			if(!result){
 				request.setAttribute("insert", 0);
 			}else{

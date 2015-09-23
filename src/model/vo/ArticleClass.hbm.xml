@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="model.vo.ArticleClassVO" table="ArticleClass">
+		<id name="subclassNo" column="subclassNo" />
+		<property name="subclassName" column="subclassName" />
+		<property name="className" column="className" />
+		<set name="articles" table="Article" lazy="false" order-by="modifyTime desc">
+			<key><column name="subclassNo" /></key>
+			<one-to-many class="model.vo.ArticleVO" />
+		</set>
+	</class>
+</hibernate-mapping>

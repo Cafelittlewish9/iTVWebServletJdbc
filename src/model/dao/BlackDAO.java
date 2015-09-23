@@ -6,12 +6,12 @@ import model.vo.BlackVO;
 
 public interface BlackDAO {
 
-	public boolean markBlack(int memberId, int blackedId);
+	public int markBlack(BlackVO bean);
 
 	public List<BlackVO> getList(int memberId);
 
-	public boolean removeBlack(int memberId, int blackedId);
+	public int removeBlack(BlackVO bean);
 
-	public boolean removeAll(int memberId);
+	public int removeAll(int memberId);
 
 }

@@ -21,7 +21,7 @@ import model.vo.MemberVO;
 import util.ConvertType;
 
 @WebServlet("/registry.do")
-public class Registry<JSONstring> extends HttpServlet {
+public class Registry extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService ms;
 	// 如有必要就連註冊時間也一併登錄於login table

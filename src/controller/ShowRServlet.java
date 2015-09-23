@@ -36,17 +36,18 @@ public class ShowRServlet extends javax.servlet.http.HttpServlet{
         throws ServletException, IOException{
 //    	接收資料
     	String memberId =request.getParameter("memberId");
-        String website=request.getParameter("website");
+        String video=request.getParameter("videoId");
 //        String video=request.getParameter("video");
 //        String member=request.getParameter("member");
 //      轉換型別
         int id=Integer.parseInt(memberId);
+        int videoId=Integer.parseInt(video);
         java.util.Date time=new java.util.Date();
 //      呼叫model
         ShowVO bean = new ShowVO();//bean要set以上東西才成為一個bean
         bean.setMemberId(id);
         bean.setShowTime(time);
-        bean.setWebsite(website);
+        bean.setVideoId(videoId);
         service.addShow(bean);
 //      setAttribute共享資訊並轉交
         request.setAttribute("showList", service.showList(id));

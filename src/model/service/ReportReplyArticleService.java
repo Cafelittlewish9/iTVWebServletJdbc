@@ -16,11 +16,15 @@ public class ReportReplyArticleService {
 		this.dao2 = new ReplyArticleDAOjdbc();
 	}
 
-	public boolean addReportReplyArticle(int reportedReplyArticleId, String reportReason) {
-		ReportReplyArticleVO bean = new ReportReplyArticleVO();
-		bean.setReportedReplyArticleId(reportedReplyArticleId);
-		bean.setReportReason(reportReason);
-		return dao.insert(bean);
+	public boolean addReportReplyArticle(ReportReplyArticleVO bean) {
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.insert(bean);
+			if (temp == 1) {
+				result = true;
+			}
+		}
+		return result;
 	}
 
 	public Collection<ReportReplyArticleVO> selectAllList() {
@@ -28,9 +32,9 @@ public class ReportReplyArticleService {
 	}
 
 	public boolean deleteReplyArticle(ReportReplyArticleVO bean) {
-		int result1 = dao2.delete(bean.getReportedReplyArticleId());
-		boolean result2 = dao.delete(bean.getOrderId());
-		if (result1 == 1 && result2) {
+		int result1 = dao2.delete(bean.getReplyArticle().getReplyArticleId());
+		int result2 = dao.delete(bean.getOrderId());
+		if (result1 == 1 && result2 == 1) {
 			return true;
 		} else {
 			return false;

@@ -16,16 +16,15 @@ public class ReportMemberService {
 		this.dao2 = new MemberDAOjdbc();
 	}
 
-	public boolean addReportMember(int reportedMemberId, String reportReason) {
-		ReportMemberVO bean = new ReportMemberVO();
-		bean.setReportedMemberId(reportedMemberId);
-		bean.setReportReason(reportReason);
-		ReportMemberVO demo = dao.insert(bean);
-		if (demo != null) {
-			return true;
-		} else {
-			return false;
+	public boolean addReportMember(ReportMemberVO bean) {
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.insert(bean);
+			if (temp == 1) {
+				result = true;
+			}
 		}
+		return result;
 	}
 
 	public List<ReportMemberVO> selectAll() {
@@ -34,9 +33,9 @@ public class ReportMemberService {
 
 	//刪除成功為false
 	public boolean deleteReportMember(ReportMemberVO bean) {
-		int result1 = bean.getReportedMemberId();
-		boolean result2 = dao.delete(bean.getOrderId());
-		if (result1 == 1 && result2 == true) {
+		int result1 = dao2.switchSuspend(bean.getMember().getMemberId(), true);
+		int result2 = dao.delete(bean.getOrderId());
+		if (result1 == 1 && result2 == 1) {
 			return true;
 		} else {
 			return false;

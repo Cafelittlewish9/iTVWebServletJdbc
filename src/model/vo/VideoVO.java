@@ -1,6 +1,10 @@
 package model.vo;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -8,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class VideoVO {
+public class VideoVO implements Serializable {
 	@XmlElement(required = true)
 	private int videoId;
 	@XmlElement(required = true)
@@ -33,6 +37,8 @@ public class VideoVO {
 	private java.util.Date videoDescriptionModifyTime;
 	@XmlElement(required = true)
 	private MemberVO member;
+	@XmlElement(required = true)
+	private Set<VideoCommentsVO> videoComments = new LinkedHashSet<VideoCommentsVO>();
 
 	@Override
 	public String toString() {
@@ -137,4 +143,11 @@ public class VideoVO {
 		this.member = member;
 	}
 
+	public Set<VideoCommentsVO> getVideoComments() {
+		return videoComments;
+	}
+
+	public void setVideoComments(Set<VideoCommentsVO> videoComments) {
+		this.videoComments = videoComments;
+	}
 }

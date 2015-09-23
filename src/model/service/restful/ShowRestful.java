@@ -20,7 +20,7 @@ public class ShowRestful {
 	public ShowRestful() {
 		this.dao = new ShowDAOjdbc();
 	}
-
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Collection<ShowVO> addShow(ShowVO bean) {

@@ -5,33 +5,33 @@ import model.vo.CloudVO;
 
 public interface CloudDAO {
 
-	List<CloudVO> selectAll();
+	public List<CloudVO> selectAll();
 
-	List<CloudVO> selectByMemberId(int memberId);
+	public List<CloudVO> selectByMemberId(int memberId);
 
-	List<CloudVO> selectByFileName(int memberId, String fileName);
+	public List<CloudVO> selectByFileName(int memberId, String fileName);
 
-	List<CloudVO> selectByTime(int memberId, java.util.Date fromTime, java.util.Date toTime);
+	public List<CloudVO> selectByTime(int memberId, java.util.Date fromTime, java.util.Date toTime);
 
-	List<CloudVO> selectByFileType(int memberId, String fileType);
+	public List<CloudVO> selectByFileType(int memberId, String fileType);
 
-	List<CloudVO> selectByFileNameAndTime(int memberId, String fileName, java.util.Date fromTime,
+	public List<CloudVO> selectByFileNameAndTime(int memberId, String fileName, java.util.Date fromTime,
 			java.util.Date toTime);
 
-	List<CloudVO> selectByFileNameAndFileType(int memberId, String fileName, String fileType);
+	public List<CloudVO> selectByFileNameAndFileType(int memberId, String fileName, String fileType);
 
-	List<CloudVO> selectByFileTypeAndTime(int memberId, java.util.Date fromTime, java.util.Date toTime,
+	public List<CloudVO> selectByFileTypeAndTime(int memberId, java.util.Date fromTime, java.util.Date toTime,
 			String fileType);
 
-	List<CloudVO> selectByFileNameFileTypeAndTime(int memberId, String fileName, java.util.Date fromTime,
+	public List<CloudVO> selectByFileNameFileTypeAndTime(int memberId, String fileName, java.util.Date fromTime,
 			java.util.Date toTime, String fileType);
 
-	int insert(CloudVO file);
+	public int insert(CloudVO file);
 
-	int updateFile(String filePath, long fileSize, int fileId);
+	public int updateFile(CloudVO file);
 
 	public int updateFileName(int fileId, String fileName, String filePath);
 
-	int delete(int fileId);
+	public int delete(int fileId);
 
 }

@@ -6,10 +6,10 @@ import model.vo.ReportReplyArticleVO;
 
 public interface ReportReplyArticleDAO {
 
-	List<ReportReplyArticleVO> selectAll();
+	public List<ReportReplyArticleVO> selectAll();
 
-	boolean insert(ReportReplyArticleVO reportReplyArticle);
+	public int insert(ReportReplyArticleVO reportReplyArticle);
 
-	boolean delete(int orderId);
+	public int delete(int orderId);
 
 }

@@ -8,8 +8,8 @@ public interface ReportMemberDAO {
 
 	public List<ReportMemberVO> selectAll();
 
-	public ReportMemberVO insert(ReportMemberVO bean);
+	public int insert(ReportMemberVO reportMember);
 
-	public boolean delete(int orderId);
+	public int delete(int orderId);
 
 }

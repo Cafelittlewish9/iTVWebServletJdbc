@@ -6,10 +6,10 @@ import model.vo.ReportVideoVO;
 
 public interface ReportVideoDAO {
 
-	List<ReportVideoVO> selectAll();
+	public List<ReportVideoVO> selectAll();
 
-	boolean insert(ReportVideoVO reportVideo);
+	public int insert(ReportVideoVO reportVideo);
 
-	boolean delete(int orderId);
+	public int delete(int orderId);
 
 }

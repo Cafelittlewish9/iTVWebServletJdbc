@@ -25,8 +25,15 @@ public class BlackService {
 	 * @param blackedId 被黑的人
 	 * @return Collection<BlackVO>
 	 */	
-	public boolean insertBlackList(int memberId, int blackedId) {
-		return dao.markBlack(memberId, blackedId);
+	public boolean insertBlackList(BlackVO bean) {
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.markBlack(bean);
+			if (temp == 1) {
+				result = true;
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -44,8 +51,15 @@ public class BlackService {
 	 * @param blackedId 被黑的人
 	 * @return boolean
 	 */
-	public boolean removeBlackAccount(int memberId, int blackedId) {
-		return dao.removeBlack(memberId, blackedId);
+	public boolean removeBlackAccount(BlackVO bean) {
+		boolean result = false;
+		if (bean != null) {
+			int temp = dao.removeBlack(bean);
+			if (temp == 1) {
+				result = true;
+			}
+		}
+		return result;
 	}
 	
 	/**
@@ -53,15 +67,13 @@ public class BlackService {
 	 * @param memberId 黑別人的人 
 	 * @return boolean
 	 */	
-	public boolean removeAll(int memberId) {
+	public int removeAll(int memberId) {
 		return dao.removeAll(memberId);
 	}
 
 	
 	public static void main(String[] args) {
 		BlackService service = new BlackService();
-		boolean bool = service.insertBlackList(1, 3);
-		System.out.println(bool);
 		System.out.println(service.searchBlackAccount(1));
 
 	}

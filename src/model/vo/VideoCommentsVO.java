@@ -1,14 +1,15 @@
 package model.vo;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class VideoCommentsVO {
+public class VideoCommentsVO implements Serializable {
 	@XmlElement(required = true)
 	private int commentId;
 	@XmlElement(required = true)
@@ -21,13 +22,16 @@ public class VideoCommentsVO {
 	private java.util.Date commentTime;
 	@XmlElement(required = true)
 	private MemberVO member;
-	
+	@XmlElement(required = true)
+	private VideoVO video;
+
 	@Override
 	public String toString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = sdf.format(commentTime);
-		return commentId + "討論的影片ID為: " + videoId + " (" + date + ")" +commentContent;
+		return commentId + "討論的影片ID為: " + videoId + " (" + date + ")";
 	}
+
 	public int getCommentId() {
 		return commentId;
 	}
@@ -67,11 +71,20 @@ public class VideoCommentsVO {
 	public void setCommentTime(java.util.Date commentTime) {
 		this.commentTime = commentTime;
 	}
+
 	public MemberVO getMember() {
 		return member;
 	}
+
 	public void setMember(MemberVO member) {
 		this.member = member;
 	}
 
+	public VideoVO getVideo() {
+		return video;
+	}
+
+	public void setVideo(VideoVO video) {
+		this.video = video;
+	}
 }

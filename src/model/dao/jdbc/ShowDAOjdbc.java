@@ -6,116 +6,92 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+
 import model.dao.ShowDAO;
 import model.vo.MemberVO;
 import model.vo.ShowVO;
+import model.vo.VideoCommentsVO;
 import model.vo.VideoVO;
 import util.ConvertType;
 import util.GC;
+import util.HibernateUtil;
 
 public class ShowDAOjdbc implements ShowDAO {
-	// private static final String URL = GC.URL;
-	// private static final String USERNAME = GC.USERNAME;
-	// private static final String PASSWORD = GC.PASSWORD;
-	private DataSource ds;
+	private static final String URL = GC.URL;
+	private static final String USERNAME = GC.USERNAME;
+	private static final String PASSWORD = GC.PASSWORD;
+	private DataSource datasource;
 
-	public ShowDAOjdbc() {
-		try {
-			InitialContext context = new InitialContext();
-			this.ds = (DataSource) context.lookup(GC.DATASOURCE);
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-	}
+	// public ShowDAOjdbc() {
+	// try {
+	// InitialContext context = new InitialContext();
+	// this.datasource = (DataSource) context.lookup(GC.DATASOURCE);
+	// } catch (NamingException e) {
+	// e.printStackTrace();
+	// }
+	// }
 
-	private static final String SELECT_BY_ID_JOIN_MEMBER = "SELECT s.*, broadcastTitle FROM show s Join member m ON website = broadcastWebsite WHERE s.memberId = ? ORDER BY showTime";
+	// private static final String SELECT_BY_ID_JOIN_MEMBER = "SELECT s.*,
+	// broadcastTitle FROM show s Join member m ON website = broadcastWebsite
+	// WHERE s.memberId = ? ORDER BY showTime";
 
 	@Override
 	public List<ShowVO> selectJoinMember(int memberId) {
-		ShowVO result = null;
 		List<ShowVO> list = null;
-		try (Connection conn = ds.getConnection();
-				// Connection conn = DriverManager.getConnection(URL, USERNAME,
-				// PASSWORD);
-
-				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID_JOIN_MEMBER);) {
-			stmt.setInt(1, memberId);
-			ResultSet rset = stmt.executeQuery();
-			list = new ArrayList<ShowVO>();
-			while (rset.next()) {
-				result = new ShowVO();
-				result.setMemberId(rset.getInt("memberId"));
-				result.setShowTime(ConvertType.convertToLocalTime(rset.getTimestamp("showTime")));
-				result.setWebsite(rset.getString("website"));
-				MemberVO member = new MemberVO();
-				member.setBroadcastTitle(rset.getString("broadcastTitle"));
-				result.setMember(member);
-				list.add(result);
-			}
-		} catch (SQLException e) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from ShowVO where memberId = ? order by showTime asc").setParameter(0, memberId);
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return list;
 	}
 
-	private static final String SELECT_BY_ID_JOIN_VIDEO = "SELECT s.*, videoTitle FROM show s Join Video v ON website = videoWebsite WHERE s.memberId = ? ORDER BY showTime ASC";
+	// private static final String SELECT_BY_ID_JOIN_VIDEO = "SELECT s.*,
+	// videoTitle FROM show s Join Video v ON website = videoWebsite WHERE
+	// s.memberId = ? ORDER BY showTime ASC";
 
 	@Override
 	public List<ShowVO> selectJoinVideo(int memberId) {
-		ShowVO result = null;
 		List<ShowVO> list = null;
-		try (Connection conn = ds.getConnection();
-				// Connection conn = DriverManager.getConnection(URL, USERNAME,
-				// PASSWORD);
-				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID_JOIN_VIDEO);) {
-			stmt.setInt(1, memberId);
-			ResultSet rset = stmt.executeQuery();
-			list = new ArrayList<ShowVO>();
-			while (rset.next()) {
-				result = new ShowVO();
-				result.setMemberId(rset.getInt("memberId"));
-				result.setShowTime(ConvertType.convertToLocalTime(rset.getTimestamp("showTime")));
-				result.setWebsite(rset.getString("website"));
-				VideoVO video = new VideoVO();
-				video.setVideoTitle(rset.getString("videoTitle"));
-				result.setVideo(video);
-				list.add(result);
-			}
-		} catch (SQLException e) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from ShowVO where memberId = ? order by showTime asc").setParameter(0, memberId);
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return list;
 	}
 
-	private static final String SELECT_ALL = "SELECT s.*,m.memberAccount FROM show s Join member m ON s.memberId = m.memberId";
+//	private static final String SELECT_ALL = "SELECT s.*,m.memberAccount FROM show s Join member m ON s.memberId = m.memberId";
 
 	@Override
 	public List<ShowVO> selectAll() {
 		List<ShowVO> list = null;
-		try (
-
-		Connection conn = ds.getConnection();
-				// Connection conn = DriverManager.getConnection(URL, USERNAME,
-				// PASSWORD);
-
-				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
-				ResultSet rset = stmt.executeQuery();) {
-			list = new ArrayList<ShowVO>();
-			while (rset.next()) {
-				ShowVO bean = new ShowVO();
-				bean.setMemberId(rset.getInt("memberId"));
-				bean.setShowTime(ConvertType.convertToLocalTime(rset.getTimestamp("showTime")));
-				bean.setWebsite(rset.getString("website"));
-				list.add(bean);
-			}
-		} catch (SQLException e) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from ShowVO");
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return list;
@@ -126,20 +102,14 @@ public class ShowDAOjdbc implements ShowDAO {
 	@Override
 	public int insert(ShowVO bean) {
 		int result = -1;
-		try (
-
-		Connection conn = ds.getConnection();
-				// Connection conn = DriverManager.getConnection(URL, USERNAME,
-				// PASSWORD);
-
-				PreparedStatement stmt = conn.prepareStatement(INSERT);) {
-			if (bean != null) {
-				stmt.setInt(1, bean.getMemberId());
-				java.util.Date date = new java.util.Date();
-				stmt.setString(2, bean.getWebsite());
-				result = stmt.executeUpdate();
-			}
-		} catch (SQLException e) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			session.saveOrUpdate(bean);
+			session.getTransaction().commit();
+			result = 1;
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return result;
@@ -149,26 +119,16 @@ public class ShowDAOjdbc implements ShowDAO {
 	private static final String UPDATE = "update show set showTime = ?, website = ? where memberId = ? and showTime = ?";
 
 	@Override
-	public int update(java.util.Date showTime, String website, int memberId, java.util.Date showTimed) {
+	public int update(ShowVO bean) {
 		int result = -1;
-		try (
-
-		Connection conn = ds.getConnection();
-				// Connection conn = DriverManager.getConnection(URL, USERNAME,
-				// PASSWORD);
-
-				PreparedStatement stmt = conn.prepareStatement(UPDATE);) {
-			if (showTime != null) {
-				long time = showTime.getTime();
-				stmt.setTimestamp(1, new java.sql.Timestamp(time));
-			} else {
-				stmt.setTimestamp(1, null);
-			}
-			stmt.setString(2, website);
-			stmt.setInt(3, memberId);
-			stmt.setTimestamp(4, new java.sql.Timestamp(showTimed.getTime()));
-			result = stmt.executeUpdate();
-		} catch (SQLException e) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			session.saveOrUpdate(bean);
+			session.getTransaction().commit();
+			result = 1;
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return result;
@@ -179,32 +139,31 @@ public class ShowDAOjdbc implements ShowDAO {
 
 	@Override
 
-	public boolean delete(int memberId, String website) {
-		try (Connection conn = ds.getConnection();
-				// Connection conn = DriverManager.getConnection(URL, USERNAME,
-				// PASSWORD);
-
-				PreparedStatement stmt = conn.prepareStatement(DELETE);) {
-			stmt.setInt(1, memberId);
-			stmt.setString(2, website);
-			int i = stmt.executeUpdate();
-			if (i == 1) {
-				return true;
-			}
-		} catch (SQLException e) {
+	public int delete(int memberId, int videoId) {
+		int result = -1;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("delete from ShowVO where memberId = ? and videoId = ?").setParameter(0, memberId).setParameter(1, videoId);
+			result = query.executeUpdate();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
-		return false;
+		return result;
 	}
 
 	public static void main(String[] args) {
 
 		ShowDAOjdbc dao = new ShowDAOjdbc();
-		List<ShowVO> list = dao.selectJoinMember(2);
-		for (ShowVO bean : list) {
-			System.out.println(bean);
-//			System.out.println(bean.getTitle());
-		}
+//		List<ShowVO> list = dao.selectJoinMember(1);
+//		for (ShowVO bean : list) {
+//			System.out.println(bean);
+//			System.out.println(bean.getVideo().getVideoTitle());
+//		}
+		System.out.println(dao.delete(1, 5));
 
 	}
+
 }
