@@ -25,36 +25,34 @@ public class BroadcastOrderService {
 		return list;
 	}
 
+	public BroadcastOrderVO searchAccount(String Account) {
+		BroadcastOrderVO list = null;
+		if (Account != null && Account.trim().length() != 0) {
+			list = dao.selectByMemberAccount(Account);
+		}
+		return list;
+	}
+	
 	public BroadcastOrderVO createBroadcast(BroadcastOrderVO bean) {
 		BroadcastOrderVO result = null;
-		if (bean != null) {
-			int temp = dao.insert(bean);
-			if (temp == 1) {
-				result = dao.selectByMemberAccount(bean.getMemberAccount());
-			}
+		int temp = dao.insert(bean.getMemberAccount(), bean.getBroadcastSite(), bean.getBroadcastTitle(),
+				bean.getBroadcastTime());
+		if (temp == 1) {
+			result = dao.selectByMemberAccount(bean.getMemberAccount());
 		}
 		return result;
 	}
 
 	public boolean changeTitle(BroadcastOrderVO bean) {
-		boolean result = false;
-		if (bean != null) {
-			int temp = dao.update(bean);
-			if (temp == 1) {
-				result = true;
-			}
+		int temp = dao.update(bean.getBroadcastTitle(), bean.getMemberAccount());
+		if (temp == 1) {
+			return true;
+		} else {
+			return false;
 		}
-		return result;
 	}
 
-	public boolean removeBroadcast(String memberAccount) {
-		boolean result = false;
-		if (memberAccount != null && memberAccount.trim().length() != 0) {
-			int temp = dao.delete(memberAccount);
-			if (temp == 1) {
-				result = true;
-			}
-		}
-		return result;
+	public boolean removeBroadcast(BroadcastOrderVO bean) {
+		return dao.delete(bean.getMemberAccount());
 	}
 }

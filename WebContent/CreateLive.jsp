@@ -22,7 +22,7 @@
 <!-- <link rel="stylesheet" href="css/bootstrap-responsive.css"> -->
 <!-- <link rel="stylesheet" href="css/bootstrap.2.2.2.css"> -->
 
-<script src="js/bootstrap-datepicker.en-GB.js"></script>
+<!-- <script src="js/bootstrap-datepicker.en-GB.js"></script> -->
 <!-- <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet"> -->
 
 <link rel="stylesheet" href="css/CreateLive.css">
@@ -31,21 +31,12 @@
 <script>
             var initUploadComponent = function() {
                 
-            	$('#c_memberId').on('keyup blur', function() {
-                	var server = "http://itvvm.cloudapp.net/ITV/LiveShow.jsp?memberAccount=";
-                    $('#c_website').val(server+$(this).val());
-                    
-                  });
+            	
+                	var server = "http://itvvm.cloudapp.net/ITV/LiveShow.jsp?m=";
+                    $('#c_website').val(server+'${user.memberAccount}');
+                 
                 
                 
-//              判斷必要輸入欄位的用法
-                $('#c_memberId').blur(function(){
-                	if( $('#c_memberId').val()==""){
-                	$('#c_input').addClass("has-error has-feedback");
-                	}else{
-                		$('#c_input').removeClass("has-error has-feedback");
-                	}
-                });
 //              判斷必要輸入欄位的用法               
                 $('#showtime').blur(function(){
                 	if( $('#showtime').val()==""){
@@ -55,35 +46,59 @@
                 	}
                 });
                 
-                
+//              建立實況
                 $('#c_submit1').click(function(){
-                	if($('#showtime').val()==""||$('#memberId').val()==""){
-                		if($('#showtime').val()==""){
-                			$('#c_input2').addClass("has-error has-feedback");
-                		}
-	                	if($('#c_memberId').val()==""){
-		                	$('#c_input').addClass("has-error has-feedback");
-	                	}
+                	if($('#showtime').val()==""){
+                		$('#c_input2').addClass("has-error has-feedback");
 	                	return;
                 	}else{
-                		$('#c_input').removeClass("has-error has-feedback");
+                		
                 		$('#c_input2').removeClass("has-error has-feedback");
+                		
 //                     	console.log($('form').serializeArray());
-                   	 $.get('ChannelServlet',$('#createliveform').serialize(),function(data){
-                 		   	console.log(data);
+                   	 	$.get('BroadcastOrderServlet',$('#createliveform').serialize(),function(data){
+                 		   		console.log(data);
                  	   		})
                  	   		
                  	   		//關閉列表 顯示成功畫面
                  	   		$('#CreateModal').modal('hide');
-                        	$('#finishedModal').modal('show');
+                        	$('#createsuccessModal').modal('show');
                         	//一秒半後關閉成功畫面
-   	                	 setTimeout(function() {
-   	                     	$('#finishedModal').modal('hide');
-   	                     }, 1500);
+	   	                	 setTimeout(function() {
+	   	                     	$('#createsuccessModal').modal('hide');
+	   	                     }, 1500);
+	   	                	setTimeout(function() {
+		                		 location.reload();
+			                 }, 2000);
                 	}
 
             	});
-        		
+                
+//              取消實況
+                $('#c_submit2').click(function(){
+                	$.ajax({
+            			url:'BroadcastOrderServlet',
+            			type:'get',
+             			data:{'memberAccount':'${user.memberAccount}',
+             				  'prodaction':'Delete'},
+            			dataType:"json",
+            			success:function(data){
+            					console.log(data);
+            						if(data=="true"){
+            							$('#createlive').css('display','block');
+            							$('#cancellive').css('display','none');
+            						}else{
+            							$('#createlive').css('display','none');
+            						 	$('#cancellive').css('display','block');
+            						}
+            						setTimeout(function() {
+       		                		 location.reload();
+       			                 	}, 1000);
+            			}
+            		})
+                });
+                
+                
             }
             window.addEventListener('load', initUploadComponent, false);
           
@@ -111,7 +126,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 style="text-align:center" class="modal-title" id="myModalLabel">建立實況</h4>
+        <h4 class="modal-title" id="myModalLabel">建立實況</h4>
       </div>
       <div class="modal-body">
 
@@ -121,10 +136,10 @@
 			<form id="createliveform">
 				<fieldset style="text-align:center">
 				
-						<div id="c_input" class="input-group">
-						  <span  class="input-group-addon" id="basic-addon1" style="width:100px">Username</span>
-						  <input id="c_memberId" type="text" name="memberId" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
-						</div>
+<!-- 						<div id="c_input" class="input-group"> -->
+<!-- 						  <span  class="input-group-addon" id="basic-addon1" style="width:100px">Username</span> -->
+						  <input id="c_memberAccount" type="hidden" value="${user.memberAccount}" name="memberAccount" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+<!-- 						</div> -->
 					
 					
 					    <div id="c_input2" class="input-group">
@@ -146,17 +161,17 @@
 					
 						<div id="c_input4" class="input-group">
 						  <span  class="input-group-addon" id="basic-addon1" style="width:100px">直播網址 </span>
-						  <input type="text" id="c_website" name="broadcastWebsite" class="form-control" placeholder="" aria-describedby="basic-addon1" readonly>
+						  <input type="text" id="c_website" name="broadcastSite" class="form-control" placeholder="" aria-describedby="basic-addon1" readonly>
 						</div>
 						
 						
 						
-					<input value="Insert" type="hidden" name="prodaction" class="form-control" aria-describedby="basic-addon1">
+						<input value="Insert" type="hidden" name="prodaction" class="form-control" aria-describedby="basic-addon1">
 					
 				</fieldset>
 			</form>
 			<div style="width: 450px; margin:0px auto;padding:5px" class="input-group">
-				<input style="width: 440px" id="c_submit1"  value="送出" class="btn btn-primary btn-small" type="submit">
+				<input style="width: 440px" id="c_submit1"  value="Insert" class="btn btn-primary btn-small" type="submit">
 			</div>
 
       </div>
@@ -171,7 +186,7 @@
 
 <!-- 成功Modal -->
 
-<div id="finishedModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static">
+<div id="createsuccessModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
     
@@ -188,6 +203,29 @@
   </div>
 </div>
 
+
+<!-- 關閉實況狀態 -->
+
+<div id="CancelModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+    
+  
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">確定取消實況直播?</h4>
+	        <div style='text-align:center'>
+	        	<button  id="c_submit2"  value="送出" type="submit" class="btn btn-default" data-dismiss="modal">確定</button>
+	        </div>
+	      </div>
+	      
+	    </div><!-- /.modal-content -->
+    
+    
+    </div>
+  </div>
+</div>
 
 
 <!-- </body> -->

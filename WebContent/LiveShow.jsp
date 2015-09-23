@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="java.io.* , java.lang.* , java.text.*, java.util.*"%>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -32,6 +34,39 @@
 
 </head>
 
+<script>
+
+<%
+SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+Date date = new Date();
+%>
+
+$(function(){
+	
+	$.ajax({
+			url:'BroadcastOrderServlet',
+			type:'get',
+			data:{'memberAccount':'${param.m}',
+				  'prodaction':'searchAccount'},
+			dataType:"json",
+			success:function(data){
+				$.each(data,function(i,v){
+					//算總實況時間
+					var totaltime = <%=date.getTime() %> - new Date(v.broadcastTime).getTime();
+					var totalhour = (totaltime/(1000 * 60 )+'').substring(0,(totaltime/(1000 * 60 )+'').indexOf('.'));
+					var totalmin = (totaltime%(1000 * 60 )/1000+'').substring(0,(totaltime%(1000 * 60 )/1000+'').indexOf('.'));
+					
+					$('.live-title').text(v.broadcastTitle);
+					$('.stream-title--username span').text(v.memberAccount);
+					$('.stream-current-time--data span').text(totalhour+'分'+totalmin+'秒');
+					$('video').prepend("<source src='" + v.server + "' type='rtmp/mp4'/>");
+		 		});
+			}		
+		})
+	
+})
+</script>
+
 <body style="margin:0px;font-family:Microsoft JhengHei">
 
 	<jsp:include page="/Header.jsp" />
@@ -51,10 +86,10 @@
               
             </div >
             <div class="stream-title--title" >
-              	<h2  class="live-title " data-toggle="tooltip" data-placement="bottom" title="Swift@7 | 9/11  | Merlin | webm 4chan browser">Swift@7 | 9/11  | Merlin | webm 4chan browser</h2>
+              	<h2  class="live-title " data-toggle="tooltip" data-placement="bottom"></h2>
             </div>
             <div class="stream-title--username">
-              <p style="display: inline-block;color: #f1f1f1;font-weight: 300;line-height: 19px;">with <span>andrewschreiber</span></p>
+              <p style="display: inline-block;color: #f1f1f1;font-weight: 300;line-height: 19px;">with <span></span></p>
             </div>
           </div>
 
@@ -65,7 +100,7 @@
 			
 	          <div class="stream-current-time">
 	            
-	              <p class="stream-current-time--data">Total Stream Time | <span>7 hours</span></p>
+	              <p class="stream-current-time--data">Total Stream Time | <span></span></p>
 	            
 	          </div>
 		            <div class="stream-buttons js-showtour no-throbber">
@@ -83,10 +118,11 @@
         <div class="span-8">
           <div class="stream-video theater-mode-container">
           
-            <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="100%" height="400"
+            <video id="video_stream" class="video-js vjs-default-skin" controls preload="none" width="100%" height="400"
 	      	data-setup='{"techOrder": ["html5", "flash"] }' preload="auto" poster="">
 	      	
-	      		<source src="Video/Attack.mp4" type='video/mp4' />
+	      			<source src="rtmp://itvvm.cloudapp.net/live/5ASC9R" type='rtmp/mp4'/>
+<!-- 	      		<source src="../mp4/Attack.mp4" type='video/mp4' /> -->
 	      	
 	      	</video>
 
@@ -95,20 +131,20 @@
               
                 
                   
-                    <a href="#" id="unfollow" data-ajax-action="/andrewschreiber/follow.form" data-ajax-post-follow="no"  style="display: none;">放棄追蹤</a>
-                    <a href="#" id="follow" data-ajax-action="/andrewschreiber/follow.form" data-ajax-post-follow="yes"  style="display: block;">追蹤我</a>
+                    <a href="#" id="unfollow" data-ajax-action=""  style="display: block;">放棄追蹤</a>
+                    <a href="#" id="follow" data-ajax-action=""   style="display: none;">追蹤我</a>
                   
-                	<a href="#" id="unfollow" data-ajax-action="/andrewschreiber/follow.form" data-ajax-post-follow="no"  style="display: none;">刪除實況列表</a>
-                    <a href="#" id="follow" data-ajax-action="/andrewschreiber/follow.form" data-ajax-post-follow="yes"  style="display: block;">加入實況列表</a>
+                	<a href="#" id="unfollow" data-ajax-action=""  style="display: none;">刪除實況列表</a>
+                    <a href="#" id="follow" data-ajax-action=""  style="display: block;">加入實況列表</a>
 					
               
             </div>
 
             <div class="stream-video-info--counts">
               
-              <span style="color:#6c6e71" data-toggle="tooltip" data-placement="bottom" title="Followers"><i class="fa fa-heart" style="color: #a6a8ab; font-size: 18px;"></i> <span id="followers_count">8</span></span>
-              <span style="color:#6c6e71" data-toggle="tooltip" data-placement="bottom" title="View count"><span class="icon-span-contact"></span> <span id="views_overall">793</span></span>
-              <span style="color:#6c6e71" data-toggle="tooltip" data-placement="bottom" title="Live viewers"><span class="icon-red-eay"></span> <span id="views_live">9</span></span>
+              <span style="color:#6c6e71" data-toggle="tooltip" data-placement="bottom" title="Followers"><i class="fa fa-heart" style="color: #a6a8ab; font-size: 18px;"></i> <span id="followers_count"></span></span>
+              <span style="color:#6c6e71" data-toggle="tooltip" data-placement="bottom" title="View count"><span class="icon-span-contact"></span> <span id="views_overall"></span></span>
+              <span style="color:#6c6e71" data-toggle="tooltip" data-placement="bottom" title="Live viewers"><span class="icon-red-eay"></span> <span id="views_live"></span></span>
             </div>
           </div>
           </div>

@@ -81,13 +81,13 @@ public class Registry extends HttpServlet {
 			return ;
 		}else{
 //			呼叫service服務，將資料送去DB型轉已寫在model裡
-			MemberVO bean=ms.getOneMember(username);
+			MemberVO bean=ms.memberAccountHasBeanUsed(username);
 			if(operation!=null && operation.equals("註冊")&& bean != null){
 				errorMsg.add("帳號已存在，請再輸入其他帳號");	
 				System.out.println(errorMsg.get(0));
 			}else{
 				try {				
-					ms.registry1(username, password, usermail,broadcastWebsite);
+					ms.registry1(bean);
 					bean.setMemberAccount(username);
 					bean.setMemberPassword(password.getBytes());
 					bean.setMemberEmail(usermail);

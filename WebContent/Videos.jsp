@@ -82,8 +82,7 @@
 					<div class="browse-main-items">
 						<div id="livestream_items" class="browse-main-videos clearfix">
 						
-							<table>
-								<tr >
+ 							
 									 <div class="browse-main-filters">
 							            <button type="button" value="" id="browse_type_any" class="browse-main-filters--button js-browse-product-type active">All</button>
 							            <button type="button" value="MusicVideo" id="browse_type_MusicVideo" class="browse-main-filters--button js-browse-product-type ">音樂影片</button>
@@ -98,8 +97,6 @@
 									<div id="videos_div1" >
 									
 									</div>
-								</tr>
-							</table>
 						
 						
 						</div>

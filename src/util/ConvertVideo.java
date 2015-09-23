@@ -95,21 +95,21 @@ public class ConvertVideo {
 			   if (type.equals("avi")) { 
 		return 0;
 		} else if (type.equals("mkv")) { 
-		return 0; 
+		return 1; 
 		} else if (type.equals("mpg")) { 
 		return 0; 
 		} else if (type.equals("3gp")) { 
-		return 0; 
+		return 1; 
 		} else if (type.equals("mov")) { 
-		return 0; 
+		return 1; 
 		} else if (type.equals("asf")) { 
-		return 0; 
+		return 1; 
 		} else if (type.equals("asx")) { 
-		return 0; 
+		return 1; 
 		} else if (type.equals("flv")) { 
-		return 0; 
+		return 1; 
 		} else if (type.equals("mp4")) { 
-		return 0; 
+		return 1; 
 		}
 		// On the ffmpeg can not resolve the file format (wmv9, rm, rmvb, etc.) 
 		// Can start using other tools (mencoder) convert avi (ffmpeg can be resolved) format. 
@@ -133,16 +133,26 @@ public class ConvertVideo {
 //			Process p = Runtime.getRuntime().exec(cmd+cmd2);
 		
 			List commend = new java.util.ArrayList (); 
-			commend.add ("move"); 
+			commend.add (ffmpegpath); 
+			commend.add ("-i"); 
 			commend.add (videofolder + path);  
-			commend.add (mp4folder + path);
+			commend.add("-vcodec");
+			commend.add("copy");
+			commend.add("-acodec");
+			commend.add("libvo_aacenc");
+			commend.add("-ac");
+			commend.add("2");
+			commend.add("-y");
+			commend.add (mp4folder + filerealname + ".mp4"); 
 			
 			try { 
 				ProcessBuilder builder = new ProcessBuilder (); 
 				builder.command (commend); 
 				System.out.println(commend);
 				Process p = builder.start(); 
-				doWaitFor(p);
+				doWaitFor(p); 
+				p.destroy(); 
+				deleteFile(videofolder + path); 
 				return true; 
 				} catch (Exception e) { 
 				e.printStackTrace (); 
@@ -165,6 +175,7 @@ public class ConvertVideo {
 		commend.add("libvo_aacenc");
 		commend.add("-ac");
 		commend.add("2");
+		commend.add("-y");
 		commend.add (mp4folder + filerealname + ".mp4"); 
 		
 //		String cmd = ffmpegpath + " -i " + videofolder + oldfilepath;
@@ -225,11 +236,11 @@ public class ConvertVideo {
 		commend.add ("-f");
 		commend.add ("image2"); 
 		commend.add ("-ss"); 
-		commend.add ("20"); 
+		commend.add ("35"); 
 		commend.add ("-t"); 
 		commend.add ("00:00:01"); 
 		commend.add ("-s"); 
-		commend.add ("240x135"); 
+		commend.add ("570x320"); 
 		commend.add (imageRealPath + filerealname + ".jpg");
 		
 //		String cmd = ffmpegpath + " -i " + mp4RealPath + filerealname +".mp4";

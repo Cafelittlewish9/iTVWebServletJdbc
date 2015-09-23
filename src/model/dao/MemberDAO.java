@@ -6,13 +6,15 @@ import model.vo.MemberVO;
 
 public interface MemberDAO {
 
-	public int insert(MemberVO member);
+	public int insert(MemberVO member) ;
 
 	public int insert2(MemberVO member);
 
 	public List<MemberVO> getMemberList();
 
 	public int getId(String memberAccount);
+	
+	public MemberVO getAccount(String memberAccount);
 
 	public int update(MemberVO member);
 
@@ -21,14 +23,12 @@ public interface MemberDAO {
 	public int switchSuspend(int memberId, boolean suspendRight);
 	
 	public String getMemberNickname(String memberAccount);
-
-	public byte[] photoOut(int memberId);
-
-	public String getMemberAccount(String memberAccount);
-
-	public MemberVO findByMemberAccount(String memberAccount);
 	
-	public MemberVO findByEmail(String email);
+	int photoOut(byte[] memberPhoto,int memberId);
+	
+	public String getMemberAccount(String memberAccount);
+	
+	public MemberVO findByMemberAccount(String memberAccount);
 
-	public int updatePhoto(int memberId, byte[] photo);
+
 }

@@ -31,21 +31,17 @@
 		<div id="mwt_slider_content">
 				<br>
 				<br>
-				<c:if test="${!empty LoginOK }">
-				<ul>
-					<a href="PersonalPage.jsp"><span class="glyphicon glyphicon-user" > <span style="font-family:Microsoft JhengHei;">個人頁面</span></span></a>
-				</ul>
+				
+				<c:if test="${!empty user}">
+					<ul>
+						<a href="PlayList.jsp"><span class="glyphicon glyphicon-list-alt" > <span style="font-family:Microsoft JhengHei;">影片節目列表</span></span></a>
+					</ul>
 				</c:if>
 				
 				<ul>
 					<a href="Videos.jsp"><span class="glyphicon glyphicon-hd-video" > <span style="font-family:Microsoft JhengHei;">熱門影片</span></span></a>
 				</ul>	
 				
-				<c:if test="${!empty LoginOK }">
-					<ul>
-						<a href="PlayList.jsp"><span class="glyphicon glyphicon-list-alt" > <span style="font-family:Microsoft JhengHei;">影片節目列表</span></span></a>
-					</ul>
-				</c:if>
 				
 				<ul>
 					<a href="LiveStream.jsp"><span class="glyphicon glyphicon-facetime-video" > <span style="font-family:Microsoft JhengHei;">實況直播</span></span></a>

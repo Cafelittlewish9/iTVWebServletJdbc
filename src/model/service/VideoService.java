@@ -1,6 +1,8 @@
 package model.service;
 
 import java.util.Collection;
+import java.util.List;
+
 import model.dao.VideoDAO;
 import model.dao.jdbc.VideoDAOjdbc;
 import model.vo.MemberVO;
@@ -16,45 +18,33 @@ public class VideoService {
 	public Collection<VideoVO> hotVideo() {
 		return dao.selectAll();
 	}
+	
+	public Collection<VideoVO> searchMemberId(int memberId) {
+		return dao.selectByMemberId(memberId);
+	}
 
 	public Collection<VideoVO> searchVideo(String videoTitle) {
 		return dao.selectByVideoTitle(videoTitle);
+	}
+	
+	public Collection<VideoVO> searchVideoName(String videoName) {
+		return dao.selectByVideoName(videoName);
 	}
 
 	public Collection<VideoVO> videoClassList(String videoClassName) {
 		return dao.selectByVideoClassName(videoClassName);
 	}
-
+	
 	public boolean uploadVideo(VideoVO bean) {
-		boolean result = false;
-		if (bean != null) {
-			int temp = dao.insert(bean);
-			if (temp == 1) {
-				result = true;
-			}
-		}
-		return result;
+		return dao.insert(bean);
 	}
 
-	// 只能改videoDescription，另外兩個參數是應資料庫而要求的
-	public boolean updateVideo(VideoVO bean) {
-		boolean result = false;
-		if (bean != null) {
-			int temp = dao.update(bean);
-			if (temp == 1) {
-				result = true;
-			}
-		}
-		return result;
+	public boolean updateVideo(int videoId, String videoTitle, String videoDescription) {
+		return dao.update(videoId, videoTitle, videoDescription);
 	}
 
 	public boolean removeVideo(int videoId) {
-		boolean result = false;
-		int temp = dao.delete(videoId);
-		if (temp == 1) {
-			result = true;
-		}
-		return result;
+		return dao.delete(videoId);
 	}
 
 	// 不知道是否應該要有一個全刪的方法

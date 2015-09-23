@@ -17,51 +17,51 @@
       <div class="row">
       
         <div class="col-sm-6 col-md-3">
-          <h6 class="footer-home--title">company</h6>
+          <h6 class="footer-home--title">成員</h6>
           <div class="float-left">
-            <a class="footer-home--link" href="/about/">About</a>
-            <a class="footer-home--link" href="http://blog.livecoding.tv/" rel="me" target="_blank">Blog</a>
-            <a class="footer-home--link" href="/terms/">Terms</a>
-            <a class="footer-home--link" href="/privacy/">Privacy Policy</a>
-            <a class="footer-home--link" href="http://support.livecoding.tv/hc/en-us/" target="_blank">Support</a>
-            <a class="footer-home--link" href="/contact/">Contact</a>
+            <a class="footer-home--link" >About</a>
+            <a class="footer-home--link" >Blog</a>
+            <a class="footer-home--link" >Terms</a>
+            <a class="footer-home--link" >Privacy Policy</a>
+            <a class="footer-home--link" >Support</a>
+            <a class="footer-home--link" >Contact</a>
           </div>
         </div>
 
         <div class="col-sm-6 col-md-3">
-          <h6 class="footer-home--title">languages</h6>
+          <h6 class="footer-home--title">使用技術</h6>
           <div class="float-left">
-            <a class="footer-home--link" href="/livestreams/java/">Java</a>
-            <a class="footer-home--link" href="/livestreams/android/">Android</a>
-            <a class="footer-home--link" href="/livestreams/python/">Python</a>
-            <a class="footer-home--link" href="/livestreams/javascript/">Javascript</a>
-            <a class="footer-home--link" href="/livestreams/ruby/">Ruby</a>
-            <a class="footer-home--link" href="/livestreams/objc-swift-ios/">Obj-C/Swift </a>
+            <a class="footer-home--link" >Java</a>
+            <a class="footer-home--link" >Android</a>
+            <a class="footer-home--link" >Python</a>
+            <a class="footer-home--link" >Javascript</a>
+            <a class="footer-home--link" >Ruby</a>
+            <a class="footer-home--link" >Obj-C/Swift </a>
           </div>
           <div class="float-right">
-            <a class="footer-home--link" href="/livestreams/sql/">SQL</a>
-            <a class="footer-home--link" href="/livestreams/c-cplusplus/">C/C++</a>
-            <a class="footer-home--link" href="/livestreams/csharp-dotnet/">C#/.NET</a>
-            <a class="footer-home--link" href="/livestreams/php/">PHP</a>
-            <a class="footer-home--link" href="/livestreams/html-css/">HTML/CSS</a>
-            <a class="footer-home--link" href="/livestreams/others/">Others</a>
+            <a class="footer-home--link" >SQL</a>
+            <a class="footer-home--link" >C/C++</a>
+            <a class="footer-home--link" >C#/.NET</a>
+            <a class="footer-home--link" >PHP</a>
+            <a class="footer-home--link" >HTML/CSS</a>
+            <a class="footer-home--link" >Others</a>
           </div>
         </div>
 
         <div class="col-sm-6 col-md-3">
-          <h6 class="footer-home--title">product</h6>
+          <h6 class="footer-home--title">指導老師</h6>
           <div class="float-left">
-            <a class="footer-home--link" href="/features/">Features</a>
-            <a class="footer-home--link" href="/builtonlivecodingtv/" style="line-height: 20px;">Built on<br/>LCTV</a>
-            <a class="footer-home--link" href="http://roadmap.livecoding.tv/" rel="me" target="_blank">Roadmap</a>
+            <a class="footer-home--link" >Features</a>
+            <a class="footer-home--link" >Built on<br/>LCTV</a>
+            <a class="footer-home--link" >Roadmap</a>
           </div>
           <div class="float-right">
-            <a class="footer-home--link" href="/streamingguide/">Streamer guide</a>
-            <a class="footer-home--link" href="/streamerprogram/">Streamer program</a>
-            <a class="footer-home--link" href="/gettingstarted/">Getting started</a>
-            <a class="footer-home--link" href="/leaderboard/streamers/">Leaderboard</a>
-            <a class="footer-home--link" href="/pastebin/">Pastebin</a>
-            <a class="footer-home--link" href="/goodies/">Goodies</a>
+            <a class="footer-home--link" >Streamer guide</a>
+            <a class="footer-home--link" >Streamer program</a>
+            <a class="footer-home--link" >Getting started</a>
+            <a class="footer-home--link" >Leaderboard</a>
+            <a class="footer-home--link" >Pastebin</a>
+            <a class="footer-home--link" >Goodies</a>
           </div>
         </div>
 
