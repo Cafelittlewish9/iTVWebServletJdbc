@@ -37,6 +37,7 @@ public class LoginAjax extends HttpServlet {
 
 		MemberVO bean = memberService.login1(username, password);
 		if (operation != null && operation.equals("登入") && bean != null) {
+			System.out.println("XXX");
 			request.getSession().setAttribute("LoginOK", bean);
 			response.sendRedirect("HomePageVersion3.jsp");
 			return;

@@ -43,7 +43,7 @@ public class ShowServlet extends HttpServlet {
 			Map map =new HashMap();
 			map.put("memberId",row.getMemberId());
 			map.put("showTime",row.getShowTime()+"");
-			map.put("website",row.getWebsite());
+			map.put("website",row.getVideo().getVideoWebsite());
 			map.put("videoTitle", row.getVideo().getVideoTitle());
 			list.add(map);
 		}
@@ -142,7 +142,7 @@ public class ShowServlet extends HttpServlet {
 //			request.getRequestDispatcher(
 //					"/pages/Success.jsp").forward(request, response);
 		}else if(prodaction!=null && prodaction.equals("Update")) {
-			Collection<ShowVO> result = ss.changeShow(bean,bean.getShowTime());
+			Collection<ShowVO> result = ss.changeShow(bean);
 			if(result==null) {
 				errors.put("action", "Update fail");
 			} else {

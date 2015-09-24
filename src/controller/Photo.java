@@ -47,9 +47,9 @@ public class Photo extends HttpServlet {
 //		while ((length = in.read(buffer)) != -1) {
 //			out.write(buffer, 0, length);
 //		}
-		ms.changePhoto("Pikachu", in);
-//		out.close();
-		in.close();
+//		ms.changePhoto("Pikachu", in);
+////		out.close();
+//		in.close();
 
 	}
 

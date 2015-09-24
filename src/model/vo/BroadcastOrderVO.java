@@ -6,7 +6,7 @@ public class BroadcastOrderVO {
 	private String broadcastTitle;
 	private java.util.Date broadcastTime;
 	private long broadcastWatchTimes;
-	private MemberVO broadcastWebsite;
+	private MemberVO member;
 
 	@Override
 	public String toString() {
@@ -52,12 +52,12 @@ public class BroadcastOrderVO {
 	public void setBroadcastWatchTimes(long broadcastWatchTimes) {
 		this.broadcastWatchTimes = broadcastWatchTimes;
 	}
-	
-	public MemberVO getBroadcastWebsite() {
-		return broadcastWebsite;
+
+	public MemberVO getMember() {
+		return member;
 	}
 
-	public void setBroadcastWebsite(MemberVO broadcastWebsite) {
-		this.broadcastWebsite = broadcastWebsite;
+	public void setMember(MemberVO member) {
+		this.member = member;
 	}
 }

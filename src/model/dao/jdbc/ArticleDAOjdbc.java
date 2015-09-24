@@ -184,9 +184,6 @@ public class ArticleDAOjdbc implements ArticleDAO {
 		// System.out.println(temp.delete(13, 2));
 		List<ArticleVO> list = temp.selectByInput("C", "皮卡丘");
 		for (ArticleVO bean : list) {
-			for (ReplyArticleVO bean2 : bean.getReplyArticles()) {
-				System.out.println(bean2.getReplyContent());
-			}
 		}
 		// avo.setMemberId(1);
 		// avo.setArticleId(14);

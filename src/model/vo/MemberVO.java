@@ -2,6 +2,7 @@ package model.vo;
 
 import java.io.Serializable;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -53,8 +54,6 @@ public class MemberVO implements Serializable {
 	private long broadcastWatchTimes;
 	@XmlElement(required = true)
 	private boolean suspendMember;
-	@XmlElement(required = true)
-	private Set<VideoVO> videos = new LinkedHashSet<VideoVO>();
 
 	@Override
 	public String toString() {
@@ -219,13 +218,5 @@ public class MemberVO implements Serializable {
 
 	public void setSuspendMember(boolean suspendMember) {
 		this.suspendMember = suspendMember;
-	}
-
-	public Set<VideoVO> getVideos() {
-		return videos;
-	}
-
-	public void setVideos(Set<VideoVO> videos) {
-		this.videos = videos;
 	}
 }

@@ -19,9 +19,5 @@
 		<many-to-one name="articleClass" class="model.vo.ArticleClassVO" lazy="false">
 			<column name="subclassNo" />
 		</many-to-one>
-		<set name="replyArticles" table="ReplyArticle" lazy="false" order-by="publishTime asc">
-			<key><column name="articleId" /></key>
-			<one-to-many class="model.vo.ReplyArticleVO" />
-		</set>
 	</class>
 </hibernate-mapping>

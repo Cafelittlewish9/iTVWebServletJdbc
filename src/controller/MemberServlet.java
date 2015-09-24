@@ -55,7 +55,7 @@ public class MemberServlet extends HttpServlet {
 		
 		String UpdateMemberInfo = request.getParameter("UpdateMemberInfo");
 		
-		MemberVO checkMemberInfo = service.checkInfo(memberAccount, memberPassword);
+		MemberVO checkMemberInfo = service.showMemberInfo(memberAccount, memberPassword);
 		
 		Map<String , String> errors = new HashMap<String , String>();
 		request.setAttribute("errors", errors);
@@ -104,16 +104,16 @@ public class MemberServlet extends HttpServlet {
 		
 		//導向View
 		//先將個人資料Select到畫面上，再讓會員修改
-		if(service.showMemberInfo(memberAccount, memberPassword)!=null){
-			MemberVO showMemberInfo = service.showMemberInfo(memberAccount, memberPassword);
-			if(showMemberInfo == null){
-				request.setAttribute("showMemberInfo", showMemberInfo);
-			}else{
-				request.setAttribute("showMemberInfo", showMemberInfo);
-			}
-			request.getRequestDispatcher("").forward(request, response); //目前沒有路徑
-		}
-		
+//		if(service.showMemberInfo(memberAccount, memberPassword)!=null){
+//			MemberVO showMemberInfo = service.showMemberInfo(memberAccount, memberPassword);
+//			if(showMemberInfo == null){
+//				request.setAttribute("showMemberInfo", showMemberInfo);
+//			}else{
+//				request.setAttribute("showMemberInfo", showMemberInfo);
+//			}
+//			request.getRequestDispatcher("").forward(request, response); //目前沒有路徑
+//		}
+//		
 		//呼叫Model
 		MemberVO bean = new MemberVO();
 		bean.setMemberEmail(memberEmail);
@@ -124,19 +124,19 @@ public class MemberServlet extends HttpServlet {
 		bean.setBroadcastDescription(broadcastDescription);
 		
 		//會員修改資料
-		if(UpdateMemberInfo!=null && UpdateMemberInfo.equals("update")){
-			int result = service.update(bean);
-			if(result == -1){
-				request.setAttribute("update", -1);
-			}else{
-				request.setAttribute("update", 1);
-			}
-			request.getRequestDispatcher("").forward(request, response); //目前無路徑
-		}else {
-			errors.put("action", "Unknown Action:"+UpdateMemberInfo);
-			request.getRequestDispatcher("").forward(request, response); //目前無路徑
-		}
-		
+//		if(UpdateMemberInfo!=null && UpdateMemberInfo.equals("update")){
+//			int result = service.update(bean);
+//			if(result == -1){
+//				request.setAttribute("update", -1);
+//			}else{
+//				request.setAttribute("update", 1);
+//			}
+//			request.getRequestDispatcher("").forward(request, response); //目前無路徑
+//		}else {
+//			errors.put("action", "Unknown Action:"+UpdateMemberInfo);
+//			request.getRequestDispatcher("").forward(request, response); //目前無路徑
+//		}
+//		
 		
 		
 	}

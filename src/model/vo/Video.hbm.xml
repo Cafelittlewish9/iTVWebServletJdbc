@@ -20,9 +20,5 @@
 
 		<many-to-one name="member" class="model.vo.MemberVO" lazy="false"
 			column="memberId" />
-		<set name="videoComments" table="VideoComments" lazy="false" order-by="commentTime desc">
-			<key><column name="commentId" /></key>
-			<one-to-many class="model.vo.VideoCommentsVO" />
-		</set>
 	</class>
 </hibernate-mapping>

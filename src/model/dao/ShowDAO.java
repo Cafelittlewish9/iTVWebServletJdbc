@@ -10,14 +10,14 @@ public interface ShowDAO {
 	
 	public List<ShowVO> selectJoinVideo(int memberId);
 	
-	public ShowVO selectByIdAndWebsite(int memberId,String website);
+	public ShowVO selectByIdAndWebsite(int memberId, int videoId);
 
 	public List<ShowVO> selectAll();
 
 	public int insert(ShowVO bean);
 
-	public int update(java.util.Date showTime, String website, int memberId, java.util.Date showTimed);
+	public int update(ShowVO bean);
 
-	public boolean delete(int memberId, String website);
+	public int delete(int memberId, int videoId);
 
 }

@@ -45,7 +45,7 @@ public class ReportReplyArticleServlet extends HttpServlet {
 		String memberAccount = request.getParameter("memberAccount");
 		String memberPassword = request.getParameter("memberPassword");
 		MemberService memberService = new MemberService();
-		MemberVO checkMemberInfo = memberService.checkInfo(memberAccount, memberPassword);
+		MemberVO checkMemberInfo = memberService.showMemberInfo(memberAccount, memberPassword);
 		
 		Map<String, String> errors = new HashMap<String , String>();
 		request.setAttribute("errors", errors);
