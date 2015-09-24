@@ -23,14 +23,18 @@ background-color:#337ab7;
 color:#fff;
 }
 /* 合併時修改用 */
-#upload_form1 span{
+#upload_form1 span,#VideoSetting span{
     width:112px;
 }
-#upload_form1 div{
+#upload_form1 div,#VideoSetting div{
 	width: 450px; 
 	margin:0px auto;
 	padding:5px;
 }
+.modal-title{
+	text-align:center;
+}
+
 </style>
 
 	<script src="js/VideoUpload.js"></script>
@@ -53,7 +57,7 @@ color:#fff;
     
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 style="text-align:center" class="modal-title" id="myModalLabel">上傳檔案</h4>
+        <h4 class="modal-title" id="myModalLabel">上傳檔案</h4>
       </div>
       
       <div class="modal-body">
@@ -85,7 +89,7 @@ color:#fff;
     <div class="modal-content">
       <div class="modal-header">
         <button id="cancel_upload_btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 style="text-align:center" class="modal-title">上傳中...</h4>
+        <h4 class="modal-title">上傳中...</h4>
       </div>
     	<div class="modal-body">
 
@@ -108,7 +112,7 @@ color:#fff;
 
 <!-- 成功Modal -->
 
-<div id="finishedModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div id="finishedModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
     
@@ -125,6 +129,25 @@ color:#fff;
   </div>
 </div>
 
+<!-- 阻擋Modal -->
+
+<div id="blockModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"  aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+    
+  
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        	<h4 class="modal-title">影片標題不允許特殊字元符號！</h4>
+      </div>
+    </div><!-- /.modal-content -->
+    
+    
+    </div>
+  </div>
+</div>
+
 <!-- VideoInformation表單 -->
 
 <div class="modal fade" id="VideoForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
@@ -132,20 +155,18 @@ color:#fff;
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 style="text-align:center" class="modal-title" id="myModalLabel">影片資訊</h4>
+        <h4 class="modal-title" id="myModalLabel">影片資訊</h4>
       </div>
       <div class="modal-body">
 
 			<form id="upload_form1">
 				<fieldset style="text-align:center">
 				
+
+					  <input id="memberId" type="hidden" name="memberId" value="${user.memberId}" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+
+					
 					<div id="input1" class="input-group">
-					  <span  class="input-group-addon" id="basic-addon1">Username</span>
-					  <input id="memberId" type="text" name="memberId" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
-					</div>
-					
-					
-					<div id="input2" class="input-group">
 					  <span  class="input-group-addon" id="basic-addon1">影片標題</span>
 					  <input id="videoTitle" type="text" name="videoTitle" class="form-control" placeholder="videoTitle" aria-describedby="basic-addon1">
 					</div>
@@ -195,7 +216,7 @@ color:#fff;
 <script>
 $('input[type=file]').bootstrapFileInput();
 $('.file-inputs').bootstrapFileInput();
-// $('#finishedModal').modal('show');
+// $('#finishedModal').modal('show');\
 // $('#VideoForm').modal('show');
 // $('#myModal').modal()                      // 採用預設值初始化
 // $('#myModal').modal('hide')                // 初始化後立即呼叫 show

@@ -1,22 +1,49 @@
 package model.dao.jdbc;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import model.dao.BroadcastOrderDAO;
+import model.dao.VideoDAO;
 import model.vo.BroadcastOrderVO;
+import model.vo.MemberVO;
+import model.vo.VideoVO;
+import util.ConvertType;
 import util.GC;
 import util.HibernateUtil;
 
 public class BroadcastOrderDAOjdbc implements BroadcastOrderDAO {
-	private static final String URL = GC.URL;
-	private static final String USERNAME = GC.USERNAME;
-	private static final String PASSWORD = GC.PASSWORD;
+	// private static final String URL = GC.URL;
+	// private static final String USERNAME = GC.USERNAME;
+	// private static final String PASSWORD = GC.PASSWORD;
 
-	// private static final String SELECT_ALL = "SELECT * FROM BroadcastOrder
-	// ORDER BY broadcastWatchTimes DESC";
+	// private DataSource datasource;
+	//
+	// public BroadcastOrderDAOjdbc() {
+	// try {
+	// InitialContext context = new InitialContext();
+	// this.datasource = (DataSource) context.lookup("java:comp/env/jdbc/DB");
+	// } catch (NamingException e) {
+	// e.printStackTrace();
+	// }
+	// }
+	//
+	// private static final String SELECT_ALL = "SELECT b.*,m.broadcastWebsite
+	// FROM BroadcastOrder b Join member m ON b.memberAccount = m.memberAccount
+	// ORDER BY broadcastTime DESC";
 
 	@Override
 	public List<BroadcastOrderVO> selectAll() {
@@ -76,7 +103,7 @@ public class BroadcastOrderDAOjdbc implements BroadcastOrderDAO {
 		return bean;
 	}
 
-//	private static final String INSERT = "INSERT INTO BroadcastOrder(memberAccount, broadcastWebsite, broadcastTitle, broadcastTime) VALUES(?, ?, ?, ?)";
+//	private static final Strings INSERT = "INSERT INTO BroadcastOrder(memberAccount, broadcastSite, broadcastTitle, broadcastTime) VALUES(?, ?, ?, ?)";
 
 	@Override
 	public int insert(BroadcastOrderVO bean) {
@@ -120,7 +147,8 @@ public class BroadcastOrderDAOjdbc implements BroadcastOrderDAO {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery("delete from BroadcastOrderVO where memberAccount = ?").setParameter(0, memberAccount);
+			Query query = session.createQuery("delete from BroadcastOrderVO where memberAccount = ?").setParameter(0,
+					memberAccount);
 			result = query.executeUpdate();
 			session.getTransaction().commit();
 		} catch (Exception e) {
@@ -131,7 +159,48 @@ public class BroadcastOrderDAOjdbc implements BroadcastOrderDAO {
 	}
 
 	public static void main(String[] args) {
-		BroadcastOrderDAOjdbc dao = new BroadcastOrderDAOjdbc();
-		System.out.println(dao.selectAll());
+		// SelectAll
+		// BroadcastOrderDAO temp = new BroadcastOrderDAOjdbc();
+		// List<BroadcastOrderVO> list = temp.selectAll();
+		// System.out.println(list);
+
+		// Insert
+		// String memberAccount = "FUN";
+		// String broadcastWebsite =
+		// "http://itvvm.cloudapp.net/ITV/LiveShow?memberAccount=FUN";
+		// String broadcastTitle = "TGIF";
+		// BroadcastOrderVO tempinsert = new BroadcastOrderVO();
+		// tempinsert.setMemberAccount(memberAccount);
+		// tempinsert.setBroadcastWebsite(broadcastWebsite);
+		// tempinsert.setBroadcastTitle(broadcastTitle);
+		// tempinsert.setBroadcastTime(new
+		// java.sql.Date(System.currentTimeMillis()));
+		//
+		// BroadcastOrderDAO dao = new BroadcastOrderDAOjdbc();
+		// int insertlist =
+		// dao.insert(tempinsert.getMemberAccount(),tempinsert.getBroadcastWebsite(),tempinsert.getBroadcastTitle(),tempinsert.getBroadcastTime());
+		// System.out.println("Insert : "+ insertlist);
+
+		// Update
+		// String memberAccount = "FUN";
+		// String broadcastTitle = "TGIF IS F";
+		//
+		// BroadcastOrderVO tempupdate = new BroadcastOrderVO();
+		// tempupdate.setMemberAccount(memberAccount);
+		// tempupdate.setBroadcastTitle(broadcastTitle);
+		//
+		// BroadcastOrderDAO dao = new BroadcastOrderDAOjdbc();
+		// int updatelist =
+		// dao.update(tempupdate.getBroadcastTitle(),tempupdate.getMemberAccount());
+		// System.out.println("Update : "+ updatelist);
+
+		// Delete
+		// BroadcastOrderDAO dao = new BroadcastOrderDAOjdbc();
+		// boolean d = dao.delete("FUN");
+		// if(d==true){
+		// System.out.println("Delete : Success!!!");
+		// }else{
+		// System.out.println("Delete : Fail!!!");
+		// }
 	}
 }

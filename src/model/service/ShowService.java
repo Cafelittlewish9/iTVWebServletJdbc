@@ -1,9 +1,6 @@
 package model.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
 import model.dao.ShowDAO;
 import model.dao.jdbc.ShowDAOjdbc;
 import model.vo.ShowVO;
@@ -20,18 +17,31 @@ public class ShowService {
 		return list;
 	}
 
-	public boolean addShow(ShowVO bean) {
+	public ShowVO checkShow(int memberId, int videoId) {
+		ShowVO list = dao.selectByIdAndWebsite(memberId, videoId);
+		return list;
+	}
+
+	public Collection<ShowVO> addShow(ShowVO bean) {
+		Collection<ShowVO> list = null;
+		int result = dao.insert(bean);
+		if (result == 1) {
+			list = this.showList(bean.getMemberId());
+		}
+		return list;
+	}
+
+	public Collection<ShowVO> changeShow(ShowVO bean) {
+		Collection<ShowVO> list = null;
 		boolean result = false;
 		if (bean != null) {
-			int temp = dao.insert(bean);
+			int temp = dao.update(bean);
 			if (temp == 1) {
 				result = true;
 			}
 		}
-		return result;
+		return list;
 	}
-
-	// console 出現null pointer exception但移除成功
 	public boolean removeShow(ShowVO bean) {
 		boolean result = false;
 		if (bean != null) {
@@ -44,10 +54,10 @@ public class ShowService {
 	}
 
 	public static void main(String[] args) {
-		ShowService service = new ShowService();
-		for (ShowVO bean : service.showList(2)) {
-			System.out.println(bean);
-			// System.out.println(bean.getTitle());
-		}
+		// ShowService service = new ShowService();
+		// for(ShowVO bean:service.showList(2)){
+		// System.out.println(bean);
+		// System.out.println(bean.getTitle());
+		// }
 	}
 }

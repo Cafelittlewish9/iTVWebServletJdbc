@@ -1,6 +1,8 @@
 package model.service;
 
 import java.util.Collection;
+import java.util.List;
+
 import model.dao.VideoDAO;
 import model.dao.jdbc.VideoDAOjdbc;
 import model.vo.MemberVO;
@@ -15,6 +17,10 @@ public class VideoService {
 
 	public Collection<VideoVO> hotVideo() {
 		return dao.selectAll();
+	}
+
+	public Collection<VideoVO> searchMemberId(int memberId) {
+		return dao.selectByMemberId(memberId);
 	}
 
 	public Collection<VideoVO> searchVideo(String videoTitle) {
@@ -36,7 +42,6 @@ public class VideoService {
 		return result;
 	}
 
-	// 只能改videoDescription，另外兩個參數是應資料庫而要求的
 	public boolean updateVideo(VideoVO bean) {
 		boolean result = false;
 		if (bean != null) {

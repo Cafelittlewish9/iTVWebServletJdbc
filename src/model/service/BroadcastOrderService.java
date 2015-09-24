@@ -25,6 +25,14 @@ public class BroadcastOrderService {
 		return list;
 	}
 
+	public BroadcastOrderVO searchAccount(String memberAccount) {
+		BroadcastOrderVO list = null;
+		if (memberAccount != null && memberAccount.trim().length() != 0) {
+			list = dao.selectByMemberAccount(memberAccount);
+		}
+		return list;
+	}
+
 	public BroadcastOrderVO createBroadcast(BroadcastOrderVO bean) {
 		BroadcastOrderVO result = null;
 		if (bean != null) {

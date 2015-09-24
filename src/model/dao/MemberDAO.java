@@ -19,15 +19,11 @@ public interface MemberDAO {
 	public MemberVO findByPK(int memberId);
 
 	public int switchSuspend(int memberId, boolean suspendRight);
-	
-	public String getMemberNickname(String memberAccount);
-
-	public byte[] photoOut(int memberId);
 
 	public String getMemberAccount(String memberAccount);
-
-	public MemberVO findByMemberAccount(String memberAccount);
 	
+	public MemberVO findByMemberAccount(String memberAccount);
+
 	public MemberVO findByEmail(String email);
 
 	public int updatePhoto(int memberId, byte[] photo);

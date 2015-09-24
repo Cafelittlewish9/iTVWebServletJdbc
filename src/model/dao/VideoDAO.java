@@ -7,8 +7,12 @@ import model.vo.VideoVO;
 public interface VideoDAO {
 
 	public List<VideoVO> selectByVideoTitle(String videoTitle);
+	
+	public VideoVO selectByVideoName(String videoName);
 
 	public List<VideoVO> selectByVideoClassName(String videoClassName);
+	
+	public List<VideoVO> selectByMemberId(int memberId);
 
 	public List<VideoVO> selectAll();
 

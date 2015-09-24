@@ -1,31 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.lang.*"%>
-<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> -->
-<!-- <html> -->
-<!-- <head> -->
-<!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> -->
-<!-- <title>Create Live</title> -->
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->
-<!-- <script src="js/bootstrap.js"></script> -->
-
-<!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
-<!-- <link rel="stylesheet" href="css/justified-nav.css"> -->
-
-<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script> -->
-<!-- <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"> -->
-<!-- </script> -->
-
-<!-- <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet"> -->
-
-<!-- <link rel="stylesheet" type="text/css" media="screen" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" /> -->
-
-<!-- <link rel="stylesheet" href="css/layout.css"> -->
-<!-- <link rel="stylesheet" href="css/bootstrap-responsive.css"> -->
-<!-- <link rel="stylesheet" href="css/bootstrap.2.2.2.css"> -->
-
-<!-- <script src="js/bootstrap-datepicker.en-GB.js"></script> -->
-<!-- <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet"> -->
-
 
 <!-- Setting Button的形狀 -->
 <link rel="stylesheet" href="css/Setting.css">
@@ -57,7 +31,7 @@
 				<fieldset style="text-align: center">
 					<form class="form-horizontal" role="form">
 					
-						<div class="form-group ">
+						<div class="form-group">
 							<label for="account" class="col-sm-3 control-label">帳號</label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" id="account" name="memberAccount" placeholder="帳號無法變更" disabled />

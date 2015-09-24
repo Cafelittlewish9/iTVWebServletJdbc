@@ -75,7 +75,7 @@ pre {
 .centered {
 	background-color:#22282e;
     width: 1080px;
-    height:475px;
+    height:430px;
     margin: 30px auto 0;
 }
 
@@ -196,6 +196,31 @@ table tr td {
     border-right: 1px solid #e0e0e0;
     border-bottom: 1px solid #e0e0e0;
 }
+
+	.stream-video-info--buttons {
+    	width: 510px;
+    	float: left;
+    	margin-left: 10px;
+	}
+	.stream-video-info--buttons button{
+	    font-size: 12px;
+	    color: #fff;
+	    font-weight: 700;
+	    float: left;
+	    background-color: #1976d2;
+	    line-height: 25px;
+	    margin-right: 5px;
+	    height: 25px;
+	    min-width: 84px;
+	    text-align: center;
+	    border: none;
+	    margin-bottom: 5px;
+	    padding: 0 10px;
+	    text-transform: uppercase;
+	}
+	.stream-video-info--buttons button:hover{
+	text-decoration:none;
+	}
 
 /* Odds Events */
 table tr:nth-child(even) td {

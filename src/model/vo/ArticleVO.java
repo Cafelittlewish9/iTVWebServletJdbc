@@ -34,8 +34,6 @@ public class ArticleVO implements Serializable {
 	private MemberVO member;
 	@XmlElement(required = true)
 	private ArticleClassVO articleClass;
-	@XmlElement(required = true)
-	private Set<ReplyArticleVO> replyArticles = new LinkedHashSet<ReplyArticleVO>();
 
 	@Override
 	public String toString() {
@@ -122,13 +120,5 @@ public class ArticleVO implements Serializable {
 
 	public void setArticleClass(ArticleClassVO articleClass) {
 		this.articleClass = articleClass;
-	}
-
-	public Set<ReplyArticleVO> getReplyArticles() {
-		return replyArticles;
-	}
-
-	public void setReplyArticles(Set<ReplyArticleVO> replyArticles) {
-		this.replyArticles = replyArticles;
 	}
 }

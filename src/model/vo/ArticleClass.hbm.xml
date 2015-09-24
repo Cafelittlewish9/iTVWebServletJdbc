@@ -8,9 +8,5 @@
 		<id name="subclassNo" column="subclassNo" />
 		<property name="subclassName" column="subclassName" />
 		<property name="className" column="className" />
-		<set name="articles" table="Article" lazy="false" order-by="modifyTime desc">
-			<key><column name="subclassNo" /></key>
-			<one-to-many class="model.vo.ArticleVO" />
-		</set>
 	</class>
 </hibernate-mapping>

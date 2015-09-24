@@ -120,6 +120,7 @@ public class MemberService {
 		MemberVO mvo = this.login1(username, password);
 		return mvo;
 	}
+	// ↑是否是指連查詢個資都要輸入一次帳密？
 
 	// 更改、測試完成
 	public boolean update(MemberVO bean) {
@@ -131,19 +132,6 @@ public class MemberService {
 				result = true;
 			}
 		}
-		return result;
-	}
-
-	public String getMemberNickname(String memberAccount) {
-		String result = null;
-		if (memberAccount != null) {
-			result = dao.getMemberNickname(memberAccount);
-		}
-		return result;
-	}
-
-	public byte[] getPhoto(byte[] photo, int memberId) {
-		byte[] result = dao.photoOut(memberId);
 		return result;
 	}
 
@@ -165,14 +153,21 @@ public class MemberService {
 		return result;
 	}
 
+	// 測完了，沒問題可以動呦吼吼。
+	public int suspendMember(int memberId, boolean suspendRight) {
+		int result = -1;
+		if (memberId != 0) {
+			result = dao.switchSuspend(memberId, suspendRight);
+		}
+		return result;
+	}
+
 	public static void main(String[] args) throws SQLException {
 		MemberService service = new MemberService();
 		// MemberVO mvo = service.login1("niceguy", "E");
 		// System.out.println("");
 		// String result = service.registry2("madclown@gmail.com", "E");
 		// System.out.println(result);
-
-		System.out.println(service.forgetPassword("Pikachu"));
 
 		// String result=service.registry1("niceguy", "E","madclown@gmail.com");
 		// System.out.println("registry result="+result);

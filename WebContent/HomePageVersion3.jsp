@@ -35,34 +35,41 @@
 <script type="text/javascript">
 
 $(function(){
+// 		$.get("VideoServlet",{"videoTitle":"girl"},function(data){
+// 			console.log(data[0]);
+// 		})
+	
+	
 		$.ajax({
 			url:'VideoServlet',
 			type:'get',
-// 			data:{'categoryID':1},
-			dataType:"json",
+ 			data:{'videoTitle':null},
+			dataType:"JSON",
 			success:function(data){
 				$.each(data,function(i,v){
-					
 					//順序=最新-舊
-					var vn = v.videoName.substring(0,25);
+					var vt = v.videoTitle.substring(0,25);
 					var vd = v.videoDescription;
 					if(vd==null){
 						vd="";
 					}
-					
+					//最新10筆
+					if(10>=data.length-i){
 					$('#h_div1').prepend("<td>")
 					$('#h_div1').prepend("<div class='service'>"+
 							"<a href='PlayVideo.jsp?filename="+v.videoName + "'>"+
 							"<img src='../img/"+v.videoName+".jpg' width='200px'/></a><br>"+
 							"<a href='PlayVideo.jsp?filename="+v.videoName+"'>"+
-							"<span class='font-right'><div style='width:200px; display:inline-block' class='font-right'>"+vn+"</div></span></a><br>"+
+							"<span class='font-right'><div style='width:200px; display:inline-block' class='font-right'>"+vt+"</div></span></a><br>"+
 							"<span class='font-right'><div style='width:200px; display:inline-block' class='font-right'><p>"+vd+"</p></div></span></a><br>"+
 							"<span id='v_watchtimes'>"+v.videoWatchTimes+ "views</span><br></td>"+
 							"</div>");
+					}
 				});
 			}
 		})
 })
+alert('${sessionScope.user}');
 </script>
 
 </head>
@@ -100,8 +107,7 @@ $(function(){
 <center>
         <div style="background:white; width:93%; margin:50px 0px 50px 0px">
         
-			<table>
-				<tr>
+			
 					<div style="height:40px;text-align:left;;text-align:center;">
 						<h4><span style="line-height:50px;margin-left:40px;font-family:Microsoft JhengHei;color:#767676;">最新TOP10</span></h4>
 					</div>
@@ -110,8 +116,6 @@ $(function(){
 					<div id="h_div1" style="margin-right: 60px;">
 						
 					</div>
-				</tr>
-			</table>
 			
 		</div>
 </center>

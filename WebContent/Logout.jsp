@@ -13,7 +13,7 @@
 <!-- 先將使用者名稱取出 -->
 
 <!-- 移除放在session物件內的屬性物件 -->
-<c:set var="LoginOK" value='kkk' scope="session" />
+<c:remove var="user" scope="session" />
 <%-- <c:remove var="LoginOK" scope="session" /> --%>
 
 <!-- 引入共同的頁首 -->

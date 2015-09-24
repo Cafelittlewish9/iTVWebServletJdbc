@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.io.* , java.lang.Math"%>
-    <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+    pageEncoding="UTF-8" import="java.io.* , java.lang.* , java.text.*, java.util.*"%>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -37,25 +37,34 @@
 	
 	
 <script type="text/javascript">
+<%
+SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+Date date = new Date();
+%>
 
 $(function(){
 		$.ajax({
-			url:'VideoServlet',
+			url:'BroadcastOrderServlet',
 			type:'get',
 // 			data:{'categoryID':1},
 			dataType:"json",
 			success:function(data){
 				$.each(data,function(i,v){
-					//順序=最新-舊
 					
+					//算總實況時間
+					var totaltime = <%=date.getTime() %> - new Date(v.broadcastTime).getTime();
+					var totalhour = (totaltime/(1000 * 60 )+'').substring(0,(totaltime/(1000 * 60 )+'').indexOf('.'));
+					var totalmin = (totaltime%(1000 * 60 )/1000+'').substring(0,(totaltime%(1000 * 60 )/1000+'').indexOf('.'));
+					
+					//順序=最新-舊
 					$('#s_div1').prepend("<td >")
 					$('#s_div1').prepend("<div class='service'>"+
-							"<a href='LiveShow.jsp?memberAccount="+v.videoName + "'>"+
+							"<a href='LiveShow.jsp?m="+v.memberAccount + "'>"+
 							"<img src='img/test.jpg' width='200px'/></a><br>"+
-							"<a href='LiveShow.jsp?memberAccount="+v.videoName+"'>"+
-							"<span class='font-right'><div style='width:200px; display:inline-block' class='font-right'>"+v.videoName.substr(0,25)+"</div></span></a><br>"+
-							"<span class='font-right'><div style='width:200px; display:inline-block' class='font-right'><p>"+v.videoDescription.substr(0,25)+"</p></div></span></a><br>"+
-							"<span class='font-right' id='v_watchtimes'>"+v.videoWatchTimes+ "views</span><br></td>"+
+							"<a href='LiveShow.jsp?m="+v.memberAccount+"'>"+
+							"<span class='font-right'><div style='width:200px; display:inline-block' class='font-right'>"+v.broadcastTitle.substr(0,25)+"</div></span></a><br>"+
+							"<span class='font-right' id='v_uploadtime'>總實況："+totalhour+'分'+totalmin+'秒'+"</span><br>"+
+							"<span class='font-right' id='v_watchtimes'>"+v.broadcastWatchTimes+ "views</span><br></td>"+
 							"</div>");
 					
 				});
@@ -65,6 +74,8 @@ $(function(){
 </script>
 
 </head>
+
+
 
 <body style="background:rgba(0,0,0,0.05);font-family:Microsoft JhengHei">
 
@@ -106,19 +117,10 @@ $(function(){
 					<div class="browse-main-items">
 						<div id="livestream_items" class="browse-main-videos clearfix">
 						
-							<table>
-								<tr >
-									<div style="height:40px;text-align:center;">
-										<span style="line-height:50px;margin-left:40px;font-family:Microsoft JhengHei;color:#767676;">Search:"LIVESTREAM"</span>
-									</div>
-									
 									<div id="s_div1" >
 									
 									</div>
-								</tr>
-							</table>
-						
-						
+								
 						</div>
 					</div>
 				</div>

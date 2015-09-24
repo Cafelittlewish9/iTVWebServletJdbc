@@ -188,7 +188,6 @@ public class ArticleClassDAOjdbc implements ArticleClassDAO {
 			System.out.println(bean.getSubclassNo());
 			System.out.println(bean.getClassName());
 			System.out.println(bean.getSubclassName());
-			System.out.println(bean.getArticles());
 		}
 //		ArticleClassVO acvo = new ArticleClassVO();
 //		acvo.setSubclassNo("o");

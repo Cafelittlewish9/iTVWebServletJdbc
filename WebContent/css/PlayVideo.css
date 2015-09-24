@@ -1,38 +1,23 @@
-.service{
-	border: 1px solid #c0c0c0;
-	margin-top: 10px;
-	margin-right: 10px;
-	margin-left: 10px;
-	margin-bottom: 30px;
-	transition: all 0.3s;
-	position: relative;
-	padding: 5px 5px;
-	font-family: Microsoft YaHei;
-	text-align:center;
-	display: inline-block;
+ .stream-video-info--buttons {
+    	width: 510px;
+    	float: left;
 	}
-	div#P_div1 span{
-		text-align:-webkit-auto;
+	.stream-video-info--buttons a{
+	    font-size: 12px;
+	    color: #fff;
+	    font-weight: 700;
+	    float: left;
+	    background-color: #1976d2;
+	    line-height: 25px;
+	    margin-right: 5px;
+	    height: 25px;
+	    min-width: 84px;
+	    text-align: center;
+	    border: none;
+	    margin-bottom: 5px;
+	    padding: 0 10px;
+	    text-transform: uppercase;
 	}
-	.service:hover{
-	border-color: #c59a6d;
-	margin-top: 0px;
-	margin-bottom: 0px;
-	cursor: pointer;
-	padding-top: 20px;
-	padding-bottom: 20px;
-	font-family: Microsoft YaHei;
-	}
-
-	#P_div1 a{
+	.stream-video-info--buttons a:hover{
 	text-decoration:none;
-	color:#167ac6;
-	font-weight: 600;
-	font-family:sans-serif; 
-	font-size:15px;
-	}
-	#v_watchtimes{
-	font-weight: 550;
-	font-family:Microsoft JhengHei; 
-	font-size:12px;
 	}

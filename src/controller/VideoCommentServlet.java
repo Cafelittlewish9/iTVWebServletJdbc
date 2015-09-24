@@ -150,13 +150,13 @@ public class VideoCommentServlet extends HttpServlet {
 		// }
 
 		// 傳送會員暱稱
-		if (memberService.getMemberNickname(memberAccount) != null && memberAccount.equals(checkMemberInfo)) {
-			String showMemberNickname = memberService.getMemberNickname(memberAccount);
-			if (showMemberNickname != null) {
-				request.setAttribute("showMemberNickname", showMemberNickname);
-			}
-			request.getRequestDispatcher("PlayVideo.jsp").forward(request, response);
-		}
+//		if (memberService.getMemberNickname(memberAccount) != null && memberAccount.equals(checkMemberInfo)) {
+//			String showMemberNickname = memberService.getMemberNickname(memberAccount);
+//			if (showMemberNickname != null) {
+//				request.setAttribute("showMemberNickname", showMemberNickname);
+//			}
+//			request.getRequestDispatcher("PlayVideo.jsp").forward(request, response);
+//		}
 
 		// select, Insert, Update, Delete
 		// if(sendComment != null && sendComment.equals("select")){

@@ -89,14 +89,14 @@
 		    border-radius: 50%;
 		    max-width: 100%;
 		}
-		#uploadfile,#createlive,#setting{
+		#uploadfile,#createlive,#cancellive,#fallow,#setting{
 			background:transparent;
 			color:black; 
 			border:0px solid #E0E0E0;
 			margin:3px 10px 0px 0px;
 			width: 100%;
 		}
-		#uploadfile:hover,#createlive:hover,#setting:hover{
+		#uploadfile:hover,#createlive:hover,#cancellive:hover,#fallow:hover,#setting:hover{
 			color: #262626;
 		    background-color: #f5f5f5;
 		}

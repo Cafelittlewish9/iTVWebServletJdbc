@@ -55,6 +55,7 @@ var initUploadComponent = function() {
                     	$('#VideoForm').modal('show');
                     }, 2000);
                     
+                    
         			
                 }
 
@@ -77,12 +78,11 @@ var initUploadComponent = function() {
 	                          // check file type is valid as given in 'exts' array
 	                          if ( $.inArray ( get_ext[0].toLowerCase(), exts ) > -1 ){
 	                        	  //特殊字元判斷
-		                          var re = new RegExp("(?=.*[~`!@#$%^&*()\'\";:\/?,.|\\”“。，、？！@#￥……])")
+		                          var re = new RegExp("(?=.*[~`+@#$%^&*()\'\";:\/?,.|\\”“。，、？！@#￥……])")
 		                          if (!re.test(get_ext[1].substring(get_ext[1].lastIndexOf("\\")+1))){
 		                        	  
 		                          }else{
-		                        	  $('#finishedModal h4').text("檔名不允許特殊字元符號");
-		                        	  $('#finishedModal').modal('show');
+		                        	  $('#blockModal').modal('show');
 		                        	  return;
 		                          } 
 	                          } else {
@@ -122,55 +122,62 @@ var initUploadComponent = function() {
                     $('#videoName').val($('#file_input').val().substring ($('#file_input').val().lastIndexOf("\\")+1, $('#file_input').val().lastIndexOf(".")));
                   });
                 
-//              判斷必要輸入欄位的用法
-                $('#memberId').blur(function(){
-                	if( $('#memberId').val()==""){
+
+                
+                $('#videoTitle').blur(function(){
+                	if( $('#videoTitle').val()==""){
                 	$('#input1').addClass("has-error has-feedback");
                 	}else{
                 		$('#input1').removeClass("has-error has-feedback");
                 	}
                 });
                 
-                $('#videoTitle').blur(function(){
-                	if( $('#videoTitle').val()==""){
-                	$('#input2').addClass("has-error has-feedback");
-                	}else{
-                		$('#input2').removeClass("has-error has-feedback");
-                	}
-                });
-                
                 $('#submit1').click(function(){
-                	if( $('#memberId').val()==""||$('#videoTitle').val()==""){
-                		if($('#memberId').val()==""){
-                			$('#input1').addClass("has-error has-feedback");
-                		}
-                    	if($('#videoTitle').val()==""){
-                        	$('#input2').addClass("has-error has-feedback");
-                    	}
+                	if($('#videoTitle').val()==""){
+                        $('#input1').addClass("has-error has-feedback");
                     	return;
                 	}else{
                 	$('#input1').removeClass("has-error has-feedback");
 //                 	console.log($('form').serializeArray());
-                	 $.get('VideoServlet',$('#upload_form1').serialize(),function(data){
-              		   console.log(data);
-              	   		})
-              	   		
-              	   	 $.post('Convert',{"videoName":$('#videoName').val()},function(data){
-							console.log("轉檔成功");
-              	   		})	
-              	   		
-              	   		//關閉列表 顯示成功畫面
-              	   		$('#VideoForm').modal('hide');
-                	 	setTimeout(function() {
-	                     	$('#finishedModal').modal('show');
-	                     }, 1500);
-                     	//一秒半後關閉成功畫面
-	                	 setTimeout(function() {
-	                     	$('#finishedModal').modal('hide');
-	                     }, 3000);
-	                	 setTimeout(function() {
-	                		 location.reload();
-		                 }, 4000);
+                	
+	                	var re = new RegExp("(?=.*[~`+@#$%^&*()\'\";:\/?,.|\\”“。，、？！@#￥……])")
+	                    if (!re.test($('#videoTitle').val())){
+	                    	
+	                    	$.get('VideoServlet',$('#upload_form1').serialize(),function(data){
+	                   		     console.log(data);
+	                   	   		})
+	                   	   		
+	                   	   	 $.post('Convert',{"videoName":$('#videoName').val()},function(data){
+	     							console.log("轉檔成功");
+	                   	   		})	
+	                   	   		
+	                   	   		//關閉列表 顯示成功畫面
+	                   	   		$('#VideoForm').modal('hide');
+	                     	 	setTimeout(function() {
+	     	                     	$('#finishedModal').modal('show');
+	     	                     }, 1500);
+	                          	//一秒半後關閉成功畫面
+	     	                	 setTimeout(function() {
+	     	                     	$('#finishedModal').modal('hide');
+	     	                     }, 3000);
+	     	                	 setTimeout(function() {
+	     	                		 location.reload();
+	     		                 }, 4000);
+	     	                	 
+	                    }else{
+	                    	setTimeout(function() {
+	                    		$('#VideoForm').modal('hide');
+	                    		$('#input1').addClass("has-error has-feedback");
+	                    		$('#blockModal').modal('show');
+	                    	}, 1000);
+
+	                    	setTimeout(function() {
+	                    		$('#blockModal').modal('hide');
+	                    		$('#VideoForm').modal('show');
+	                    	}, 3000);
+	                  	  return;
+	                    } 
+                	
                 	}
             	});
                 

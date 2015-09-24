@@ -193,3 +193,20 @@ margin-top: 10px;
     border: 0px solid #E0E0E0;
     width: 100%;
 }
+#video_setting:hover{
+	color: #A60505;
+	text-decoration: none;
+}
+#gotop {
+    display: none;
+    position: fixed;
+    right: 40px;
+    bottom: 40px;    
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+	}
+#gotop img{
+	border-radius: 5px;
+}

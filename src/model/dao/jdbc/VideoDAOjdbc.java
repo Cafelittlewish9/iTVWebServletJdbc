@@ -1,13 +1,12 @@
 package model.dao.jdbc;
 
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
- import model.dao.VideoDAO;
-import model.vo.VideoCommentsVO;
+
+import model.dao.VideoDAO;
 import model.vo.VideoVO;
 import util.HibernateUtil;
 
@@ -20,7 +19,7 @@ public class VideoDAOjdbc implements VideoDAO {
 	// public VideoDAOjdbc() {
 	// try {
 	// InitialContext context = new InitialContext();
-	// this.datasource = (DataSource) context.lookup(GC.DATASOURCE);
+	// this.datasource = (DataSource) context.lookup("java:comp/env/jdbc/DB");
 	// } catch (NamingException e) {
 	// e.printStackTrace();
 	// }
@@ -36,8 +35,7 @@ public class VideoDAOjdbc implements VideoDAO {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery("from VideoVO where videoTitle like ?");
-			query.setParameter(0, "%" + videoTitle + "%");
+			Query query = session.createQuery("from VideoVO where videoTitle like ?").setParameter(0, "%" + videoTitle + "%");
 			list = query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
@@ -45,6 +43,26 @@ public class VideoDAOjdbc implements VideoDAO {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	// private static final String SELECT_BY_VIDEONAME = "SELECT
+	// v.*,m.memberAccount FROM video v Join member m ON v.memberId = m.memberId
+	// WHERE videoName = ?";
+
+	@Override
+	public VideoVO selectByVideoName(String videoName) {
+		VideoVO result = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from VideoVO where videoName = ?").setParameter(0, videoName);
+			result = (VideoVO) query.list().get(0);
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	// private static final String SELECT_BY_VIDEOCLASSNAME = "SELECT
@@ -57,8 +75,27 @@ public class VideoDAOjdbc implements VideoDAO {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery("from VideoVO where videoClassName = ?");
-			query.setParameter(0, videoClassName);
+			Query query = session.createQuery("from VideoVO where videoClassName = ?").setParameter(0, videoClassName);
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	// private static final String SELECT_BY_MEMBERID = "SELECT
+	// v.*,m.memberAccount FROM video v Join member m ON v.memberId = m.memberId
+	// WHERE m.memberId=?";
+
+	@Override
+	public List<VideoVO> selectByMemberId(int memberId) {
+		List<VideoVO> list = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from VideoVO where memberId = ?").setParameter(0, memberId);
 			list = query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
@@ -109,8 +146,8 @@ public class VideoDAOjdbc implements VideoDAO {
 	}
 
 	// private static final String UPDATE_DESCRIPTION = "update video set
-	// videoDescription = ?, videoDescriptionModifyTime = GETUTCDATE() where
-	// videoId = ?";
+	// videoTitle = ?,videoDescription = ?, videoDescriptionModifyTime =
+	// GETUTCDATE() where videoId = ?";
 
 	@Override
 	public int update(VideoVO bean) {
@@ -128,10 +165,8 @@ public class VideoDAOjdbc implements VideoDAO {
 		return result;
 	}
 
-	// private static final String UPDATE_WATCHTIMES = "update video set
-	// videoWatchTimes = ? where videoId = ?";
-
-	private static final String DELETE = "delete from video where videoId = ?";
+	// private static final String DELETE = "delete from video where videoId =
+	// ?";
 
 	@Override
 	public int delete(int videoId) {
@@ -149,32 +184,60 @@ public class VideoDAOjdbc implements VideoDAO {
 		return result;
 	}
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		// SelectALL
 		VideoDAO temp = new VideoDAOjdbc();
 		List<VideoVO> list = temp.selectAll();
-		for (VideoVO bean : list) {
-			System.out.println(bean.getMember().getMemberAccount());
-			Set<VideoCommentsVO> temp2 = bean.getVideoComments();
-			for (VideoCommentsVO bean2 : temp2) {
-				System.out.println(bean2.getCommentContent());
-			}
-		}
-//		VideoVO bean4 = new VideoVO();
-//		MemberVO xx = new MemberVO();
-//		xx.setMemberId(2);
-//		bean4.setMember(xx);
-//		bean4.setVideoWebsite("xzzxc");
-//		bean4.setVideoClassName("default");
-//		bean4.setVideoTitle("1323");
-//		bean4.setVideoName("好吃");
-//		bean4.setVideoPath("CCCCCCCCCCCC");
-//		bean4.setVideoUploadTime(new java.util.Date());
-//		bean4.setVideoDescriptionModifyTime(new java.util.Date());
-//		boolean i = temp.update("Cxvczxcdvasdvasd", 32);
-//		System.err.println(i);
+		System.out.println(list);
+
+		// Insert
+		// String url =
+		// "http://nextinnovation.cloudapp.net/ITV/PlayVideo.jsp?filename=";
+		// String path = "../mp4/";
+		// String videoname = "Mamamoo - Um Oh Ah Yeh";
+		// VideoVO tempinsert = new VideoVO();
+		// tempinsert.setMemberId(2);
+		// tempinsert.setVideoWebsite(url+videoname);
+		// tempinsert.setVideoClassName("mv");
+		// tempinsert.setVideoName(videoname);
+		// tempinsert.setVideoPath(path+videoname+".mp4");
+		// tempinsert.setVideoWatchTimes(1000);
+		//
+		// VideoDAO dao = new VideoDAOjdbc();
+		// VideoVO insertlist = dao.insert(tempinsert);
+		// System.out.println("Insert : "+ insertlist);
+
+		// Update
+		// String url =
+		// "http://nextinnovation.cloudapp.net/ITV/PlayVideo.jsp?filename=";
+		// String path = "../mp4/";
+		// String videoname = "Mamamoo";
+		//
+		// VideoVO tempupdate = new VideoVO();
+		// tempupdate.setMemberId(3);
+		// tempupdate.setVideoWebsite(url+videoname);
+		// tempupdate.setVideoClassName("mv");
+		// tempupdate.setVideoName(videoname);
+		// tempupdate.setVideoPath(path+videoname+".mp4");
+		// tempupdate.setVideoUploadTime(new
+		// java.sql.Date(System.currentTimeMillis()));
+		// tempupdate.setVideoWatchTimes(2000);
+		// tempupdate.setVideoDescription("");
+		// tempupdate.setVideoId(14);
+		//
+		// VideoDAO dao = new VideoDAOjdbc();
+		// VideoVO updatelist =
+		// dao.update(tempupdate.getMemberId(),tempupdate.getVideoWebsite(),tempupdate.getVideoClassName(),
+		// tempupdate.getVideoName(),tempupdate.getVideoPath(),tempupdate.getVideoUploadTime(),tempupdate.getVideoWatchTimes(),tempupdate.getVideoDescription(),tempupdate.getVideoId());
+		// System.out.println("Update : "+ updatelist);
+
+		// Delete
+		// VideoDAO dao = new VideoDAOjdbc();
+		// boolean d = dao.delete(13);
+		// if(d==true){
+		// System.out.println("Delete : Success!!!");
+		// }else{
+		// System.out.println("Delete : Fail!!!");
+		// }
 	}
 }

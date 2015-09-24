@@ -1,45 +1,30 @@
 package model.dao.jdbc;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import model.dao.LoginDAO;
 import model.vo.LoginVO;
-import model.vo.ReplyArticleVO;
-import util.ConvertType;
-import util.GC;
 import util.HibernateUtil;
 
 public class LoginDAOjdbc implements LoginDAO {
-	// private static final String URL = GC.URL;
-	// private static final String USERNAME = GC.USERNAME;
-	// private static final String PASSWORD = GC.PASSWORD;
-	// private DataSource ds;
-	//
-	// public LoginDAOjdbc(){
-	// try {
-	// Context ctx = new InitialContext();
-	// this.ds = (DataSource) ctx.lookup(GC.DATASOURCE);
-	// } catch (NamingException e) {
-	// e.printStackTrace();
-	// }
-	// }
-
-	// private static final String SELECT_BY_MEMBERACCOUNT = "select * from
-	// Login where memberAccount = ?";
+//	private static final String URL = GC.URL;
+//	private static final String USERNAME = GC.USERNAME;
+//	private static final String PASSWORD = GC.PASSWORD;
+//	private DataSource ds;
+//
+//	public LoginDAOjdbc(){
+//		try {
+//			Context ctx = new InitialContext();
+//			this.ds = (DataSource) ctx.lookup("java:comp/env/jdbc/DB");
+//		} catch (NamingException e) {
+//			e.printStackTrace();
+//		}
+//	}
+	
+//	private static final String SELECT_BY_MEMBERACCOUNT = "select * from Login where memberAccount = ?";
 
 	@Override
 	public List<LoginVO> selectAll(String memberAccount) {
@@ -57,7 +42,7 @@ public class LoginDAOjdbc implements LoginDAO {
 		return list;
 	}
 
-	// private static final String SELECT_ALL = "select * from Login";
+//	private static final String SELECT_ALL = "select * from Login";
 
 	@Override
 	public List<LoginVO> selectAll() {
@@ -75,8 +60,7 @@ public class LoginDAOjdbc implements LoginDAO {
 		return list;
 	}
 
-	// private static final String SELECT_LAST_TIME = "SELECT TOP 1 * FROM Login
-	// WHERE memberAccount = ? ORDER BY logintime DESC";
+//	private static final String SELECT_LAST_TIME = "SELECT TOP 1 * FROM Login WHERE memberAccount = ? ORDER BY logintime DESC";
 
 	@Override
 	public LoginVO select(String memberAccount) {
@@ -96,7 +80,7 @@ public class LoginDAOjdbc implements LoginDAO {
 		return bean;
 	}
 
-//	private static final String INSERT = "insert into Login(ip, memberAccount) values(?, ?)";
+	private static final String INSERT = "insert into Login(ip, memberAccount) values(?, ?)";
 
 	@Override
 	public int insert(LoginVO bean) {

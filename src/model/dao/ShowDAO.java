@@ -9,6 +9,8 @@ public interface ShowDAO {
 	public List<ShowVO> selectJoinMember(int memberId);
 	
 	public List<ShowVO> selectJoinVideo(int memberId);
+	
+	public ShowVO selectByIdAndWebsite(int memberId, int videoId);
 
 	public List<ShowVO> selectAll();
 
