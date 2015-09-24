@@ -8,18 +8,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.service.restful.ArticleRestful;
+import model.service.ArticleService;
 import model.vo.ArticleVO;
 @WebServlet("/article")
 public class ArticleRServlet extends javax.servlet.http.HttpServlet{
     private static final long serialVersionUID = 2010L;
-    private ArticleRestful service = null;
+    private ArticleService service = null;
     
 //    public void setArticleRestful(ArticleRestful service){
 //        this.service = service;
 //    }
     public void init() throws ServletException{
-    	service = new ArticleRestful();
+    	service = new ArticleService();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -62,7 +62,9 @@ public class ArticleRServlet extends javax.servlet.http.HttpServlet{
         throws ServletException, IOException{
         String articleId = request.getParameter("articleId");
         int id=Integer.parseInt(articleId);
-        service.deleteArticle(id);
+        ArticleVO bean = new ArticleVO();
+        bean.setArticleId(id);
+        service.deleteArticle(bean);
         request.setAttribute("articleList", service.allArticle());
     }
 
@@ -70,7 +72,7 @@ public class ArticleRServlet extends javax.servlet.http.HttpServlet{
         throws ServletException, IOException{
     	String keyword =request.getParameter("keyword");
     	//搜尋可能無法這麼便宜行事
-        request.setAttribute("articleList", service.searchByInput(keyword));        
+        request.setAttribute("articleList", service.searchByInput("", keyword));        
     }
     
     public void update(HttpServletRequest request, HttpServletResponse response) 
@@ -90,7 +92,7 @@ public class ArticleRServlet extends javax.servlet.http.HttpServlet{
         bean.setArticleContent(articleContent);
         bean.setModifyTime(modifyTime); 
         service.modifyArticle(bean);
-        request.setAttribute("articleList", service.searchByInput(articleId));
+        request.setAttribute("articleList", service.searchByInput(subclassNo, articleTitle));
         //改完應該會想再看一下同一篇文章吧
     }
     

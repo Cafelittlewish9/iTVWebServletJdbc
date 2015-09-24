@@ -50,13 +50,13 @@ public class VideoDAOjdbc implements VideoDAO {
 	// WHERE videoName = ?";
 
 	@Override
-	public VideoVO selectByVideoName(String videoName) {
-		VideoVO result = null;
+	public List<VideoVO> selectByVideoName(String videoName) {
+		List<VideoVO> result = null;
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
 			Query query = session.createQuery("from VideoVO where videoName = ?").setParameter(0, videoName);
-			result = (VideoVO) query.list().get(0);
+			result = query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
 			session.getTransaction().rollback();

@@ -8,7 +8,7 @@ public interface VideoDAO {
 
 	public List<VideoVO> selectByVideoTitle(String videoTitle);
 	
-	public VideoVO selectByVideoName(String videoName);
+	public List<VideoVO> selectByVideoName(String videoName);
 
 	public List<VideoVO> selectByVideoClassName(String videoClassName);
 	

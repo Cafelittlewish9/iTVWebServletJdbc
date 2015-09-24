@@ -42,12 +42,12 @@ public class ShowService {
 		}
 		return list;
 	}
-	public boolean removeShow(ShowVO bean) {
-		boolean result = false;
+	public Collection<ShowVO> removeShow(ShowVO bean) {
+		Collection<ShowVO> result = null;
 		if (bean != null) {
 			int temp = dao.insert(bean);
 			if (temp == 1) {
-				result = true;
+				result = dao.selectJoinMember(bean.getMemberId());
 			}
 		}
 		return result;

@@ -26,6 +26,10 @@ public class VideoService {
 	public Collection<VideoVO> searchVideo(String videoTitle) {
 		return dao.selectByVideoTitle(videoTitle);
 	}
+	
+	public Collection<VideoVO> searchVideoName(String videoName) {
+		return dao.selectByVideoName(videoName);
+	}
 
 	public Collection<VideoVO> videoClassList(String videoClassName) {
 		return dao.selectByVideoClassName(videoClassName);

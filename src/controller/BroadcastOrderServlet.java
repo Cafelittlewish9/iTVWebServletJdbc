@@ -130,7 +130,7 @@ public class BroadcastOrderServlet extends HttpServlet {
 					request.getRequestDispatcher(
 							"/pages/Success.jsp").forward(request, response);
 				} else if(prodaction!=null && prodaction.equals("Delete")) {
-					boolean result = bs.removeBroadcast(bean);
+					boolean result = bs.removeBroadcast(bean.getMemberAccount());
 					PrintWriter out = response.getWriter();
 					out.println(result);
 				

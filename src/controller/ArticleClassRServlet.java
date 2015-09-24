@@ -7,18 +7,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.service.restful.ArticleClassRestful;
+import model.service.ArticleClassService;
 import model.vo.ArticleClassVO;
 @WebServlet("/articleClass")
 public class ArticleClassRServlet extends javax.servlet.http.HttpServlet{
     private static final long serialVersionUID = 2010L;
-    private ArticleClassRestful service = null;
+    private ArticleClassService service = null;
     
 //    public void setArticleClassRestful(setArticleClassRestful service){
 //        this.service = service;
 //    }
     public void init() throws ServletException{
-    	service = new ArticleClassRestful();
+    	service = new ArticleClassService();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) 

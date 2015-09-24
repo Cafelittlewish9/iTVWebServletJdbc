@@ -116,14 +116,14 @@ public class ReportArticleServlet extends HttpServlet {
 		}
 		
 		//顯示會員暱稱
-		if(memberService.getMemberNickname(memberAccount)!=null && memberAccount.equals(checkMemberInfo)){
-			String showMemberNickname = memberService.getMemberNickname(memberAccount);
-			if(showMemberNickname!=null){
-				request.setAttribute("showMemberNickname", showMemberNickname);
-			}
-			request.getRequestDispatcher("").forward(request, response); //目前沒有頁面
-		}
-		
+//		if(memberService.getMemberNickname(memberAccount)!=null && memberAccount.equals(checkMemberInfo)){
+//			String showMemberNickname = memberService.acgetMemberNickname(memberAccount);
+//			if(showMemberNickname!=null){
+//				request.setAttribute("showMemberNickname", showMemberNickname);
+//			}
+//			request.getRequestDispatcher("").forward(request, response); //目前沒有頁面
+//		}
+//		
 		//檢舉文章、管理員後台刪除檢舉
 		if(sendReportArticle != null && sendReportArticle.equals("insert")){
 			boolean result = reportArticleService.addReportArticle(bean);

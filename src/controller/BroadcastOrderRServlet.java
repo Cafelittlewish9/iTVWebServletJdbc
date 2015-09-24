@@ -8,20 +8,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.service.restful.ArticleRestful;
-import model.service.restful.BroadcastOrderRestful;
-import model.vo.ArticleVO;
+import model.service.BroadcastOrderService;
 import model.vo.BroadcastOrderVO;
 @WebServlet("/broadcastOrder")
 public class BroadcastOrderRServlet extends javax.servlet.http.HttpServlet{
     private static final long serialVersionUID = 2010L;
-    private BroadcastOrderRestful service = null;
+    private BroadcastOrderService service = null;
     
 //    public void setArticleRestful(ArticleRestful service){
 //        this.service = service;
 //    }
     public void init() throws ServletException{
-    	service = new BroadcastOrderRestful();
+    	service = new BroadcastOrderService();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -62,9 +60,7 @@ public class BroadcastOrderRServlet extends javax.servlet.http.HttpServlet{
     public void delete(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException{
     	String memberAccount =request.getParameter("memberAccount");
-    	BroadcastOrderVO bean = new BroadcastOrderVO();
-        bean.setMemberAccount(memberAccount);
-        service.removeBroadcast(bean);//為什麼要用上一個bean去刪除，其實用memberAccount就好…
+        service.removeBroadcast(memberAccount);//為什麼要用上一個bean去刪除，其實用memberAccount就好…
         request.setAttribute("broadcastOrderList", service.broadcastOrder());
     }
 

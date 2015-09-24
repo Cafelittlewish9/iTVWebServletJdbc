@@ -8,21 +8,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.service.restful.ArticleRestful;
-import model.service.restful.BlackRestful;
-import model.service.restful.FollowRestful;
-import model.vo.ArticleVO;
-import model.vo.BlackVO;
+import model.service.FollowService;
+import model.vo.FollowVO;
 @WebServlet("/follow")
 public class FollowRServlet extends javax.servlet.http.HttpServlet{
     private static final long serialVersionUID = 2010L;
-    private FollowRestful service = null;
+    private FollowService service = null;
     
 //    public void setFollowRestful(FollowRestful service){
 //        this.service = service;
 //    }
     public void init() throws ServletException{
-    	service = new FollowRestful();
+    	service = new FollowService();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -43,9 +40,12 @@ public class FollowRServlet extends javax.servlet.http.HttpServlet{
 //      轉換型別
         int id=Integer.parseInt(memberId);
         int fid=Integer.parseInt(followId);
+        FollowVO bean = new FollowVO();
+        bean.setFollowId(fid);
+        bean.setMemberId(id);
         //還是應該用bid去求出被黑的人的memberAccount?!
 //      呼叫model
-        service.follow(id, fid);
+        service.follow(bean);
 //      setAttribute共享資訊並轉交
         request.setAttribute("followList", service.followList(id));
     }

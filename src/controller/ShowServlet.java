@@ -58,7 +58,7 @@ public class ShowServlet extends HttpServlet {
 		
 		String memberId = request.getParameter("memberId");
 		java.sql.Timestamp showTime = new java.sql.Timestamp(date.getTime());
-		String website = Website + request.getParameter("website");
+		String videoId = Website + request.getParameter("videoId");
 		String prodaction = request.getParameter("prodaction");
 		//驗證資料
 				Map<String, String> errors = new HashMap<String, String>();
@@ -87,7 +87,7 @@ public class ShowServlet extends HttpServlet {
 		ShowVO bean = new ShowVO();
 		bean.setMemberId(id);
 		bean.setShowTime(showTime);
-		bean.setWebsite(website);
+		bean.setVideoId(ConvertType.convertToInt(videoId));
 		
 		
 		//根據Model執行結果導向View
@@ -100,7 +100,7 @@ public class ShowServlet extends HttpServlet {
 			request.getRequestDispatcher(
 					"/pages/Success.jsp").forward(request, response);
 		}else if(prodaction!=null && prodaction.equals("Check")) {
-			ShowVO result = ss.checkShow(bean.getMemberId(),bean.getWebsite());
+			ShowVO result = ss.checkShow(bean.getMemberId(),bean.getVideoId());
 			PrintWriter out = response.getWriter();
 			if(result!=null){
 				JSONArray one = new JSONArray();
@@ -108,7 +108,7 @@ public class ShowServlet extends HttpServlet {
 					Map map =new HashMap();
 					map.put("memberId",result.getMemberId());
 					map.put("showTime",result.getShowTime()+"");
-					map.put("website",result.getWebsite());
+					map.put("website",result.getVideo().getVideoWebsite());
 					
 				//轉換contentType必要
 				response.setContentType("text/html; charset=utf-8");
@@ -128,7 +128,7 @@ public class ShowServlet extends HttpServlet {
 					Map map =new HashMap();
 					map.put("memberId",row.getMemberId());
 					map.put("showTime",row.getShowTime()+"");
-					map.put("website",row.getWebsite());
+					map.put("website",row.getVideo().getVideoWebsite());
 					one.add(map);
 				}
 				//轉換contentType必要
@@ -151,7 +151,7 @@ public class ShowServlet extends HttpServlet {
 			request.getRequestDispatcher(
 					"/pages/Success.jsp").forward(request, response);
 		} else if(prodaction!=null && prodaction.equals("Delete")) {
-			Collection<ShowVO> result = ss.removeShow(bean.getMemberId(),bean.getWebsite());
+			Collection<ShowVO> result = ss.removeShow(bean);
 			
 			//轉換contentType必要
 			response.setContentType("text/html; charset=utf-8");
