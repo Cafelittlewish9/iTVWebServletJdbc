@@ -37,10 +37,8 @@ width: 450px; margin:0px auto;padding:5px
 }
 </style>
 
-<<<<<<< HEAD
 </head>
 <body>
-=======
 <!-- SignUp Modal -->
 <div class="modal fade" id="SignUp" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true"
@@ -66,7 +64,7 @@ width: 450px; margin:0px auto;padding:5px
 						<div id="l_input2" class="input-group">
 							<span class="input-group-addon" id="basic-addon1">密碼</span>
 							<input id="memberPassword" type="text" name="memberPassword"
-								class="form-control" maxlength="6" placeholder="請輸入"
+								class="form-control" maxlength="20" placeholder="請輸入"
 								aria-describedby="basic-addon1">
 						</div>
 						<div id="l_input3" class="input-group">
@@ -78,7 +76,7 @@ width: 450px; margin:0px auto;padding:5px
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">暱稱</span>
 							<input id="memberNickname" type="text" name="memberNickname"
-								class="form-control" maxlength="10" placeholder="請輸入"
+								class="form-control" maxlength="40" placeholder="請輸入"
 								aria-describedby="basic-addon1">
 						</div>
 						<div class="input-group">
@@ -116,7 +114,6 @@ width: 450px; margin:0px auto;padding:5px
 		</div>
 	</div>
 </div>
->>>>>>> branch 'master' of https://github.com/Cafelittlewish9/iTVWebServletJdbc.git
 
 	<jsp:include page="/Header.jsp" />
 
@@ -132,13 +129,10 @@ width: 450px; margin:0px auto;padding:5px
       </div>
       
       <div class="modal-body">
-<<<<<<< HEAD
 
 			<form id="Login_form" method="post" action="login.do">
-=======
 <!-- 		<div class="upload-form"> -->
 			<form id="Login_form" method="post" action="<c:url value='/loginAjaxs' />">
->>>>>>> branch 'master' of https://github.com/Cafelittlewish9/iTVWebServletJdbc.git
 				<fieldset style="text-align:center">
 				
 				<div id="l_input1-1"  class="input-group">

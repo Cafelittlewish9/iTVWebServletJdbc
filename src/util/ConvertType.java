@@ -7,7 +7,7 @@ import java.time.ZonedDateTime;
 import model.dao.ArticleDAO;
 import model.dao.LoginDAO;
 import model.dao.jdbc.ArticleDAOjdbc;
-import model.dao.jdbc.LoginDAOjdbc;
+//import model.dao.jdbc.LoginDAOjdbc;
 
 public class ConvertType {
 
@@ -115,8 +115,8 @@ public class ConvertType {
 		// java.util.Date(System.currentTimeMillis()), "Asia/Taipei");
 		// System.out.println(time);
 
-		ArticleDAO temp = new ArticleDAOjdbc();
-		LoginDAO dao = new LoginDAOjdbc();
+//		ArticleDAO temp = new ArticleDAOjdbc();
+//		LoginDAO dao = new LoginDAOjdbc();
 
 		/*
 		 * List<LoginVO> bean = dao.selectAll("Pikachu"); for (LoginVO a : bean)

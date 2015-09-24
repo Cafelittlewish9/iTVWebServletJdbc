@@ -78,17 +78,17 @@
 							<div class="col-sm-8">
 								<input type="date" class="form-control" id="birthday" />
 							</div>
-						</div>
-
+						</div>			   			
+					</form>
+					<!-- 傳物件時所在的form必須改enctype -->
+					<form >
 						<div class="form-group">
 							<label for="photo1" class="col-sm-3 control-label">照片</label>
 							<div class="col-sm-8">
 								<input type="file" class="btn btn-default btn-file" id="photo1" />
 							</div>
 						</div>
-			   			
 					</form>
-					
 				</fieldset>
 			</div>
 
